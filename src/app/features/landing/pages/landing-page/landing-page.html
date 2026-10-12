@@ -1,0 +1,71 @@
+<div class="landing-page">
+  <!-- Navigation -->
+  <app-header></app-header>
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-content">
+        <span class="eyebrow">GRAPH THEORY × NETWORK PLANNING</span>
+
+        <h1>
+          Explore networks through
+          <span>graph algorithms.</span>
+        </h1>
+
+        <p class="hero-description">
+          Build communication networks, visualize their structure and experiment
+          with graph algorithms in an interactive environment.
+        </p>
+
+        <div class="hero-actions">
+          <a class="primary-button" routerLink="/network-planner">
+            Open Network Planner
+          </a>
+
+          <a class="secondary-button" href="#features"> Learn more </a>
+        </div>
+      </div>
+
+      <app-graph-preview></app-graph-preview>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="features">
+      <div class="section-heading">
+        <span class="eyebrow">THE PROJECT</span>
+
+        <h2>Experiment with networks visually</h2>
+
+        <p>
+          Create network instances and investigate how graph algorithms behave
+          on them.
+        </p>
+      </div>
+
+      <div class="feature-grid">
+        <app-feature-card
+          icon="◎"
+          title="Build Networks"
+          description="Add towers to a two-dimensional space and generate connections according to their communication distance."
+        >
+        </app-feature-card>
+
+        <app-feature-card
+          icon="⌘"
+          title="Run Algorithms"
+          description="Apply graph algorithms to analyze and optimize the generated network."
+        >
+        </app-feature-card>
+
+        <app-feature-card
+          icon="△"
+          title="Visualize Results"
+          description="Explore large graph structures using an interactive Canvas or WebGL visualization."
+        >
+        </app-feature-card>
+      </div>
+    </section>
+  </main>
+
+  <app-footer></app-footer>
+</div>

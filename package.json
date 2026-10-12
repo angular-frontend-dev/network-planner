@@ -1,0 +1,41 @@
+{
+  "name": "network-planner",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "npm@11.12.0",
+  "engines": {
+    "node": ">=22.22.3",
+    "npm": ">=8.0.0"
+  },
+  "volta": {
+    "node": "22.22.3",
+    "npm": "11.12.0"
+  },
+  "scripts": {
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "lint": "ng lint",
+    "test": "echo \"Vitest not wired yet (scaffold only).\" && exit 0",
+    "generate:page": "ng g c --type=page"
+  },
+  "dependencies": {
+    "@angular/animations": "^22.2.2",
+    "@angular/common": "^22.2.2",
+    "@angular/compiler": "^22.2.2",
+    "@angular/core": "^22.2.2",
+    "@angular/forms": "^22.2.2",
+    "@angular/platform-browser": "^22.2.2",
+    "@angular/platform-browser-dynamic": "^22.2.2",
+    "@angular/router": "^22.2.2",
+    "rxjs": "^7.8.0",
+    "tslib": "^2.6.0"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^22.2.2",
+    "@angular/cli": "^22.2.2",
+    "@angular/compiler-cli": "^22.2.2",
+    "typescript": "^6.0.3"
+  }
+}

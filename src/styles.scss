@@ -1,0 +1,17 @@
+@use "styles/theme";
+@use "styles/base";
+@use "styles/buttons";
+
+:root {
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  font-family:
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
+}
