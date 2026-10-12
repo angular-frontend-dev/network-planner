@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Component } from "@angular/core";
 
 interface PreviewNode {
   id: number;
@@ -23,12 +23,10 @@ interface RenderedPreviewEdge {
 }
 
 @Component({
-  standalone: true,
   imports: [],
   selector: "app-graph-preview",
   styleUrls: ["./graph-preview.component.scss"],
   templateUrl: "./graph-preview.component.html",
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GraphPreviewComponent {
   readonly nodes: PreviewNode[] = this.createRandomNodes();
@@ -45,12 +43,17 @@ export class GraphPreviewComponent {
     const maxGrids = 3;
 
     const nodes: PreviewNode[] = [];
-    for (let i = 0.2; i < maxGrids; i++) {
-      for (let j = 0.2; j < maxGrids; j++) {
+    for (let i = 0; i < maxGrids; i++) {
+      for (let j = 0; j < maxGrids; j++) {
+        const minX = Math.max(0.1, i / maxGrids);
+        const maxX = Math.min(0.9, (i + 1) / maxGrids);
+        const minY = Math.max(0.1, j / maxGrids);
+        const maxY = Math.min(0.9, (j + 1) / maxGrids);
+
         nodes.push({
           id: nodes.length + 1,
-          x: this.getRandomInterval(i / maxGrids, (i + 1) / maxGrids) * 80,
-          y: this.getRandomInterval(j / maxGrids, (j + 1) / maxGrids) * 80,
+          x: this.getRandomInterval(minX, maxX) * 100,
+          y: this.getRandomInterval(minY, maxY) * 100,
           animationDelay: this.getRandomInterval(-5, 0),
         });
       }
