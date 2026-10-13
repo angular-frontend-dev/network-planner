@@ -1,0 +1,11 @@
+.network-planner {
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(101, 229, 194, 0.09),
+      transparent 30%
+    ),
+    var(--color-background);
+
+  color: var(--color-text);
+}

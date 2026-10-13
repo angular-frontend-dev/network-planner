@@ -1,0 +1,14 @@
+<article class="algorithm-card">
+  <header class="algorithm-card__header">
+    <span class="algorithm-card__number">{{ stepNumber() }}</span>
+
+    <div>
+      <h3>{{ title() }}</h3>
+      <p>{{ description() }}</p>
+    </div>
+  </header>
+
+  <div class="algorithm-card__figure">
+    <app-graph-view [graph]="graph()"></app-graph-view>
+  </div>
+</article>

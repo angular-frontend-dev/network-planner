@@ -1,0 +1,13 @@
+<article class="why-card">
+  <span class="section-eyebrow">{{ title() }}</span>
+
+  <h2>{{ description() }}</h2>
+
+  <div>
+    <ul>
+      @for (point of points(); track $index) {
+        <li>{{ point }}</li>
+      }
+    </ul>
+  </div>
+</article>

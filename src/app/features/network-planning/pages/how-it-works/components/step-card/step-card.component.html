@@ -1,0 +1,26 @@
+<article class="step-card">
+  <header class="step-card__header">
+    <span class="step-card__number">{{ stepNumber() }}</span>
+
+    <div>
+      <h3>{{ title() }}</h3>
+      <p>{{ description() }}</p>
+    </div>
+  </header>
+
+  <div class="step-card__figure">
+    @if (imgUrl()) {
+      <img [src]="imgUrl()" alt="{{ title() }}" />
+    }
+
+    @if (graph()) {
+      <app-graph-view [graph]="graph()!"></app-graph-view>
+    }
+  </div>
+
+  <div class="step-card__content">
+    <p>
+      {{ content() }}
+    </p>
+  </div>
+</article>

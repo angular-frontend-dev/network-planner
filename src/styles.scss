@@ -1,9 +1,11 @@
-@use "styles/theme";
-@use "styles/base";
-@use "styles/buttons";
+@use "styles/_theme";
+@use "styles/_base";
+@use "styles/_buttons";
 
 :root {
   color-scheme: light dark;
+  display: block;
+  --content-max-width: 1200px;
 }
 
 body {
@@ -11,7 +13,7 @@ body {
   font-family:
     system-ui,
     -apple-system,
-    Segoe UI,
+    "Segoe UI",
     Roboto,
     sans-serif;
 }
