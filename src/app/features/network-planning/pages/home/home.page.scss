@@ -86,6 +86,30 @@
 }
 
 /* -------------------------
+   GRAPH PREVIEW
+-------------------------- */
+
+.graph-preview {
+  position: relative;
+
+  width: min(100%, 500px);
+  aspect-ratio: 1;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    var(--color-surface);
+
+  background-size: 30px 30px;
+
+  overflow: hidden;
+}
+
+/* -------------------------
    FEATURES
 -------------------------- */
 

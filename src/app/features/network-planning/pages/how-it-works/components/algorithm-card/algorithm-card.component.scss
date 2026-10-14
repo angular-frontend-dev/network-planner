@@ -56,5 +56,11 @@
     overflow: hidden;
     border-radius: 0.75rem;
     margin-top: 1.25rem;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
   }
 }

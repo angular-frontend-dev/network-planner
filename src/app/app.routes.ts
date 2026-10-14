@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { MarketingLayout } from "./features/network-planning/layouts/marketing/marketing.layout";
 import { NetworkPlannerLayout } from "./features/network-planning/layouts/network-planner/network-planner.layout";
+import { HomePage } from "./features/network-planning/pages/home/home.page";
 
 export const routes: Routes = [
   { path: "", redirectTo: "/network-planner", pathMatch: "full" },
@@ -31,10 +32,7 @@ export const routes: Routes = [
     children: [
       {
         path: "",
-        loadComponent: () =>
-          import("./features/network-planning/pages/home/home.page").then(
-            (m) => m.HomePage,
-          ),
+        component: HomePage,
       },
       {
         path: "network-planner",
