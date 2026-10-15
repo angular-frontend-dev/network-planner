@@ -5,7 +5,8 @@
   color: var(--color-text);
 
   &__container {
-    width: min(1180px, 100%);
+    max-width: var(--content-max-width);
+    width: 100%;
     margin: 0 auto;
   }
 }

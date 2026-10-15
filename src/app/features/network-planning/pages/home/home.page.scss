@@ -86,10 +86,10 @@
 }
 
 /* -------------------------
-   GRAPH PREVIEW
+   HERO GRAPH
 -------------------------- */
 
-.graph-preview {
+.hero-graph {
   position: relative;
 
   width: min(100%, 500px);
@@ -107,6 +107,19 @@
   background-size: 30px 30px;
 
   overflow: hidden;
+}
+
+@keyframes hint-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translateX(-50%) scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1.04);
+  }
 }
 
 /* -------------------------

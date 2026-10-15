@@ -1,1 +1,37 @@
-<p>engineering works!</p>
+<main class="engineering-page">
+  <div class="engineering-page__container">
+    <header class="engineering-page__header">
+      <h1>Engineering the application</h1>
+
+      <p>
+        Running graph algorithms on tens of thousands of nodes in the browser
+        requires careful architectural and performance decisions.
+      </p>
+    </header>
+
+    <section class="engineering-overview">
+      <article class="architecture-grid">
+        <app-architecture></app-architecture>
+      </article>
+
+      <aside class="tech-stack-grid">
+        <app-tech-stack></app-tech-stack>
+      </aside>
+    </section>
+
+    <section class="decisions">
+      <h2>Key decisions</h2>
+
+      <div class="decisions__grid">
+        @for(keyDecision of keyDecisions; track keyDecision.id){
+        <app-key-decision
+          [icon]="keyDecision.icon"
+          [title]="keyDecision.title"
+          [description]="keyDecision.description"
+        >
+        </app-key-decision>
+        }
+      </div>
+    </section>
+  </div>
+</main>

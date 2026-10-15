@@ -1,0 +1,11 @@
+<article class="decision-card">
+  <div class="decision-card__icon">
+    <ng-container [ngComponentOutlet]="icon()" />
+  </div>
+
+  <h3>{{ title() }}</h3>
+
+  <p>
+    {{ description() }}
+  </p>
+</article>

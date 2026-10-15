@@ -1,5 +1,5 @@
-import Graph from "graphology";
-import Sigma from "sigma";
+import type Graph from "graphology";
+import type Sigma from "sigma";
 
 export interface NodeAttributes {
   x: number;

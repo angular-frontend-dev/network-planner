@@ -29,6 +29,7 @@
     "@angular/platform-browser": "^22.2.2",
     "@angular/platform-browser-dynamic": "^22.2.2",
     "@angular/router": "^22.2.2",
+    "@lucide/angular": "^1.57.0",
     "@sigma/export-image": "^4.0.0",
     "@sigma/node-border": "^4.0.0",
     "graphology": "^0.26.0",

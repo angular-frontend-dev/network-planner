@@ -24,9 +24,10 @@
         </div>
       </div>
 
-      <!-- <app-graph-preview></app-graph-preview> -->
-      <div class="graph-preview">
-        <app-graph-view [graph]="randomGraph()"></app-graph-view>
+      <div class="hero-graph">
+        @defer {
+        <app-random-graph />
+        }
       </div>
     </section>
 
