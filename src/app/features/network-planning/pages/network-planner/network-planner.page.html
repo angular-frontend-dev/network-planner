@@ -1,1 +1,126 @@
-<p>network-planner works!</p>
+<div class="planner-shell">
+  <!-- <header class="planner-header">
+    <a class="planner-header__brand" href="#">
+      <span class="planner-header__logo">⌁</span>
+      <span>Signal</span>
+    </a>
+
+    <nav class="planner-header__nav">
+      <a class="active" href="#">Planner</a>
+      <a href="#">How it works</a>
+      <a href="#">Performance</a>
+      <a href="#">Engineering</a>
+    </nav>
+
+    <a class="planner-header__github" href="#"> GitHub </a>
+  </header> -->
+
+  <main class="planner">
+    <!-- LEFT PANEL -->
+    <aside class="planner-controls">
+      <app-planner-controls
+        (generateNetwork)="onGenerateNetwork($event)"
+        (runAllocation)="onRunAllocation($event)"
+      ></app-planner-controls>
+    </aside>
+
+    <!-- GRAPH AREA -->
+    <section class="planner-workspace">
+      <div class="graph-stage">
+        <!--
+          Your Sigma/Graphology graph will eventually fill this element.
+        -->
+        <div class="graph-canvas">
+          <div class="graph-placeholder">Graph visualization</div>
+        </div>
+
+        <!-- LEGEND -->
+        <aside class="frequency-legend">
+          <h3>Frequencies</h3>
+
+          <ul>
+            <li>
+              <span class="frequency-dot frequency-dot--1"></span>
+              1
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--2"></span>
+              2
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--3"></span>
+              3
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--4"></span>
+              4
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--5"></span>
+              5
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--6"></span>
+              6
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--7"></span>
+              7
+            </li>
+            <li>
+              <span class="frequency-dot frequency-dot--8"></span>
+              8
+            </li>
+          </ul>
+        </aside>
+
+        <!-- GRAPH CONTROLS -->
+        <div class="graph-toolbar">
+          <button class="graph-toolbar__button" aria-label="Zoom in">+</button>
+
+          <button class="graph-toolbar__button" aria-label="Zoom out">−</button>
+
+          <button class="graph-toolbar__button" aria-label="Reset camera">
+            ⟳
+          </button>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <footer class="planner-stats">
+        <div class="stat">
+          <span class="stat__label"> Transmitters </span>
+
+          <strong class="stat__value"> 2,500 </strong>
+        </div>
+
+        <div class="stat">
+          <span class="stat__label"> Edges </span>
+
+          <strong class="stat__value"> 18,431 </strong>
+        </div>
+
+        <div class="stat">
+          <span class="stat__label"> Frequencies </span>
+
+          <strong class="stat__value"> 7 </strong>
+        </div>
+
+        <div class="stat">
+          <span class="stat__label"> Runtime </span>
+
+          <strong class="stat__value"> 83 ms </strong>
+        </div>
+
+        <div class="stat">
+          <span class="stat__label"> Valid coloring </span>
+
+          <strong class="stat__value stat__value--success">
+            <span class="valid-icon">✓</span>
+            Yes
+          </strong>
+        </div>
+      </footer>
+    </section>
+  </main>
+</div>

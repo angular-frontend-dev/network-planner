@@ -1,0 +1,127 @@
+<form [formRoot]="configurationForm" class="control-form">
+  <h2>Network configuration</h2>
+
+  <div class="mode-tabs">
+    <button class="mode-tabs__button active">Generate</button>
+
+    <button class="mode-tabs__button">Custom</button>
+
+    <button class="mode-tabs__button">Import</button>
+  </div>
+
+  <div class="field">
+    <div class="field__header">
+      <label for="transmitters"> Number of transmitters </label>
+
+      <output class="field__value">
+        {{ configurationForm.transmitters().value() }}</output
+      >
+    </div>
+
+    <input
+      id="transmitters"
+      type="range"
+      [formField]="configurationForm.transmitters"
+    />
+  </div>
+
+  <div class="field">
+    <div class="field__header">
+      <label for="radius"> Interference radius (m) </label>
+
+      <output class="field__value">
+        {{ configurationForm.interferenceRadius().value() }}</output
+      >
+    </div>
+
+    <input
+      id="radius"
+      type="range"
+      [formField]="configurationForm.interferenceRadius"
+    />
+  </div>
+
+  <div class="field">
+    <label for="distribution"> Distribution </label>
+
+    <select id="distribution" [formField]="configurationForm.distribution">
+      <option value="uniform">Random (uniform)</option>
+      <option value="grid">Grid</option>
+    </select>
+  </div>
+
+  <button
+    class="button button--primary button--full"
+    (click)="onClickGenerateNetwork()"
+  >
+    Generate network
+  </button>
+</form>
+
+<form [formRoot]="allocationForm" class="control-form">
+  <h2>Algorithm</h2>
+
+  <div class="field">
+    <select aria-label="Algorithm" [formField]="allocationForm.algorithm">
+      <option value="DSATUR">DSATUR</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <div class="field__header">
+      <label for="animation-speed"> Animation speed </label>
+
+      <output class="field__value">
+        {{ allocationForm.animationSpeed().value() }}</output
+      >
+    </div>
+
+    <input
+      id="animation-speed"
+      type="range"
+      [formField]="allocationForm.animationSpeed"
+    />
+  </div>
+
+  <div class="toggle-row">
+    <span>Show edges</span>
+
+    <label class="switch">
+      <input type="checkbox" [formField]="allocationForm.showEdges" />
+      <span class="switch__track"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <span>Show coverage area</span>
+
+    <label class="switch">
+      <input type="checkbox" [formField]="allocationForm.showCoverageArea" />
+      <span class="switch__track"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <span>Show frequency colors</span>
+
+    <label class="switch">
+      <input type="checkbox" [formField]="allocationForm.showFrequencyColors" />
+      <span class="switch__track"></span>
+    </label>
+  </div>
+
+  <button
+    class="button button--primary button--full run-button"
+    (click)="onClickRunAllocation()"
+  >
+    <span class="run-button__icon">▷</span>
+    Run allocation
+  </button>
+
+  <button
+    class="button button--secondary button--full"
+    (click)="onClickReset()"
+  >
+    Reset
+  </button>
+</form>
