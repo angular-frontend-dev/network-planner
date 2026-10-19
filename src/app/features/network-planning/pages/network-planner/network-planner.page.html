@@ -27,11 +27,14 @@
     <!-- GRAPH AREA -->
     <section class="planner-workspace">
       <div class="graph-stage">
-        <!--
-          Your Sigma/Graphology graph will eventually fill this element.
-        -->
         <div class="graph-canvas">
-          <div class="graph-placeholder">Graph visualization</div>
+          @if (networkGraph(); as graph) {
+          <app-graph-view
+            [graph]="graph"
+            [enableNodeDrag]="false"
+            (rendered)="onGraphRendered()"
+          />
+          }
         </div>
 
         <!-- LEGEND -->
@@ -123,4 +126,6 @@
       </footer>
     </section>
   </main>
+
+  <app-loading [loading]="loading()"></app-loading>
 </div>

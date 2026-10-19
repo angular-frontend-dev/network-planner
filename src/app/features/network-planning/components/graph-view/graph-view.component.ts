@@ -1,31 +1,59 @@
 import {
-  AfterViewInit,
   Component,
+  effect,
   ElementRef,
   input,
-  OnDestroy,
-  ViewChild,
+  output,
+  viewChild,
 } from "@angular/core";
-import Sigma from "sigma";
-import { SignalGraph, SignalGraphRenderer } from "./graph-view.component.types";
 import { layerBorder } from "@sigma/node-border";
+import {
+  NetworkGraph,
+  NetworkGraphRenderer,
+} from "../../models/graphs/network-graph";
+import Sigma from "sigma";
 
 @Component({
   selector: "app-graph-view",
   templateUrl: "./graph-view.component.html",
   styleUrl: "./graph-view.component.scss",
 })
-export class GraphViewComponent implements AfterViewInit, OnDestroy {
-  @ViewChild("container", { static: true })
-  container!: ElementRef<HTMLElement>;
-
-  graph = input.required<SignalGraph>();
+export class GraphViewComponent {
+  graph = input.required<NetworkGraph>();
   enableNodeDrag = input<boolean>(true);
+  enableCameraZooming = input<boolean>(true);
+  enableCameraPanning = input<boolean>(true);
 
-  private renderer?: SignalGraphRenderer;
+  readonly rendered = output<void>();
 
-  ngAfterViewInit() {
-    this.renderer = new Sigma(this.graph(), this.container.nativeElement, {
+  private readonly container =
+    viewChild.required<ElementRef<HTMLDivElement>>("container");
+
+  private renderer?: NetworkGraphRenderer;
+
+  constructor() {
+    effect((onCleanup) => {
+      const container = this.container();
+      if (!container) {
+        return;
+      }
+
+      const renderer = this.render(this.graph(), container.nativeElement);
+
+      this.renderer = renderer;
+
+      renderer.once("afterRender", () => {
+        this.rendered.emit();
+      });
+
+      onCleanup(() => {
+        renderer.kill();
+      });
+    });
+  }
+
+  private render(graph: NetworkGraph, container: HTMLElement) {
+    const renderer = new Sigma(graph, container, {
       primitives: {
         nodes: {
           variables: {
@@ -96,22 +124,30 @@ export class GraphViewComponent implements AfterViewInit, OnDestroy {
 
       settings: {
         enableNodeDrag: this.enableNodeDrag(),
+        enableCameraZooming: this.enableCameraZooming(),
+        enableCameraPanning: false,
+        minCameraRatio: 0.15,
+        maxCameraRatio: 1,
+        zoomingRatio: 1.4,
         autoRescale: "once",
         itemSizesReference: "screen",
         autoRescaleContent: "nodes",
         stagePadding: 4,
 
-        renderLabels: false,
+        cameraPanBoundaries: {
+          tolerance: 0.1,
+        },
 
-        enableCameraZooming: false,
-        enableCameraPanning: false,
-        enableCameraRotation: false,
-        enableCameraMouseRotation: false,
+        renderLabels: false,
 
         dragPositionToAttributes: (position, node) =>
           this.dragPositionToAttributes(position, node),
       },
     });
+
+    if (this.enableCameraPanning()) this.configureCamera(renderer);
+
+    return renderer;
   }
 
   private dragPositionToAttributes(
@@ -138,7 +174,19 @@ export class GraphViewComponent implements AfterViewInit, OnDestroy {
     };
   }
 
-  ngOnDestroy() {
-    this.renderer?.kill();
+  private configureCamera(renderer: NetworkGraphRenderer): void {
+    const camera = renderer.getCamera();
+
+    let panningEnabled = false;
+
+    camera.on("updated", (state) => {
+      const isZoomedIn = state.ratio < 0.999;
+
+      if (isZoomedIn !== panningEnabled) {
+        panningEnabled = isZoomedIn;
+
+        renderer.setSetting("enableCameraPanning", panningEnabled);
+      }
+    });
   }
 }

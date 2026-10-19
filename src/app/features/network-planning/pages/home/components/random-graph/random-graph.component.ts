@@ -1,12 +1,13 @@
 import { Component, input, signal } from "@angular/core";
 
 import Graph from "graphology";
-import {
-  EdgeAttributes,
-  NodeAttributes,
-  SignalGraph,
-} from "../../../../components/graph-view/graph-view.component.types";
+
 import { GraphViewComponent } from "../../../../components/graph-view/graph-view.component";
+import {
+  NetworkEdgeAttributes,
+  NetworkGraph,
+  NetworkNodeAttributes,
+} from "../../../../models/graphs/network-graph";
 
 export interface RandomGraphOptions {
   bounds?: RandomGraphBounds;
@@ -68,8 +69,8 @@ const DEFAULT_EDGE_OPTIONS: Required<RandomGraphEdgeAttributes> = {
 })
 export class RandomGraphComponent {
   private animationFrame?: number;
-  private randomGraph = signal<SignalGraph>(
-    new Graph<NodeAttributes, EdgeAttributes>(),
+  private randomGraph = signal<NetworkGraph>(
+    new Graph<NetworkNodeAttributes, NetworkEdgeAttributes>(),
   );
 
   options = input<RandomGraphOptions>();
@@ -78,7 +79,7 @@ export class RandomGraphComponent {
     this.randomGraph.set(this.createRandomGraph(this.options()));
   }
 
-  private createRandomGraph(options: RandomGraphOptions = {}): SignalGraph {
+  private createRandomGraph(options: RandomGraphOptions = {}): NetworkGraph {
     const bounds = {
       ...DEFAULT_BOUNDS,
       ...options.bounds,
@@ -94,7 +95,7 @@ export class RandomGraphComponent {
       ...options.edgeOptions,
     };
 
-    const graph = new Graph<NodeAttributes, EdgeAttributes>();
+    const graph = new Graph<NetworkNodeAttributes, NetworkEdgeAttributes>();
 
     this.createRandomNodes(graph, bounds, nodeOptions);
     this.createRandomEdges(graph, edgeOptions);
@@ -103,7 +104,7 @@ export class RandomGraphComponent {
   }
 
   private createRandomNodes(
-    graph: Graph<NodeAttributes, EdgeAttributes>,
+    graph: Graph<NetworkNodeAttributes, NetworkEdgeAttributes>,
     bounds: Required<RandomGraphBounds>,
     nodeOptions: Required<RandomGraphNodeOptions>,
   ) {
@@ -131,7 +132,7 @@ export class RandomGraphComponent {
   }
 
   private createRandomEdges(
-    graph: Graph<NodeAttributes, EdgeAttributes>,
+    graph: Graph<NetworkNodeAttributes, NetworkEdgeAttributes>,
     edgeOptions: Required<RandomGraphEdgeAttributes>,
   ) {
     const nodes = graph.nodes();
@@ -166,7 +167,7 @@ export class RandomGraphComponent {
       const elapsed = now - start;
 
       this.randomGraph().updateEachNodeAttributes((_, attributes) => {
-        const time = elapsed + attributes.delay;
+        const time = elapsed + attributes.delay!;
 
         const progress = (((time % duration) + duration) % duration) / duration;
 

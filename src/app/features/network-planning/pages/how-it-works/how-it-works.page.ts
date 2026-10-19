@@ -2,12 +2,6 @@ import { Component } from "@angular/core";
 import { StepCardComponent } from "./components/step-card/step-card.component";
 import { AlgorithmCardComponent } from "./components/algorithm-card/algorithm-card.component";
 import { WhyCardComponent } from "./components/why-card/why-card.component";
-import {
-  EdgeAttributes,
-  NodeAttributes,
-  SignalGraph,
-} from "../../components/graph-view/graph-view.component.types";
-import Graph from "graphology";
 
 interface StepCard {
   stepNumber: number;
