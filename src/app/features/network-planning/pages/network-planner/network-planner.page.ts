@@ -5,14 +5,16 @@ import type {
   ConfigurationOptions,
   AllocationOptions,
 } from "./components/network-configuration/planner-controls.component";
-import { generateRandomNetwork } from "../../engines/graphs/generate-network";
-import { NetworkGraph } from "../../models/graphs/network-graph";
 import {
   GraphViewComponent,
   GraphViewOptions,
 } from "../../components/graph-view/graph-view.component";
 import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
 import { dsatur } from "../../engines/algorithms/dsatur/dsatur";
+import {
+  GraphGeneralAttributes,
+  NetworkGraph,
+} from "../../models/graphs/network/network-graph";
 
 @Component({
   imports: [
@@ -41,7 +43,24 @@ export class NetworkPlannerPage {
       requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
     );
 
-    const graph = generateRandomNetwork(options);
+    const graphGeneralOptions = {
+      node: {
+        color: "#A7C2D6",
+        opacity: 0.9,
+        borderColor: "#10151F",
+        outerBorderSize: 3,
+      },
+      edge: {
+        color: "#817A96",
+        opacity: 0.4,
+      },
+    } as GraphGeneralAttributes;
+
+    const graph = NetworkGraph.random(
+      options.transmitters,
+      options.interferenceRadius,
+      graphGeneralOptions,
+    );
 
     this.networkGraph.set(graph);
     this.loading.set(false);
@@ -50,16 +69,27 @@ export class NetworkPlannerPage {
   onRunAllocation(allocationOptions: AllocationOptions) {
     const graph = this.networkGraph();
 
-    if (!graph || graph.order === 0) {
+    if (!graph || graph.value.order === 0) {
       this.showNoGraphWarning.set(true);
       return;
     }
 
     const start = performance.now();
-    dsatur(graph);
+    const assignament = dsatur(graph);
 
     const end = performance.now();
     console.log(`Allocation runtime: ${end - start} ms`);
+
+    this.networkGraph()!.assignColors(
+      new Map(
+        assignament.nodes.map((user) => [
+          user.id.toString(),
+          user.color.toString(),
+        ]),
+      ) as ReadonlyMap<string, string>,
+      assignament.colorCount,
+    );
+    console.log(this.networkGraph()!);
   }
 
   onGraphRendered(): void {

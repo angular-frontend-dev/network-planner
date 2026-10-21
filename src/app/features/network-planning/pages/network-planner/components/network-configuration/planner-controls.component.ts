@@ -56,7 +56,7 @@ export class PlannerControlsComponent {
     max(path.transmitters, 5000);
 
     min(path.interferenceRadius, 10);
-    max(path.interferenceRadius, 100);
+    max(path.interferenceRadius, 200);
   });
 
   readonly allocationForm = form(this.allocationModel, (path) => {

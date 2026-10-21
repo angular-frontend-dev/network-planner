@@ -10,9 +10,10 @@ import {
 } from "@angular/core";
 import { layerBorder } from "@sigma/node-border";
 import {
+  NetworkEdgeAttributes,
   NetworkGraph,
-  NetworkGraphRenderer,
-} from "../../models/graphs/network-graph";
+  NetworkNodeAttributes,
+} from "../../models/graphs/network/network-graph";
 import Sigma from "sigma";
 
 export interface GraphViewOptions {
@@ -27,6 +28,8 @@ const DEFAULT_GRAPH_VIEW_OPTIONS: GraphViewOptions = {
   enableCameraPanning: true,
 };
 
+type NetworkGraphRenderer = Sigma<NetworkNodeAttributes, NetworkEdgeAttributes>;
+
 @Component({
   selector: "app-graph-view",
   templateUrl: "./graph-view.component.html",
@@ -35,6 +38,7 @@ const DEFAULT_GRAPH_VIEW_OPTIONS: GraphViewOptions = {
 export class GraphViewComponent implements OnInit {
   graph = input.required<NetworkGraph>();
   options = input<Partial<GraphViewOptions>>({});
+  backgroundImage = input<string>("/images/network-planning/planner-map.png");
 
   readonly rendered = output<void>();
 
@@ -60,7 +64,13 @@ export class GraphViewComponent implements OnInit {
         this.rendered.emit();
       });
 
+      const cleanupMap = this.createBackgroundLayer(
+        renderer as Sigma,
+        container.nativeElement,
+      );
+
       onCleanup(() => {
+        cleanupMap();
         renderer.kill();
       });
     });
@@ -74,7 +84,9 @@ export class GraphViewComponent implements OnInit {
   }
 
   private render(graph: NetworkGraph, container: HTMLElement) {
-    const renderer = new Sigma(graph, container, {
+    this.fitGraphToContainer(graph, container);
+
+    const renderer = new Sigma(graph.value, container, {
       primitives: {
         nodes: {
           variables: {
@@ -210,5 +222,95 @@ export class GraphViewComponent implements OnInit {
         renderer.setSetting("enableCameraPanning", panningEnabled);
       }
     });
+  }
+
+  private fitGraphToContainer(
+    graph: NetworkGraph,
+    container: HTMLElement,
+  ): void {
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    if (!width || !height) return;
+
+    const viewportAspect = width / height;
+
+    let minX = Infinity;
+    let maxX = -Infinity;
+    let minY = Infinity;
+    let maxY = -Infinity;
+
+    graph.value.forEachNode((_node, attributes) => {
+      minX = Math.min(minX, attributes.x);
+      maxX = Math.max(maxX, attributes.x);
+
+      minY = Math.min(minY, attributes.y);
+      maxY = Math.max(maxY, attributes.y);
+    });
+
+    const graphWidth = maxX - minX;
+    const graphHeight = maxY - minY;
+
+    if (!graphWidth || !graphHeight) return;
+
+    const graphAspect = graphWidth / graphHeight;
+
+    const yScale = graphAspect / viewportAspect;
+
+    graph.value.forEachNode((node, attributes) => {
+      graph.value.setNodeAttribute(
+        node,
+        "y",
+        minY + (attributes.y - minY) * yScale,
+      );
+    });
+  }
+
+  private createBackgroundLayer(
+    renderer: Sigma,
+    container: HTMLElement,
+  ): () => void {
+    const image = document.createElement("img");
+
+    image.src = this.backgroundImage();
+
+    image.style.position = "absolute";
+    image.style.pointerEvents = "none";
+    image.style.opacity = "0.3";
+    image.style.zIndex = "0";
+
+    container.prepend(image);
+
+    const update = () => {
+      const graph = this.graph().value;
+
+      const bbox = renderer.getBBox();
+
+      const topLeft = renderer.graphToViewport({
+        x: bbox.x[0],
+        y: bbox.y[1],
+      });
+
+      const bottomRight = renderer.graphToViewport({
+        x: bbox.x[1],
+        y: bbox.y[0],
+      });
+
+      image.style.left = `${topLeft.x}px`;
+      image.style.top = `${topLeft.y}px`;
+
+      image.style.width = `${bottomRight.x - topLeft.x}px`;
+
+      image.style.height = `${bottomRight.y - topLeft.y}px`;
+    };
+
+    renderer.on("afterRender", update);
+
+    update();
+
+    return () => {
+      renderer.off("afterRender", update);
+      image.remove();
+    };
   }
 }

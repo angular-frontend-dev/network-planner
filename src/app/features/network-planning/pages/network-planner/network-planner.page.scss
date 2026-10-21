@@ -40,124 +40,18 @@ input[type="range"] {
   --planner-success: #25d998;
 
   min-height: 100vh;
-  background: var(--planner-bg);
-  color: var(--planner-text);
+
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(101, 229, 194, 0.09),
+      transparent 30%
+    ),
+    var(--color-background);
+
+  color: var(--color-text);
+  padding-bottom: 102px;
 }
-
-/* -------------------------------------------------
-   HEADER
-------------------------------------------------- */
-
-// .planner-header {
-//   height: 72px;
-//   padding: 0 24px;
-
-//   display: grid;
-//   grid-template-columns: 1fr auto 1fr;
-//   align-items: center;
-
-//   border-bottom: 1px solid var(--planner-border);
-
-//   background: linear-gradient(
-//     180deg,
-//     rgba(11, 23, 37, 0.98),
-//     rgba(6, 16, 27, 0.98)
-//   );
-// }
-
-// .planner-header__brand {
-//   display: flex;
-//   align-items: center;
-//   gap: 10px;
-
-//   justify-self: start;
-
-//   color: var(--planner-text);
-//   font-size: 1.1rem;
-//   font-weight: 700;
-//   text-decoration: none;
-// }
-
-// .planner-header__logo {
-//   display: grid;
-//   place-items: center;
-
-//   width: 32px;
-//   height: 32px;
-
-//   color: var(--planner-primary);
-
-//   font-size: 1.6rem;
-// }
-
-// .planner-header__nav {
-//   display: flex;
-//   align-items: center;
-//   gap: 42px;
-
-//   height: 100%;
-// }
-
-// .planner-header__nav a {
-//   position: relative;
-
-//   display: flex;
-//   align-items: center;
-
-//   height: 100%;
-
-//   color: var(--planner-text-secondary);
-//   font-size: 0.8rem;
-//   text-decoration: none;
-
-//   transition:
-//     color 160ms ease,
-//     background 160ms ease;
-// }
-
-// .planner-header__nav a:hover,
-// .planner-header__nav a.active {
-//   color: var(--planner-text);
-// }
-
-// .planner-header__nav a.active::after {
-//   content: "";
-
-//   position: absolute;
-//   right: 0;
-//   bottom: 0;
-//   left: 0;
-
-//   height: 2px;
-
-//   border-radius: 99px;
-
-//   background: var(--planner-primary);
-// }
-
-// .planner-header__github {
-//   justify-self: end;
-
-//   padding: 9px 18px;
-
-//   border: 1px solid var(--planner-border-strong);
-//   border-radius: 7px;
-
-//   color: var(--planner-text);
-//   background: transparent;
-
-//   font-size: 0.8rem;
-//   text-decoration: none;
-
-//   transition:
-//     border-color 160ms ease,
-//     background 160ms ease;
-// }
-
-// .planner-header__github:hover {
-//   border-color: var(--planner-primary);
-//   background: var(--planner-primary-soft);
-// }
 
 /* -------------------------------------------------
    MAIN LAYOUT
@@ -180,9 +74,9 @@ input[type="range"] {
 
   padding: 18px 16px;
 
-  border-right: 1px solid var(--planner-border);
-
-  background: #081421;
+  border-right: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* -------------------------------------------------
@@ -219,127 +113,25 @@ input[type="range"] {
 
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
-
-  background: #06111d;
 }
 
 .graph-stage {
   position: relative;
-
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-
-  border-bottom: 1px solid var(--planner-border);
-
-  background:
-    radial-gradient(
-      circle at 55% 45%,
-      rgba(23, 212, 227, 0.05),
-      transparent 40%
-    ),
-    #07131f;
 }
 
 .graph-canvas {
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 app-graph-view {
   display: block;
   width: 100%;
   height: 100%;
-}
-
-/* -------------------------------------------------
-   FREQUENCY LEGEND
-------------------------------------------------- */
-
-.frequency-legend {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-
-  width: 82px;
-
-  padding: 10px 11px;
-
-  border: 1px solid rgba(62, 93, 117, 0.55);
-  border-radius: 7px;
-
-  background: rgba(8, 20, 33, 0.82);
-
-  backdrop-filter: blur(10px);
-}
-
-.frequency-legend h3 {
-  margin: 0 0 8px;
-
-  color: var(--planner-text-secondary);
-
-  font-size: 0.66rem;
-  font-weight: 500;
-}
-
-.frequency-legend ul {
-  margin: 0;
-  padding: 0;
-
-  list-style: none;
-}
-
-.frequency-legend li {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-
-  margin: 5px 0;
-
-  color: var(--planner-text-secondary);
-
-  font-size: 0.65rem;
-}
-
-.frequency-dot {
-  width: 9px;
-  height: 9px;
-
-  flex: 0 0 auto;
-
-  border-radius: 50%;
-}
-
-.frequency-dot--1 {
-  background: #ff824d;
-}
-
-.frequency-dot--2 {
-  background: #ffc845;
-}
-
-.frequency-dot--3 {
-  background: #8ee86a;
-}
-
-.frequency-dot--4 {
-  background: #3de2c0;
-}
-
-.frequency-dot--5 {
-  background: #2ac4ff;
-}
-
-.frequency-dot--6 {
-  background: #6765ff;
-}
-
-.frequency-dot--7 {
-  background: #c05cff;
-}
-
-.frequency-dot--8 {
-  background: #f45fce;
 }
 
 /* -------------------------------------------------
@@ -363,26 +155,19 @@ app-graph-view {
   width: 38px;
   height: 38px;
 
-  border: 1px solid var(--planner-border-strong);
-  border-radius: 7px;
+  background: #29463f;
+  border-color: #4f7a6f;
+  color: #e8f4f0;
 
-  color: var(--planner-text);
+  border-radius: 10px;
 
-  background: rgba(7, 18, 30, 0.88);
-
-  backdrop-filter: blur(8px);
-
-  font-size: 1rem;
-
-  transition:
-    border-color 150ms ease,
-    background 150ms ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
 }
 
-.graph-toolbar__button:hover {
-  border-color: var(--planner-primary);
-
-  background: var(--planner-surface-soft);
+.map-control:hover {
+  background: #f2a65a;
+  border-color: #f2a65a;
+  color: #07131f;
 }
 
 /* -------------------------------------------------
@@ -394,8 +179,6 @@ app-graph-view {
   grid-template-columns: repeat(5, 1fr);
 
   min-height: 76px;
-
-  background: #07131f;
 }
 
 .stat {
@@ -415,13 +198,13 @@ app-graph-view {
 .stat__label {
   margin-bottom: 5px;
 
-  color: var(--planner-text-muted);
+  color: var(--color-text-muted);
 
   font-size: 0.64rem;
 }
 
 .stat__value {
-  color: var(--planner-text);
+  color: var(--color-text);
 
   font-size: 1rem;
   font-weight: 650;
@@ -455,16 +238,6 @@ app-graph-view {
 ------------------------------------------------- */
 
 @media (max-width: 1000px) {
-  .planner-header {
-    grid-template-columns: auto 1fr auto;
-  }
-
-  .planner-header__nav {
-    justify-self: center;
-
-    gap: 22px;
-  }
-
   .planner {
     grid-template-columns: 235px minmax(0, 1fr);
   }
@@ -477,19 +250,6 @@ app-graph-view {
 }
 
 @media (max-width: 760px) {
-  .planner-header {
-    height: auto;
-    min-height: 64px;
-
-    grid-template-columns: 1fr auto;
-
-    padding: 12px 16px;
-  }
-
-  .planner-header__nav {
-    display: none;
-  }
-
   .planner {
     height: auto;
     min-height: calc(100vh - 64px);
@@ -542,4 +302,26 @@ app-graph-view {
   .stat {
     padding: 12px 14px;
   }
+}
+
+.hero-graph {
+  position: relative;
+
+  width: 95%;
+  height: 100%;
+  aspect-ratio: 1;
+  margin-left: 2.5%;
+
+  border: 1px solid var(--color-border);
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    var(--color-surface);
+
+  background-size: 30px 30px;
+
+  overflow: hidden;
 }

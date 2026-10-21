@@ -1,20 +1,4 @@
 <div class="planner-shell">
-  <!-- <header class="planner-header">
-    <a class="planner-header__brand" href="#">
-      <span class="planner-header__logo">⌁</span>
-      <span>Signal</span>
-    </a>
-
-    <nav class="planner-header__nav">
-      <a class="active" href="#">Planner</a>
-      <a href="#">How it works</a>
-      <a href="#">Performance</a>
-      <a href="#">Engineering</a>
-    </nav>
-
-    <a class="planner-header__github" href="#"> GitHub </a>
-  </header> -->
-
   <main class="planner">
     <!-- LEFT PANEL -->
     <aside class="planner-controls">
@@ -26,7 +10,7 @@
 
     <!-- GRAPH AREA -->
     <section class="planner-workspace">
-      <div class="graph-stage">
+      <div class="graph-stage hero-graph">
         <div class="graph-canvas">
           @if (networkGraph(); as graph) {
           <app-graph-view
@@ -36,46 +20,6 @@
           />
           }
         </div>
-
-        <!-- LEGEND -->
-        <aside class="frequency-legend">
-          <h3>Frequencies</h3>
-
-          <ul>
-            <li>
-              <span class="frequency-dot frequency-dot--1"></span>
-              1
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--2"></span>
-              2
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--3"></span>
-              3
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--4"></span>
-              4
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--5"></span>
-              5
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--6"></span>
-              6
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--7"></span>
-              7
-            </li>
-            <li>
-              <span class="frequency-dot frequency-dot--8"></span>
-              8
-            </li>
-          </ul>
-        </aside>
 
         <!-- GRAPH CONTROLS -->
         <div class="graph-toolbar">

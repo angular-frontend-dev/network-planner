@@ -1,6 +1,6 @@
+import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
 import { DsaturBase } from "./dsatur-base";
-import type { DsaturNode, NodeId } from "./dsatur-types";
-import type { NetworkGraph } from "../../../models/graphs/network-graph";
+import type { DsaturNode } from "../dsatur-types";
 
 export class ScanDsatur extends DsaturBase {
   private readonly uncolored: DsaturNode[] = [];
