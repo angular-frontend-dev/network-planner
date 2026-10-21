@@ -1,8 +1,10 @@
 import {
   Component,
+  computed,
   effect,
   ElementRef,
   input,
+  OnInit,
   output,
   viewChild,
 } from "@angular/core";
@@ -13,18 +15,30 @@ import {
 } from "../../models/graphs/network-graph";
 import Sigma from "sigma";
 
+export interface GraphViewOptions {
+  enableNodeDrag: boolean;
+  enableCameraZooming: boolean;
+  enableCameraPanning: boolean;
+}
+
+const DEFAULT_GRAPH_VIEW_OPTIONS: GraphViewOptions = {
+  enableNodeDrag: true,
+  enableCameraZooming: true,
+  enableCameraPanning: true,
+};
+
 @Component({
   selector: "app-graph-view",
   templateUrl: "./graph-view.component.html",
   styleUrl: "./graph-view.component.scss",
 })
-export class GraphViewComponent {
+export class GraphViewComponent implements OnInit {
   graph = input.required<NetworkGraph>();
-  enableNodeDrag = input<boolean>(true);
-  enableCameraZooming = input<boolean>(true);
-  enableCameraPanning = input<boolean>(true);
+  options = input<Partial<GraphViewOptions>>({});
 
   readonly rendered = output<void>();
+
+  resolvedOptions!: GraphViewOptions;
 
   private readonly container =
     viewChild.required<ElementRef<HTMLDivElement>>("container");
@@ -50,6 +64,13 @@ export class GraphViewComponent {
         renderer.kill();
       });
     });
+  }
+
+  ngOnInit(): void {
+    this.resolvedOptions = {
+      ...DEFAULT_GRAPH_VIEW_OPTIONS,
+      ...this.options(),
+    };
   }
 
   private render(graph: NetworkGraph, container: HTMLElement) {
@@ -123,8 +144,8 @@ export class GraphViewComponent {
       },
 
       settings: {
-        enableNodeDrag: this.enableNodeDrag(),
-        enableCameraZooming: this.enableCameraZooming(),
+        enableNodeDrag: this.resolvedOptions.enableNodeDrag,
+        enableCameraZooming: this.resolvedOptions.enableCameraZooming,
         enableCameraPanning: false,
         minCameraRatio: 0.15,
         maxCameraRatio: 1,
@@ -145,7 +166,8 @@ export class GraphViewComponent {
       },
     });
 
-    if (this.enableCameraPanning()) this.configureCamera(renderer);
+    if (this.resolvedOptions.enableCameraPanning)
+      this.configureCamera(renderer);
 
     return renderer;
   }

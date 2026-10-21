@@ -31,7 +31,7 @@
           @if (networkGraph(); as graph) {
           <app-graph-view
             [graph]="graph"
-            [enableNodeDrag]="false"
+            [options]="plannerGraphOptions"
             (rendered)="onGraphRendered()"
           />
           }
@@ -127,5 +127,15 @@
     </section>
   </main>
 
-  <app-loading [loading]="loading()"></app-loading>
+  <app-loading [loading]="loading()">
+    <p>Generating network...</p>
+  </app-loading>
+
+  <app-warning-dialog
+    [open]="showNoGraphWarning()"
+    (close)="showNoGraphWarning.set(false)"
+    title="Unable to run allocation"
+  >
+    Generate a network before running the frequency allocation algorithm.
+  </app-warning-dialog>
 </div>

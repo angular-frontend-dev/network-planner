@@ -10,9 +10,9 @@ import {
 } from "../../../../models/graphs/network-graph";
 
 export interface RandomGraphOptions {
-  bounds?: RandomGraphBounds;
-  nodeOptions?: RandomGraphNodeOptions;
-  edgeOptions?: RandomGraphEdgeAttributes;
+  bounds: Partial<RandomGraphBounds>;
+  nodeOptions: Partial<RandomGraphNodeOptions>;
+  edgeOptions: Partial<RandomGraphEdgeAttributes>;
 }
 
 export interface RandomGraphBounds {
@@ -24,18 +24,18 @@ export interface RandomGraphBounds {
 
 export interface RandomGraphNodeOptions {
   gridSize: number;
-  size?: number;
-  color?: string;
-  borderColor?: string;
-  outerBorderSize?: number;
-  innerBorderSize?: number;
+  size: number;
+  color: string;
+  borderColor: string;
+  outerBorderSize: number;
+  innerBorderSize: number;
 }
 
 export interface RandomGraphEdgeAttributes {
-  size?: number;
-  color?: string;
-  opacity?: number;
-  delay?: number;
+  size: number;
+  color: string;
+  opacity: number;
+  delay: number;
 }
 
 const DEFAULT_BOUNDS: RandomGraphBounds = {
@@ -68,18 +68,20 @@ const DEFAULT_EDGE_OPTIONS: Required<RandomGraphEdgeAttributes> = {
   templateUrl: "./random-graph.component.html",
 })
 export class RandomGraphComponent {
+  options = input<Partial<RandomGraphOptions>>({});
+
   private animationFrame?: number;
   private randomGraph = signal<NetworkGraph>(
     new Graph<NetworkNodeAttributes, NetworkEdgeAttributes>(),
   );
 
-  options = input<RandomGraphOptions>();
-
   ngOnInit() {
     this.randomGraph.set(this.createRandomGraph(this.options()));
   }
 
-  private createRandomGraph(options: RandomGraphOptions = {}): NetworkGraph {
+  private createRandomGraph(
+    options: Partial<RandomGraphOptions>,
+  ): NetworkGraph {
     const bounds = {
       ...DEFAULT_BOUNDS,
       ...options.bounds,
@@ -105,8 +107,8 @@ export class RandomGraphComponent {
 
   private createRandomNodes(
     graph: Graph<NetworkNodeAttributes, NetworkEdgeAttributes>,
-    bounds: Required<RandomGraphBounds>,
-    nodeOptions: Required<RandomGraphNodeOptions>,
+    bounds: RandomGraphBounds,
+    nodeOptions: RandomGraphNodeOptions,
   ) {
     const gridSize = nodeOptions.gridSize;
 

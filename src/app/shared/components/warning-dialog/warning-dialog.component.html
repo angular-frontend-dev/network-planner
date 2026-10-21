@@ -1,0 +1,23 @@
+@if (open()) {
+  <div class="dialog-backdrop" (click)="close.emit()">
+    <div
+      class="dialog"
+      role="alertdialog"
+      aria-modal="true"
+      aria-labelledby="warning-title"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="dialog-icon">!</div>
+
+      <h2 id="warning-title">{{ title() }}</h2>
+
+      <div class="dialog-message">
+        <ng-content />
+      </div>
+
+      <button type="button" class="dialog-button" (click)="close.emit()">
+        Got it
+      </button>
+    </div>
+  </div>
+}
