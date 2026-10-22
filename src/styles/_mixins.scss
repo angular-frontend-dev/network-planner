@@ -1,0 +1,39 @@
+@mixin grid-background(
+  $background-size-width: 30px,
+  $background-size-height: 30px,
+  $color: #ffffff06,
+  $border-radius: 20px
+) {
+  background:
+    linear-gradient($color 1px, transparent 1px),
+    linear-gradient(90deg, $color 1px, transparent 1px), var(--color-surface);
+
+  background-size: $background-size-width $background-size-height;
+  border-radius: $border-radius;
+}
+
+@mixin background-page {
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(101, 229, 194, 0.09),
+      transparent 30%
+    ),
+    var(--color-background);
+
+  color: var(--color-text);
+}
+
+@mixin page-container-header {
+  width: 100%;
+  max-width: var(--content-max-width);
+
+  margin: 0 auto;
+  padding: 24px 32px;
+}
+
+@mixin page-container-content {
+  @include page-container-header;
+
+  padding: 80px 32px 100px;
+}

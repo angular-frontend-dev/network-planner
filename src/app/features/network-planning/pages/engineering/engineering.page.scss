@@ -1,3 +1,5 @@
+@use "styles/_mixins" as mixins;
+
 .engineering-page {
   min-height: 100%;
   padding: 3.5rem 1.5rem 6rem;
@@ -5,31 +7,7 @@
   background: var(--color-background);
   color: var(--color-text);
 
-  &__container {
-    width: 100%;
-    max-width: var(--content-max-width);
-    margin: 0 auto;
-  }
-
-  &__header {
-    margin-bottom: 1.5rem;
-
-    h1 {
-      margin: 0 0 0.4rem;
-      font-size: clamp(2rem, 3vw, 2.7rem);
-      line-height: 1.1;
-      letter-spacing: -0.04em;
-    }
-
-    p {
-      max-width: 52rem;
-      margin: 0;
-
-      color: var(--color-text-secondary);
-      font-size: 1rem;
-      line-height: 1.55;
-    }
-  }
+  @include mixins.page-container-content;
 }
 
 .engineering-overview {

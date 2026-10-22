@@ -6,6 +6,7 @@
   --color-accent: #65e5c2;
   --color-accent-dark: #28b997;
   --color-border: #242c39;
+  --color-eyebrow: #000;
 }
 
 @mixin dark-theme {
@@ -16,6 +17,7 @@
   --color-accent: #65e5c2;
   --color-accent-dark: #28b997;
   --color-border: #242c39;
+  --color-eyebrow: #65e5c2;
 }
 
 .theme-light {

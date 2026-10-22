@@ -1,8 +1,7 @@
-.navbar {
-  max-width: var(--content-max-width);
+@use "styles/_mixins" as mixins;
 
-  margin: 0 auto;
-  padding: 24px 32px;
+.navbar {
+  @include mixins.page-container-header;
 
   display: flex;
   justify-content: space-between;
