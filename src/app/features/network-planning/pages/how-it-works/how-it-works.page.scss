@@ -17,7 +17,6 @@
 
 .algorithm-section {
   margin-top: 4.5rem;
-  padding: 2rem;
   background: var(--color-surface-secondary);
   border-radius: 1.25rem;
 
@@ -39,16 +38,6 @@
   }
 }
 
-.section-eyebrow {
-  display: inline-block;
-  margin-bottom: 0.5rem;
-  color: var(--color-primary);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .algorithm-layout {
   display: grid;
   grid-template-columns: minmax(0, 2fr) minmax(260px, 0.8fr);
@@ -59,18 +48,6 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 @media (max-width: 960px) {

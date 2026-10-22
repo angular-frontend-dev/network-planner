@@ -1,6 +1,6 @@
 <div class="page how-it-works-page">
-  <header class="page-intro">
-    <span class="page-intro__eyebrow">How it works</span>
+  <section class="page-section">
+    <span class="eyebrow">How it works</span>
 
     <h1>From a real problem to a graph solution</h1>
 
@@ -8,11 +8,9 @@
       Wireless frequency planning can be modeled as a graph coloring problem. We
       use the DSATUR algorithm to assign frequencies efficiently.
     </p>
-  </header>
+  </section>
 
   <section class="modeling-section" aria-labelledby="modeling-title">
-    <h2 id="modeling-title" class="sr-only">Modeling the problem</h2>
-
     <div class="modeling-grid">
       @for (step of stepCards; track step.stepNumber) {
       <app-step-card
@@ -29,7 +27,7 @@
 
   <section class="algorithm-section" aria-labelledby="algorithm-title">
     <div class="algorithm-section__intro">
-      <span class="section-eyebrow">Frequency allocation</span>
+      <span class="eyebrow">Frequency allocation</span>
 
       <h2 id="algorithm-title">The DSATUR algorithm</h2>
 
