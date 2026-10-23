@@ -24,7 +24,8 @@ export class RandomGraphComponent {
   graphViewOptions: Partial<GraphViewOptions> = {
     enableCameraPanning: false,
     enableCameraZooming: false,
-    enableNodeDrag: false,
+    enableNodeDrag: true,
+    enableToolBar: false,
   };
 
   ngOnInit() {

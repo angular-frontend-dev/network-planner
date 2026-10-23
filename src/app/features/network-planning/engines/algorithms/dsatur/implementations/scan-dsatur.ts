@@ -1,5 +1,5 @@
 import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
-import { DsaturBase } from "./dsatur-base";
+import { DsaturBase } from "../dsatur-base";
 import type { DsaturNode } from "../dsatur-types";
 
 export class ScanDsatur extends DsaturBase {

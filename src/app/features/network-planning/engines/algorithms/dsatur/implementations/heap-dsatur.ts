@@ -1,6 +1,6 @@
 import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
 import { IndexedMaxHeap } from "../utils/indexed-max-heap";
-import { DsaturBase } from "./dsatur-base";
+import { DsaturBase } from "../dsatur-base";
 import { DsaturNode } from "../dsatur-types";
 
 export class HeapDsatur extends DsaturBase {

@@ -4,7 +4,7 @@ import { NetworkPlannerLayout } from "./features/network-planning/layouts/networ
 import { HomePage } from "./features/network-planning/pages/home/home.page";
 
 export const routes: Routes = [
-  { path: "", redirectTo: "/network-planner", pathMatch: "full" },
+  { path: "", redirectTo: "/network-planning", pathMatch: "full" },
   {
     path: "marketing",
     component: MarketingLayout,
@@ -27,7 +27,7 @@ export const routes: Routes = [
   },
 
   {
-    path: "network-planner",
+    path: "network-planning",
     component: NetworkPlannerLayout,
     children: [
       {
@@ -39,6 +39,13 @@ export const routes: Routes = [
         loadComponent: () =>
           import("./features/network-planning/pages/network-planner/network-planner.page").then(
             (m) => m.NetworkPlannerPage,
+          ),
+      },
+      {
+        path: "performance",
+        loadComponent: () =>
+          import("./features/network-planning/pages/performance/performance.page").then(
+            (m) => m.PerformancePage,
           ),
       },
     ],

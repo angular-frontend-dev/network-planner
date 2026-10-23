@@ -26,62 +26,29 @@
             <app-graph-view
               [graph]="graph"
               [options]="plannerGraphOptions"
-              (rendered)="onGraphRendered()"
+              (initializationTime)="onGraphRendered($event)"
             />
             }
-          </div>
-
-          <div class="graph-toolbar">
-            <button class="graph-toolbar__button" aria-label="Zoom in">
-              +
-            </button>
-
-            <button class="graph-toolbar__button" aria-label="Zoom out">
-              −
-            </button>
-
-            <button class="graph-toolbar__button" aria-label="Reset camera">
-              ⟳
-            </button>
           </div>
         </div>
       </section>
 
-      <footer class="planner-stats">
-        <div class="stat">
-          <span class="stat__label">Transmitters</span>
-          <strong class="stat__value">2,500</strong>
-        </div>
-
-        <div class="stat">
-          <span class="stat__label">Edges</span>
-          <strong class="stat__value">18,431</strong>
-        </div>
-
-        <div class="stat">
-          <span class="stat__label">Frequencies</span>
-          <strong class="stat__value">7</strong>
-        </div>
-
-        <div class="stat">
-          <span class="stat__label">Runtime</span>
-          <strong class="stat__value">83 ms</strong>
-        </div>
-
-        <div class="stat">
-          <span class="stat__label">Valid coloring</span>
-
-          <strong class="stat__value stat__value--success">
-            <span class="valid-icon">✓</span>
-            Yes
-          </strong>
-        </div>
-      </footer>
+      <!-- GRAPH SUMMARY -->
+      <section class="planner-summary">
+        <app-performance-summary
+          [performance]="performance()"
+          [graphSize]="graphSize()"
+        ></app-performance-summary>
+      </section>
     </section>
   </main>
 
   <app-loading [loading]="loading()">
     <p>Generating network...</p>
+  </app-loading>
+
+  <app-loading [loading]="loadingAlgorithm()">
+    <p>Algorithm is running...</p>
   </app-loading>
 
   <app-warning-dialog

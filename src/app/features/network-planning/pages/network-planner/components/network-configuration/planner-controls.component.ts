@@ -3,7 +3,7 @@ import { FormField, FormRoot, form, min, max } from "@angular/forms/signals";
 
 export type Distribution = "uniform" | "clustered" | "grid";
 
-export type AlgorithmOption = "DSATUR";
+export type AlgorithmOption = "DSATUR-NAIVE" | "DSATUR-HEAP";
 
 export interface ConfigurationOptions {
   transmitters: number;
@@ -26,7 +26,7 @@ const DEFAULT_CONFIGURATION: ConfigurationOptions = {
 };
 
 const DEFAULT_ALLOCATION: AllocationOptions = {
-  algorithm: "DSATUR",
+  algorithm: "DSATUR-NAIVE",
   animationSpeed: 45,
   showEdges: true,
   showCoverageArea: true,
@@ -42,6 +42,11 @@ const DEFAULT_ALLOCATION: AllocationOptions = {
 export class PlannerControlsComponent {
   generateNetwork = output<ConfigurationOptions>();
   runAllocation = output<AllocationOptions>();
+
+  algorithmOptions: { id: AlgorithmOption; label: string }[] = [
+    { id: "DSATUR-NAIVE", label: "DSATUR (naive)" },
+    { id: "DSATUR-HEAP", label: "DSATUR (heap)" },
+  ];
 
   readonly configurationModel = signal<ConfigurationOptions>({
     ...DEFAULT_CONFIGURATION,

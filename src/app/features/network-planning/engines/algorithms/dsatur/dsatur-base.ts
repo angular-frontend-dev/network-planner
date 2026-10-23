@@ -1,5 +1,5 @@
-import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
-import type { DsaturNode, DsaturResult, NodeId } from "../dsatur-types";
+import { NetworkGraph } from "../../../models/graphs/network/network-graph";
+import type { DsaturNode, DsaturResult, NodeId } from "./dsatur-types";
 
 export abstract class DsaturBase {
   protected nodes: DsaturNode[] = [];

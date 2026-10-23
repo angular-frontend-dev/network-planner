@@ -1,0 +1,44 @@
+<div class="performance-page">
+  <main class="performance-page__content">
+    <!-- Intro -->
+    <header class="performance-intro">
+      <div class="performance-intro__content">
+        <span class="eyebrow">PERFORMANCE</span>
+
+        <h1>Performance at scale</h1>
+
+        <p>
+          Generate random networks and measure how graph construction and DSATUR
+          coloring perform on your machine. Explore different algorithms,
+          network sizes and interference radii to see how they affect runtime.
+        </p>
+      </div>
+
+      <aside class="benchmark-note">
+        <div class="benchmark-note__icon">i</div>
+
+        <div>
+          <h2>About this benchmark</h2>
+
+          <p>
+            This benchmark measures graph construction, DSATUR execution and
+            visualization initialization independently so you can understand
+            where the computational cost comes from.
+          </p>
+        </div>
+      </aside>
+    </header>
+
+    <app-benchmark-configuration></app-benchmark-configuration>
+
+    <app-benchmark-result></app-benchmark-result>
+
+    <!-- Analysis -->
+    <div class="analysis-grid">
+      <!-- Chart -->
+      <app-runtime></app-runtime>
+
+      <app-reference-benchmark></app-reference-benchmark>
+    </div>
+  </main>
+</div>

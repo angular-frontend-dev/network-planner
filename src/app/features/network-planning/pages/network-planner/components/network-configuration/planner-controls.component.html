@@ -63,7 +63,9 @@
 
   <div class="field">
     <select aria-label="Algorithm" [formField]="allocationForm.algorithm">
-      <option value="DSATUR">DSATUR</option>
+      @for (option of algorithmOptions; track option.id) {
+        <option [value]="option.id">{{ option.label }}</option>
+      }
     </select>
   </div>
 

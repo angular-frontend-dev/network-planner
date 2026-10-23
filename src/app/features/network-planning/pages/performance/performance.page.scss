@@ -1,0 +1,178 @@
+@use "styles/_mixins" as mixins;
+
+.performance-page {
+  min-height: 100vh;
+
+  @include mixins.background-page;
+}
+
+.performance-page__content {
+  @include mixins.page-container-content;
+
+  padding-top: 4rem;
+  padding-bottom: 6rem;
+}
+
+/* -------------------------
+   INTRO
+-------------------------- */
+
+.performance-intro {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    minmax(320px, 0.8fr);
+
+  align-items: end;
+
+  gap: 4rem;
+
+  margin-bottom: 2rem;
+}
+
+.performance-intro__content {
+  max-width: 760px;
+}
+
+.performance-intro h1 {
+  margin: 0.8rem 0 1rem;
+
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: 1;
+
+  letter-spacing: -0.05em;
+}
+
+.performance-intro p {
+  max-width: 720px;
+
+  margin: 0;
+
+  color: var(--color-text-muted);
+
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.benchmark-note {
+  display: flex;
+
+  gap: 1rem;
+
+  padding: 1.4rem;
+
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+
+  background: var(--color-surface);
+}
+
+.benchmark-note__icon {
+  width: 1.5rem;
+  height: 1.5rem;
+
+  flex: 0 0 auto;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid var(--color-accent);
+  border-radius: 50%;
+
+  color: var(--color-accent);
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.benchmark-note h2 {
+  margin: 0 0 0.55rem;
+
+  font-size: 0.95rem;
+}
+
+.benchmark-note p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* -------------------------
+   ANALYSIS GRID
+-------------------------- */
+
+.analysis-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 2.3fr)
+    minmax(280px, 0.9fr);
+
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+/* =================================
+   TABLET
+================================= */
+
+@media (max-width: 1100px) {
+  .performance-intro {
+    grid-template-columns: 1fr;
+
+    gap: 2rem;
+  }
+
+  .benchmark-note {
+    max-width: 700px;
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .analysis-grid,
+  .analysis-grid--bottom {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =================================
+   MOBILE
+================================= */
+
+@media (max-width: 650px) {
+  .performance-page__content {
+    padding-top: 3rem;
+    padding-bottom: 4rem;
+  }
+
+  .performance-intro h1 {
+    font-size: clamp(2.6rem, 13vw, 4rem);
+  }
+
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .card-heading {
+    flex-direction: column;
+
+    gap: 1rem;
+  }
+
+  .chart-legend {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 450px) {
+  .metric-grid {
+    grid-template-columns: 1fr;
+  }
+}

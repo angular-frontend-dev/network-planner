@@ -13,6 +13,7 @@ export interface NodeGeneralAttributes {
   borderColor: string;
   outerBorderSize: number;
   innerBorderSize: number;
+  opacity: number;
 }
 
 export interface EdgeGeneralAttributes {
@@ -43,6 +44,7 @@ const DEFAULT_NODE_OPTIONS: NodeGeneralAttributes = {
   borderColor: "#10151F",
   outerBorderSize: 3,
   innerBorderSize: 8,
+  opacity: 0.9,
 };
 
 const DEFAULT_EDGE_OPTIONS: EdgeGeneralAttributes = {
@@ -86,9 +88,11 @@ export class NetworkGraph {
       type: "undirected",
     });
 
+    // O(1)
     const nodeOptions = NetworkGraph.getNodeOptions(graphGeneralOptions.node);
     const edgeOptions = NetworkGraph.getEdgeOptions(graphGeneralOptions.edge);
 
+    // O(n)
     this.createRandomNodes(
       graph,
       transmitters,
@@ -96,6 +100,8 @@ export class NetworkGraph {
       networkHeight,
       nodeOptions,
     );
+
+    // O(n * k), where k is the maximum number of neighbors in the spatial grid cell
     this.createEdges(graph, interferenceRadius, edgeOptions);
 
     return new NetworkGraph(graph);
@@ -110,12 +116,15 @@ export class NetworkGraph {
   ): void {
     const nodeSize = this.getNodeSize(transmitters);
 
+    // O(n) iterations
     for (let i = 0; i < transmitters; i++) {
+      // expected O(1) per iteration
       graph.addNode(i.toString(), {
         x: Math.random() * networkWidth,
         y: Math.random() * networkHeight,
         size: nodeSize,
         color: nodeOptions.color,
+        opacity: nodeOptions.opacity,
         borderColor: nodeOptions.borderColor,
         outerBorderSize: nodeSize * 0.25,
         innerBorderSize: nodeSize * 0.55,
@@ -128,14 +137,18 @@ export class NetworkGraph {
     interferenceRadius: number,
     edgeOptions: EdgeGeneralAttributes,
   ): void {
+    // O(1)
     const spatialGrid = new SpatialGrid(interferenceRadius);
     const edgeSize = NetworkGraph.getEdgeSize(graph.order);
 
+    // O(n) iterations
     graph.forEachNode((node, attributes) => {
       const spatialNode = new SpatialNode(node, attributes.x, attributes.y);
 
+      // O(k) iterations, where k is the number of neighbors in the spatial grid cell
       for (const neighborNode of spatialGrid.getCellNeighbors(spatialNode)) {
         if (spatialNode.distanceTo(neighborNode) <= interferenceRadius) {
+          // expected O(1) per iteration
           graph.addEdge(spatialNode.id, neighborNode.id, {
             size: edgeSize,
             color: edgeOptions.color,
@@ -203,6 +216,7 @@ export class NetworkGraph {
           y: NetworkGraph.getRandomInterval(minY, maxY) * 100,
           size: nodeOptions.size,
           color: nodeOptions.color,
+          opacity: nodeOptions.opacity,
           borderColor: nodeOptions.borderColor,
           outerBorderSize: nodeOptions.outerBorderSize,
           innerBorderSize: nodeOptions.innerBorderSize,

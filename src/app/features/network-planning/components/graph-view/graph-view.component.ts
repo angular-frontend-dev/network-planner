@@ -20,12 +20,14 @@ export interface GraphViewOptions {
   enableNodeDrag: boolean;
   enableCameraZooming: boolean;
   enableCameraPanning: boolean;
+  enableToolBar: boolean;
 }
 
 const DEFAULT_GRAPH_VIEW_OPTIONS: GraphViewOptions = {
   enableNodeDrag: true,
   enableCameraZooming: true,
   enableCameraPanning: true,
+  enableToolBar: true,
 };
 
 type NetworkGraphRenderer = Sigma<NetworkNodeAttributes, NetworkEdgeAttributes>;
@@ -40,7 +42,7 @@ export class GraphViewComponent implements OnInit {
   options = input<Partial<GraphViewOptions>>({});
   backgroundImage = input<string>("/images/network-planning/planner-map.png");
 
-  readonly rendered = output<void>();
+  readonly initializationTime = output<number>();
 
   resolvedOptions!: GraphViewOptions;
 
@@ -56,13 +58,15 @@ export class GraphViewComponent implements OnInit {
         return;
       }
 
+      const startInitializationTime = performance.now();
+
       const renderer = this.render(this.graph(), container.nativeElement);
+
+      const initializationTime = performance.now() - startInitializationTime;
 
       this.renderer = renderer;
 
-      renderer.once("afterRender", () => {
-        this.rendered.emit();
-      });
+      this.initializationTime.emit(initializationTime);
 
       const cleanupMap = this.createBackgroundLayer(
         renderer as Sigma,
@@ -312,5 +316,25 @@ export class GraphViewComponent implements OnInit {
       renderer.off("afterRender", update);
       image.remove();
     };
+  }
+
+  zoomIn(): void {
+    this.renderer?.getCamera().zoomIn({
+      factor: 1.5,
+      duration: 200,
+    });
+  }
+
+  zoomOut(): void {
+    this.renderer?.getCamera().zoomOut({
+      factor: 1.5,
+      duration: 200,
+    });
+  }
+
+  resetCamera(): void {
+    this.renderer?.getCamera().reset({
+      duration: 300,
+    });
   }
 }

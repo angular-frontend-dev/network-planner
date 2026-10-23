@@ -1,0 +1,78 @@
+<div class="performance-summary">
+  <h2>What affects performance?</h2>
+
+  <div class="performance-metric">
+    <span class="performance-metric__label"> Graph construction </span>
+
+    <div class="performance-metric__track">
+      <span
+        class="performance-metric__bar performance-metric__bar--construction"
+        [style.width.%]="graphConstructionPercentage()"
+      ></span>
+    </div>
+
+    <strong
+      >{{ graphConstructionPercentage() }}% - ({{
+        performance().graphConstruction.toFixed(2)
+      }}
+      ms)</strong
+    >
+  </div>
+
+  <div class="performance-metric">
+    <span class="performance-metric__label"> Algorithm </span>
+
+    <div class="performance-metric__track">
+      <span
+        class="performance-metric__bar performance-metric__bar--algorithm"
+        [style.width.%]="algorithmPercentage()"
+      ></span>
+    </div>
+
+    <strong
+      >{{ algorithmPercentage() }}% - ({{
+        performance().algorithm.toFixed(2)
+      }}
+      ms)</strong
+    >
+  </div>
+
+  <div class="performance-metric">
+    <span class="performance-metric__label"> Rendering </span>
+
+    <div class="performance-metric__track">
+      <span
+        class="performance-metric__bar performance-metric__bar--rendering"
+        [style.width.%]="renderingPercentage()"
+      ></span>
+    </div>
+
+    <strong
+      >{{ renderingPercentage() }}% - ({{
+        performance().rendering.toFixed(2)
+      }}
+      ms)</strong
+    >
+  </div>
+</div>
+
+<div class="graph-summary">
+  <h2>Graph size</h2>
+
+  <dl class="graph-summary__list">
+    <div>
+      <dt>Transmitters</dt>
+      <dd>{{ graphSize().transmitters }}</dd>
+    </div>
+
+    <div>
+      <dt>Edges</dt>
+      <dd>{{ graphSize().edges }}</dd>
+    </div>
+
+    <div>
+      <dt>Average degree</dt>
+      <dd>{{ graphSize().averageDegree.toFixed(2) }}</dd>
+    </div>
+  </dl>
+</div>
