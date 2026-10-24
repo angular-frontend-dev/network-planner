@@ -3,19 +3,21 @@ import { output } from "@angular/core";
 import { form, min, max } from "@angular/forms/signals";
 import { FormField, FormRoot } from "@angular/forms/signals";
 import { FieldErrorsComponent } from "../../../../../../shared/components/field-errors/field-errors.component";
-export type AlgorithmOption = "DSATUR-NAIVE" | "DSATUR-HEAP";
+import { ColoringAlgorithm } from "../../../../engines/algorithms/algorithm.types";
 
 export interface ConfigurationOptions {
-  algorithm: AlgorithmOption;
+  algorithm: ColoringAlgorithm;
   transmitters: number;
   approximateSize: number;
 }
 
 const DEFAULT_CONFIGURATION: ConfigurationOptions = {
   algorithm: "DSATUR-NAIVE",
-  transmitters: 10000,
-  approximateSize: 500,
+  transmitters: 100,
+  approximateSize: 200,
 };
+
+const MAX_EDGES = 1_000_000;
 
 @Component({
   imports: [FormField, FormRoot, FieldErrorsComponent],
@@ -29,7 +31,7 @@ const DEFAULT_CONFIGURATION: ConfigurationOptions = {
 export class BenchmarkConfigurationComponent {
   runBenchmark = output<ConfigurationOptions>();
 
-  algorithmOptions: { id: AlgorithmOption; label: string }[] = [
+  algorithmOptions: { id: ColoringAlgorithm; label: string }[] = [
     { id: "DSATUR-NAIVE", label: "DSATUR (naive)" },
     { id: "DSATUR-HEAP", label: "DSATUR (heap)" },
   ];
@@ -39,9 +41,9 @@ export class BenchmarkConfigurationComponent {
   });
 
   readonly configurationForm = form(this.configurationModel, (path) => {
-    min(path.transmitters, 5000);
+    min(path.transmitters, 100);
 
-    min(path.approximateSize, 500, {
+    min(path.approximateSize, 200, {
       message: "The number of edges must be at least 500.",
     });
     max(
@@ -49,7 +51,7 @@ export class BenchmarkConfigurationComponent {
       ({ valueOf }) => {
         const transmitters = valueOf(path.transmitters);
 
-        return (transmitters * (transmitters - 1)) / 2;
+        return Math.min((transmitters * (transmitters - 1)) / 2, MAX_EDGES);
       },
       {
         message: "The number of edges exceeds the maximum.",

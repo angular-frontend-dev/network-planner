@@ -5,7 +5,6 @@ import { PlannerControlsComponent } from "./components/network-configuration/pla
 import type {
   ConfigurationOptions,
   AllocationOptions,
-  AlgorithmOption,
 } from "./components/network-configuration/planner-controls.component";
 import {
   GraphViewComponent,
@@ -21,6 +20,8 @@ import {
 } from "./components/performance-summary/performance-summary.component";
 import Graph from "graphology";
 import { DsaturResult } from "../../engines/algorithms/dsatur/models/dsatur-result";
+import { ColoringAlgorithm } from "../../engines/algorithms/algorithm.types";
+import { Miliseconds } from "../../../../shared/types/time.type";
 
 const EMPTY_PERFORMANCE_METRICS: PerformanceMetrics = {
   graphConstruction: 0,
@@ -33,8 +34,6 @@ const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
   edges: 0,
   averageDegree: 0,
 };
-
-type Time = number;
 
 @Component({
   imports: [
@@ -67,7 +66,7 @@ export class NetworkPlannerPage {
   private graphConstructionTime: number = 0;
   private renderingTime: number = 0;
 
-  private readonly DSATUR_NAIVE_OPTION: AlgorithmOption = "DSATUR-NAIVE";
+  private readonly DSATUR_NAIVE_OPTION: ColoringAlgorithm = "DSATUR-NAIVE";
 
   private async waitForNextPaint(): Promise<void> {
     return new Promise<void>((resolve) =>
@@ -107,7 +106,7 @@ export class NetworkPlannerPage {
 
   private constructGraph(options: ConfigurationOptions): {
     graph: Network;
-    constructionTime: Time;
+    constructionTime: Miliseconds;
   } {
     const graphGeneralOptions = {
       node: {
@@ -167,12 +166,12 @@ export class NetworkPlannerPage {
 
   private runAlgorithm(
     graph: Graph,
-    algorithmType: AlgorithmOption,
-  ): { assignament: DsaturResult; algorithmTime: Time } {
+    colorignAlgorithm: ColoringAlgorithm,
+  ): { assignament: DsaturResult; algorithmTime: Miliseconds } {
     const startRunningAlgorithm = performance.now();
 
     const algorithm =
-      algorithmType === this.DSATUR_NAIVE_OPTION
+      colorignAlgorithm === this.DSATUR_NAIVE_OPTION
         ? new ScanDsatur(graph)
         : new HeapDsatur(graph);
 
@@ -195,9 +194,9 @@ export class NetworkPlannerPage {
   }
 
   private setPerformanceMetrics(
-    constructionTime: Time,
-    algorithmTime: Time,
-    renderingTime: Time,
+    constructionTime: Miliseconds,
+    algorithmTime: Miliseconds,
+    renderingTime: Miliseconds,
   ) {
     this.performanceMetrics.set({
       graphConstruction: constructionTime,

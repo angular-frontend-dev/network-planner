@@ -1,62 +1,9 @@
 <section class="dashboard-card runtime-card">
   <div class="card-heading">
     <h2>Runtime vs. number of transmitters</h2>
-
-    <div class="chart-legend">
-      <span>
-        <i class="chart-dot chart-dot--construction"></i>
-        Graph construction
-      </span>
-
-      <span>
-        <i class="chart-dot chart-dot--scan"></i>
-        DSATUR (scan)
-      </span>
-
-      <span>
-        <i class="chart-dot chart-dot--heap"></i>
-        DSATUR (heap)
-      </span>
-    </div>
   </div>
 
   <div class="runtime-chart">
-    <div class="runtime-chart__y-label">Runtime (ms)</div>
-
-    <div class="runtime-chart__area">
-      <div class="runtime-chart__grid"></div>
-
-      <svg
-        viewBox="0 0 700 300"
-        preserveAspectRatio="none"
-        aria-label="Runtime benchmark chart"
-      >
-        <polyline
-          class="chart-line chart-line--construction"
-          points="0,265 120,250 240,225 390,195 520,165 700,105"
-        />
-
-        <polyline
-          class="chart-line chart-line--scan"
-          points="0,250 120,210 240,170 390,120 520,75 700,20"
-        />
-
-        <polyline
-          class="chart-line chart-line--heap"
-          points="0,255 120,230 240,200 390,155 520,120 700,55"
-        />
-      </svg>
-
-      <div class="runtime-chart__x-axis">
-        <span>100</span>
-        <span>500</span>
-        <span>1k</span>
-        <span>5k</span>
-        <span>10k</span>
-        <span>50k</span>
-      </div>
-    </div>
-
-    <div class="runtime-chart__x-label">Number of transmitters</div>
+    <canvas #canvas></canvas>
   </div>
 </section>

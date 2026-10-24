@@ -1,9 +1,8 @@
 import { Component, output, signal } from "@angular/core";
 import { FormField, FormRoot, form, min, max } from "@angular/forms/signals";
+import { ColoringAlgorithm } from "../../../../engines/algorithms/algorithm.types";
 
 export type Distribution = "uniform" | "grid";
-
-export type AlgorithmOption = "DSATUR-NAIVE" | "DSATUR-HEAP";
 
 export interface ConfigurationOptions {
   transmitters: number;
@@ -12,7 +11,7 @@ export interface ConfigurationOptions {
 }
 
 export interface AllocationOptions {
-  algorithm: AlgorithmOption;
+  algorithm: ColoringAlgorithm;
 }
 
 const DEFAULT_CONFIGURATION: ConfigurationOptions = {
@@ -35,7 +34,7 @@ export class PlannerControlsComponent {
   generateNetwork = output<ConfigurationOptions>();
   runAllocation = output<AllocationOptions>();
 
-  algorithmOptions: { id: AlgorithmOption; label: string }[] = [
+  algorithmOptions: { id: ColoringAlgorithm; label: string }[] = [
     { id: "DSATUR-NAIVE", label: "DSATUR (naive)" },
     { id: "DSATUR-HEAP", label: "DSATUR (heap)" },
   ];

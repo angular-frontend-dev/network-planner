@@ -1,6 +1,5 @@
 import { Component, signal } from "@angular/core";
 import {
-  AlgorithmOption,
   BenchmarkConfigurationComponent,
   ConfigurationOptions,
 } from "./components/benchmark-configuration/benchmark-configuration.component";
@@ -10,14 +9,13 @@ import {
   GraphInformations,
 } from "./components/benchmark-result/benchmark-result.component";
 import { RuntimeComponent } from "./components/runtime/runtime.component";
-import { ReferenceBenchmarkComponent } from "./components/reference-benchmark/reference-benchmark.component";
 import { ScanDsatur } from "../../engines/algorithms/dsatur/implementations/scan-dsatur";
 import { HeapDsatur } from "../../engines/algorithms/dsatur/implementations/heap-dsatur";
 import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
-import { UndirectedGraph } from "graphology";
 import type Graph from "graphology";
-import erdosRenyi from "graphology-generators/random/erdos-renyi";
+import type { ColoringAlgorithm } from "../../engines/algorithms/algorithm.types";
 import { createBenchmarkGraph } from "./graph/benchmark-graph.factory";
+import { Miliseconds } from "../../../../shared/types/time.type";
 
 const EMPTY_PERFORMANCE_METRIC: PerformanceMetrics = {
   graphConstruction: 0,
@@ -31,14 +29,11 @@ const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
   averageDegree: 0,
 };
 
-type Time = number;
-
 @Component({
   imports: [
     BenchmarkConfigurationComponent,
     BenchmarkResultComponent,
     RuntimeComponent,
-    ReferenceBenchmarkComponent,
     LoadingComponent,
   ],
   selector: "app-performance",
@@ -52,7 +47,7 @@ export class PerformancePage {
   performanceMetrics = signal<PerformanceMetrics>(EMPTY_PERFORMANCE_METRIC);
   graphInformations = signal<GraphInformations>(EMPTY_GRAPH_INFORMATIONS);
 
-  private readonly DSATUR_NAIVE_OPTION: AlgorithmOption = "DSATUR-NAIVE";
+  private readonly DSATUR_NAIVE_OPTION: ColoringAlgorithm = "DSATUR-NAIVE";
 
   private async waitForNextPaint(): Promise<void> {
     return new Promise<void>((resolve) =>
@@ -92,7 +87,7 @@ export class PerformancePage {
     approximateSize: number,
   ): {
     graph: Graph;
-    constructionTime: Time;
+    constructionTime: Miliseconds;
   } {
     const startConstruction = performance.now();
 
@@ -103,11 +98,14 @@ export class PerformancePage {
     return { graph, constructionTime };
   }
 
-  private runAlgorithm(graph: Graph, algorithmType: AlgorithmOption): Time {
+  private runAlgorithm(
+    graph: Graph,
+    colorignAlgorithm: ColoringAlgorithm,
+  ): Miliseconds {
     const startRunningAlgorithm = performance.now();
 
     const algorithm =
-      algorithmType === this.DSATUR_NAIVE_OPTION
+      colorignAlgorithm === this.DSATUR_NAIVE_OPTION
         ? new ScanDsatur(graph)
         : new HeapDsatur(graph);
 
@@ -116,7 +114,10 @@ export class PerformancePage {
     return performance.now() - startRunningAlgorithm;
   }
 
-  private setPerformanceMetrics(constructionTime: Time, algorithmTime: Time) {
+  private setPerformanceMetrics(
+    constructionTime: Miliseconds,
+    algorithmTime: Miliseconds,
+  ) {
     this.performanceMetrics.set({
       graphConstruction: constructionTime,
       algorithm: algorithmTime,
