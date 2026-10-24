@@ -6,9 +6,4 @@ export interface DsaturNode {
   degree: number;
 }
 
-export interface DsaturResult {
-  nodes: DsaturNode[];
-  colorCount: number;
-}
-
 export type NodeId = number;

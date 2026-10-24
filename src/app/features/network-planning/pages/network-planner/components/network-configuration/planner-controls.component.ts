@@ -1,7 +1,7 @@
 import { Component, output, signal } from "@angular/core";
 import { FormField, FormRoot, form, min, max } from "@angular/forms/signals";
 
-export type Distribution = "uniform" | "clustered" | "grid";
+export type Distribution = "uniform" | "grid";
 
 export type AlgorithmOption = "DSATUR-NAIVE" | "DSATUR-HEAP";
 
@@ -13,10 +13,6 @@ export interface ConfigurationOptions {
 
 export interface AllocationOptions {
   algorithm: AlgorithmOption;
-  animationSpeed: number;
-  showEdges: boolean;
-  showCoverageArea: boolean;
-  showFrequencyColors: boolean;
 }
 
 const DEFAULT_CONFIGURATION: ConfigurationOptions = {
@@ -27,10 +23,6 @@ const DEFAULT_CONFIGURATION: ConfigurationOptions = {
 
 const DEFAULT_ALLOCATION: AllocationOptions = {
   algorithm: "DSATUR-NAIVE",
-  animationSpeed: 45,
-  showEdges: true,
-  showCoverageArea: true,
-  showFrequencyColors: true,
 };
 
 @Component({
@@ -64,10 +56,7 @@ export class PlannerControlsComponent {
     max(path.interferenceRadius, 200);
   });
 
-  readonly allocationForm = form(this.allocationModel, (path) => {
-    min(path.animationSpeed, 1);
-    max(path.animationSpeed, 100);
-  });
+  readonly allocationForm = form(this.allocationModel, (path) => {});
 
   onClickGenerateNetwork() {
     this.generateNetwork.emit(this.configurationModel());

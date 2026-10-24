@@ -11,9 +11,9 @@ import {
 import { layerBorder } from "@sigma/node-border";
 import {
   NetworkEdgeAttributes,
-  NetworkGraph,
+  Network,
   NetworkNodeAttributes,
-} from "../../models/graphs/network/network-graph";
+} from "../../models/network/network";
 import Sigma from "sigma";
 
 export interface GraphViewOptions {
@@ -30,7 +30,7 @@ const DEFAULT_GRAPH_VIEW_OPTIONS: GraphViewOptions = {
   enableToolBar: true,
 };
 
-type NetworkGraphRenderer = Sigma<NetworkNodeAttributes, NetworkEdgeAttributes>;
+type NetworkRenderer = Sigma<NetworkNodeAttributes, NetworkEdgeAttributes>;
 
 @Component({
   selector: "app-graph-view",
@@ -38,7 +38,7 @@ type NetworkGraphRenderer = Sigma<NetworkNodeAttributes, NetworkEdgeAttributes>;
   styleUrl: "./graph-view.component.scss",
 })
 export class GraphViewComponent implements OnInit {
-  graph = input.required<NetworkGraph>();
+  graph = input.required<Network>();
   options = input<Partial<GraphViewOptions>>({});
   backgroundImage = input<string>("/images/network-planning/planner-map.png");
 
@@ -49,7 +49,7 @@ export class GraphViewComponent implements OnInit {
   private readonly container =
     viewChild.required<ElementRef<HTMLDivElement>>("container");
 
-  private renderer?: NetworkGraphRenderer;
+  private renderer?: NetworkRenderer;
 
   constructor() {
     effect((onCleanup) => {
@@ -87,7 +87,7 @@ export class GraphViewComponent implements OnInit {
     };
   }
 
-  private render(graph: NetworkGraph, container: HTMLElement) {
+  private render(graph: Network, container: HTMLElement) {
     this.fitGraphToContainer(graph, container);
 
     const renderer = new Sigma(graph.value, container, {
@@ -212,7 +212,7 @@ export class GraphViewComponent implements OnInit {
     };
   }
 
-  private configureCamera(renderer: NetworkGraphRenderer): void {
+  private configureCamera(renderer: NetworkRenderer): void {
     const camera = renderer.getCamera();
 
     let panningEnabled = false;
@@ -228,10 +228,7 @@ export class GraphViewComponent implements OnInit {
     });
   }
 
-  private fitGraphToContainer(
-    graph: NetworkGraph,
-    container: HTMLElement,
-  ): void {
+  private fitGraphToContainer(graph: Network, container: HTMLElement): void {
     const width = container.clientWidth;
     const height = container.clientHeight;
 

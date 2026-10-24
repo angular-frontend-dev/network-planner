@@ -22,7 +22,7 @@
       <section class="planner-workspace">
         <div class="graph-stage">
           <div class="graph-canvas">
-            @if (networkGraph(); as graph) {
+            @if (network(); as graph) {
             <app-graph-view
               [graph]="graph"
               [options]="plannerGraphOptions"
@@ -36,14 +36,14 @@
       <!-- GRAPH SUMMARY -->
       <section class="planner-summary">
         <app-performance-summary
-          [performance]="performance()"
-          [graphSize]="graphSize()"
+          [performanceMetrics]="performanceMetrics()"
+          [graphInformations]="graphInformations()"
         ></app-performance-summary>
       </section>
     </section>
   </main>
 
-  <app-loading [loading]="loading()">
+  <app-loading [loading]="loadingNetwork()">
     <p>Generating network...</p>
   </app-loading>
 

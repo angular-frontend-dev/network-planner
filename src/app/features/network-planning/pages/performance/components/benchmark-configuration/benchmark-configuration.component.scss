@@ -4,7 +4,6 @@
 
 .benchmark-configuration {
   padding: 1.5rem;
-
   margin-bottom: 1rem;
 
   h2 {
@@ -22,18 +21,24 @@
     minmax(180px, 1fr);
 
   align-items: end;
-
   gap: 1.5rem;
+}
+
+.benchmark-configuration__grid--errors {
+  align-items: start;
+  margin-top: 0.4rem;
+}
+
+.approximate-size-error {
+  grid-column: 3;
 }
 
 .field {
   display: flex;
   flex-direction: column;
-
   gap: 0.6rem;
 
   color: var(--color-text-muted);
-
   font-size: 0.85rem;
 }
 
@@ -62,7 +67,6 @@
 
 .input-with-unit {
   display: grid;
-
   grid-template-columns: minmax(0, 1fr) auto;
 
   border: 1px solid var(--color-border);
@@ -91,7 +95,6 @@
   border-left: 1px solid var(--color-border);
 
   color: var(--color-text-muted);
-
   background: var(--color-surface);
 }
 

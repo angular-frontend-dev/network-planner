@@ -1,4 +1,16 @@
-import { Component } from "@angular/core";
+import { Component, input } from "@angular/core";
+
+export interface PerformanceMetrics {
+  graphConstruction: number;
+  algorithm: number;
+  totalRuntime: number;
+}
+
+export interface GraphInformations {
+  transmitters: number;
+  edges: number;
+  averageDegree: number;
+}
 
 @Component({
   imports: [],
@@ -9,4 +21,7 @@ import { Component } from "@angular/core";
   ],
   templateUrl: "./benchmark-result.component.html",
 })
-export class BenchmarkResultComponent {}
+export class BenchmarkResultComponent {
+  performanceMetrics = input.required<PerformanceMetrics>();
+  graphInformations = input.required<GraphInformations>();
+}

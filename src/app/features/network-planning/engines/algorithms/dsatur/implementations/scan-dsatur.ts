@@ -1,11 +1,11 @@
-import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
+import Graph from "graphology";
 import { DsaturBase } from "../dsatur-base";
-import type { DsaturNode } from "../dsatur-types";
+import { DsaturNode } from "../models/dsatur-node";
 
 export class ScanDsatur extends DsaturBase {
   private readonly uncolored: DsaturNode[] = [];
 
-  constructor(graph: NetworkGraph) {
+  constructor(graph: Graph) {
     super(graph);
     for (const node of this.nodes) {
       this.uncolored.push(node);

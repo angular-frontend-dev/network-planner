@@ -61,7 +61,7 @@ const DEFAULT_BOUNDS: GridBounds = {
   maxY: 0.9,
 };
 
-export class NetworkGraph {
+export class Network {
   private readonly frequencyPalette = [
     "#B88A72", // muted terracotta
     "#B7A36A", // muted ochre
@@ -80,17 +80,17 @@ export class NetworkGraph {
   static random(
     transmitters: number,
     interferenceRadius: number,
-    graphGeneralOptions: Partial<GraphGeneralAttributes>,
+    graphGeneralOptions: Partial<GraphGeneralAttributes> = {},
     networkWidth: number = 2500,
     networkHeight: number = 1000,
-  ): NetworkGraph {
+  ): Network {
     const graph = new Graph<NetworkNodeAttributes, NetworkEdgeAttributes>({
       type: "undirected",
     });
 
     // O(1)
-    const nodeOptions = NetworkGraph.getNodeOptions(graphGeneralOptions.node);
-    const edgeOptions = NetworkGraph.getEdgeOptions(graphGeneralOptions.edge);
+    const nodeOptions = Network.getNodeOptions(graphGeneralOptions.node);
+    const edgeOptions = Network.getEdgeOptions(graphGeneralOptions.edge);
 
     // O(n)
     this.createRandomNodes(
@@ -101,10 +101,10 @@ export class NetworkGraph {
       nodeOptions,
     );
 
-    // O(n * k), where k is the maximum number of neighbors in the spatial grid cell
+    // O(n * k) in expectation, where k is the maximum number of neighbors in the spatial grid cell
     this.createEdges(graph, interferenceRadius, edgeOptions);
 
-    return new NetworkGraph(graph);
+    return new Network(graph);
   }
 
   private static createRandomNodes(
@@ -139,7 +139,7 @@ export class NetworkGraph {
   ): void {
     // O(1)
     const spatialGrid = new SpatialGrid(interferenceRadius);
-    const edgeSize = NetworkGraph.getEdgeSize(graph.order);
+    const edgeSize = Network.getEdgeSize(graph.order);
 
     // O(n) iterations
     graph.forEachNode((node, attributes) => {
@@ -184,18 +184,18 @@ export class NetworkGraph {
     graphGeneralOptions: Partial<GraphGeneralAttributes>,
     gridSize: number = 3,
     bounds: GridBounds = DEFAULT_BOUNDS,
-  ): NetworkGraph {
+  ): Network {
     const graph = new Graph<NetworkNodeAttributes, NetworkEdgeAttributes>({
       type: "undirected",
     });
 
-    const nodeOptions = NetworkGraph.getNodeOptions(graphGeneralOptions.node);
-    const edgeOptions = NetworkGraph.getEdgeOptions(graphGeneralOptions.edge);
+    const nodeOptions = Network.getNodeOptions(graphGeneralOptions.node);
+    const edgeOptions = Network.getEdgeOptions(graphGeneralOptions.edge);
 
     this.createRandomGridNodes(graph, gridSize, bounds, nodeOptions);
     this.createRandomGridEdges(graph, edgeOptions);
 
-    return new NetworkGraph(graph);
+    return new Network(graph);
   }
 
   private static createRandomGridNodes(
@@ -212,15 +212,15 @@ export class NetworkGraph {
         const maxY = Math.min(bounds.maxY, (j + 1) / gridSize);
 
         graph.addNode(`${i}-${j}`, {
-          x: NetworkGraph.getRandomInterval(minX, maxX) * 100,
-          y: NetworkGraph.getRandomInterval(minY, maxY) * 100,
+          x: Network.getRandomInterval(minX, maxX) * 100,
+          y: Network.getRandomInterval(minY, maxY) * 100,
           size: nodeOptions.size,
           color: nodeOptions.color,
           opacity: nodeOptions.opacity,
           borderColor: nodeOptions.borderColor,
           outerBorderSize: nodeOptions.outerBorderSize,
           innerBorderSize: nodeOptions.innerBorderSize,
-          delay: NetworkGraph.getRandomInterval(0, 3000),
+          delay: Network.getRandomInterval(0, 3000),
         });
       }
     }

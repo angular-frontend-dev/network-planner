@@ -6,8 +6,8 @@ import {
 } from "../../../../components/graph-view/graph-view.component";
 import {
   GraphGeneralAttributes,
-  NetworkGraph,
-} from "../../../../models/graphs/network/network-graph";
+  Network,
+} from "../../../../models/network/network";
 
 @Component({
   imports: [GraphViewComponent],
@@ -19,7 +19,7 @@ export class RandomGraphComponent {
   options = input<Partial<GraphGeneralAttributes>>({});
 
   private animationFrame?: number;
-  private randomGraph = signal<NetworkGraph | null>(null);
+  private randomGraph = signal<Network | null>(null);
 
   graphViewOptions: Partial<GraphViewOptions> = {
     enableCameraPanning: false,
@@ -29,7 +29,7 @@ export class RandomGraphComponent {
   };
 
   ngOnInit() {
-    this.randomGraph.set(NetworkGraph.randomGrid(this.options()));
+    this.randomGraph.set(Network.randomGrid(this.options()));
   }
 
   ngAfterViewInit() {

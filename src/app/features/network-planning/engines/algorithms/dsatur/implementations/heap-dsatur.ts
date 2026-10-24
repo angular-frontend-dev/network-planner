@@ -1,12 +1,12 @@
-import { NetworkGraph } from "../../../../models/graphs/network/network-graph";
 import { IndexedMaxHeap } from "../utils/indexed-max-heap";
 import { DsaturBase } from "../dsatur-base";
-import { DsaturNode } from "../dsatur-types";
+import Graph from "graphology";
+import { DsaturNode } from "../models/dsatur-node";
 
 export class HeapDsatur extends DsaturBase {
   private readonly uncolored!: IndexedMaxHeap<DsaturNode>;
 
-  constructor(graph: NetworkGraph) {
+  constructor(graph: Graph) {
     super(graph);
 
     this.uncolored = new IndexedMaxHeap<DsaturNode>(

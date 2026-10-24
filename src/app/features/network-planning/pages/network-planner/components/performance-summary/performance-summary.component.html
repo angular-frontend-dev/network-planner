@@ -13,7 +13,7 @@
 
     <strong
       >{{ graphConstructionPercentage() }}% - ({{
-        performance().graphConstruction.toFixed(2)
+        performanceMetrics().graphConstruction.toFixed(2)
       }}
       ms)</strong
     >
@@ -31,7 +31,7 @@
 
     <strong
       >{{ algorithmPercentage() }}% - ({{
-        performance().algorithm.toFixed(2)
+        performanceMetrics().algorithm.toFixed(2)
       }}
       ms)</strong
     >
@@ -49,7 +49,7 @@
 
     <strong
       >{{ renderingPercentage() }}% - ({{
-        performance().rendering.toFixed(2)
+        performanceMetrics().rendering.toFixed(2)
       }}
       ms)</strong
     >
@@ -62,17 +62,17 @@
   <dl class="graph-summary__list">
     <div>
       <dt>Transmitters</dt>
-      <dd>{{ graphSize().transmitters }}</dd>
+      <dd>{{ graphInformations().transmitters }}</dd>
     </div>
 
     <div>
       <dt>Edges</dt>
-      <dd>{{ graphSize().edges }}</dd>
+      <dd>{{ graphInformations().edges }}</dd>
     </div>
 
     <div>
       <dt>Average degree</dt>
-      <dd>{{ graphSize().averageDegree.toFixed(2) }}</dd>
+      <dd>{{ graphInformations().averageDegree.toFixed(2) }}</dd>
     </div>
   </dl>
 </div>

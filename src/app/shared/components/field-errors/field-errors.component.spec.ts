@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NetworkPlannerLayout } from './network-planner.layout';
+import { FieldErrorsComponent } from './field-errors.component';
 
-describe('NetworkPlannerLayout', () => {
-  let component: NetworkPlannerLayout;
-  let fixture: ComponentFixture<NetworkPlannerLayout>;
+describe('FieldErrorsComponent', () => {
+  let component: FieldErrorsComponent;
+  let fixture: ComponentFixture<FieldErrorsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NetworkPlannerLayout]
+      imports: [FieldErrorsComponent]
     })
       .compileComponents();
 
-    fixture = TestBed.createComponent(NetworkPlannerLayout);
+    fixture = TestBed.createComponent(FieldErrorsComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

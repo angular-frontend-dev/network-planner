@@ -1,12 +1,12 @@
 import { Component, computed, input } from "@angular/core";
 
-export interface PerformanceMetric {
+export interface PerformanceMetrics {
   graphConstruction: number;
   algorithm: number;
   rendering: number;
 }
 
-export interface GraphSize {
+export interface GraphInformations {
   transmitters: number;
   edges: number;
   averageDegree: number;
@@ -19,26 +19,26 @@ export interface GraphSize {
   templateUrl: "./performance-summary.component.html",
 })
 export class PerformanceSummaryComponent {
-  performance = input.required<PerformanceMetric>();
-  graphSize = input.required<GraphSize>();
+  performanceMetrics = input.required<PerformanceMetrics>();
+  graphInformations = input.required<GraphInformations>();
 
   totalTime = computed(
     () =>
-      this.performance().graphConstruction +
-      this.performance().algorithm +
-      this.performance().rendering,
+      this.performanceMetrics().graphConstruction +
+      this.performanceMetrics().algorithm +
+      this.performanceMetrics().rendering,
   );
 
   graphConstructionPercentage = computed(() =>
-    this.percentage(this.performance().graphConstruction),
+    this.percentage(this.performanceMetrics().graphConstruction),
   );
 
   algorithmPercentage = computed(() =>
-    this.percentage(this.performance().algorithm),
+    this.percentage(this.performanceMetrics().algorithm),
   );
 
   renderingPercentage = computed(() =>
-    this.percentage(this.performance().rendering),
+    this.percentage(this.performanceMetrics().rendering),
   );
 
   private percentage(time: number): number {

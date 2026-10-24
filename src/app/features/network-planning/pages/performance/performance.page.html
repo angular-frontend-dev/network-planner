@@ -29,9 +29,14 @@
       </aside>
     </header>
 
-    <app-benchmark-configuration></app-benchmark-configuration>
+    <app-benchmark-configuration
+      (runBenchmark)="onRunBenchmark($event)"
+    ></app-benchmark-configuration>
 
-    <app-benchmark-result></app-benchmark-result>
+    <app-benchmark-result
+      [performanceMetrics]="performanceMetrics()"
+      [graphInformations]="graphInformations()"
+    ></app-benchmark-result>
 
     <!-- Analysis -->
     <div class="analysis-grid">
@@ -41,4 +46,8 @@
       <app-reference-benchmark></app-reference-benchmark>
     </div>
   </main>
+
+  <app-loading [loading]="loadingAlgorithm()">
+    <p>Algorithm is running...</p>
+  </app-loading>
 </div>

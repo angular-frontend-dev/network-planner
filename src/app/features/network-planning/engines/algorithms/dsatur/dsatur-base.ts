@@ -1,13 +1,14 @@
-import { NetworkGraph } from "../../../models/graphs/network/network-graph";
-import type { DsaturNode, DsaturResult, NodeId } from "./dsatur-types";
+import Graph from "graphology";
+import { DsaturResult } from "./models/dsatur-result";
+import { DsaturNode } from "./models/dsatur-node";
 
 export abstract class DsaturBase {
   protected nodes: DsaturNode[] = [];
   protected minColor = 1;
 
-  constructor(graph: NetworkGraph) {
+  constructor(graph: Graph) {
     // O(n + m)
-    for (const node of graph.value.nodes()) {
+    for (const node of graph.nodes()) {
       const nodeId = Number(node);
 
       this.nodes[nodeId] = {
@@ -15,12 +16,12 @@ export abstract class DsaturBase {
         color: this.minColor - 1,
         neighbors: [],
         saturation: new Set(),
-        degree: graph.value.degree(node),
+        degree: graph.degree(node),
       };
     }
 
     // O(m)
-    graph.value.forEachEdge((_edge, _attributes, sourceId, targetId) => {
+    graph.forEachEdge((_edge, _attributes, sourceId, targetId) => {
       const source = this.nodes[Number(sourceId)];
       const target = this.nodes[Number(targetId)];
 

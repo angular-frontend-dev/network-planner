@@ -1,0 +1,7 @@
+@if (field().invalid() && field().touched()) {
+  <div class="field-errors">
+    @for (error of field().errors(); track error.kind) {
+      <span>{{ error.message }}</span>
+    }
+  </div>
+}

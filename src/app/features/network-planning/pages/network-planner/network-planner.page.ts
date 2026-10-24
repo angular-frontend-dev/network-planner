@@ -1,38 +1,40 @@
 import { Component, signal } from "@angular/core";
-import type { GraphSize } from "./components/performance-summary/performance-summary.component";
+import type { GraphInformations } from "./components/performance-summary/performance-summary.component";
 import { WarningDialogComponent } from "../../../../shared/components/warning-dialog/warning-dialog.component";
 import { PlannerControlsComponent } from "./components/network-configuration/planner-controls.component";
 import type {
   ConfigurationOptions,
   AllocationOptions,
+  AlgorithmOption,
 } from "./components/network-configuration/planner-controls.component";
 import {
   GraphViewComponent,
   GraphViewOptions,
 } from "../../components/graph-view/graph-view.component";
 import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
-import {
-  GraphGeneralAttributes,
-  NetworkGraph,
-} from "../../models/graphs/network/network-graph";
+import { GraphGeneralAttributes, Network } from "../../models/network/network";
 import { HeapDsatur } from "../../engines/algorithms/dsatur/implementations/heap-dsatur";
 import { ScanDsatur } from "../../engines/algorithms/dsatur/implementations/scan-dsatur";
 import {
-  PerformanceMetric,
+  PerformanceMetrics,
   PerformanceSummaryComponent,
 } from "./components/performance-summary/performance-summary.component";
+import Graph from "graphology";
+import { DsaturResult } from "../../engines/algorithms/dsatur/models/dsatur-result";
 
-const EMPTY_PERFORMANCE_METRIC: PerformanceMetric = {
+const EMPTY_PERFORMANCE_METRICS: PerformanceMetrics = {
   graphConstruction: 0,
   algorithm: 0,
   rendering: 0,
 };
 
-const EMPTY_GRAPH_SIZE: GraphSize = {
+const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
   transmitters: 0,
   edges: 0,
   averageDegree: 0,
 };
+
+type Time = number;
 
 @Component({
   imports: [
@@ -48,19 +50,24 @@ const EMPTY_GRAPH_SIZE: GraphSize = {
 })
 export class NetworkPlannerPage {
   readonly plannerGraphOptions = {
-    enableNodeDrag: false,
+    enableCameraPanning: true,
+    enableCameraZooming: true,
+    enableNodeDrag: true,
+    enableToolBar: true,
   } satisfies Partial<GraphViewOptions>;
 
-  readonly networkGraph = signal<NetworkGraph | null>(null);
-  readonly loading = signal(false);
+  readonly network = signal<Network | null>(null);
+  readonly loadingNetwork = signal(false);
   readonly loadingAlgorithm = signal(false);
   readonly showNoGraphWarning = signal(false);
 
-  performance = signal<PerformanceMetric>(EMPTY_PERFORMANCE_METRIC);
-  graphSize = signal<GraphSize>(EMPTY_GRAPH_SIZE);
+  performanceMetrics = signal<PerformanceMetrics>(EMPTY_PERFORMANCE_METRICS);
+  graphInformations = signal<GraphInformations>(EMPTY_GRAPH_INFORMATIONS);
 
-  graphConstructionTime = signal(0);
-  renderingTime = signal(0);
+  private graphConstructionTime: number = 0;
+  private renderingTime: number = 0;
+
+  private readonly DSATUR_NAIVE_OPTION: AlgorithmOption = "DSATUR-NAIVE";
 
   private async waitForNextPaint(): Promise<void> {
     return new Promise<void>((resolve) =>
@@ -73,15 +80,35 @@ export class NetworkPlannerPage {
   }
 
   async onGenerateNetwork(options: ConfigurationOptions): Promise<void> {
-    this.performance.set(EMPTY_PERFORMANCE_METRIC);
-    this.graphSize.set(EMPTY_GRAPH_SIZE);
-    this.graphConstructionTime.set(0);
-    this.renderingTime.set(0);
+    this.setPerformanceMetrics(
+      EMPTY_PERFORMANCE_METRICS.graphConstruction,
+      EMPTY_PERFORMANCE_METRICS.algorithm,
+      EMPTY_PERFORMANCE_METRICS.rendering,
+    );
+    this.setGraphInformations(
+      EMPTY_GRAPH_INFORMATIONS.transmitters,
+      EMPTY_GRAPH_INFORMATIONS.edges,
+    );
 
-    this.loading.set(true);
+    this.graphConstructionTime = 0;
+    this.renderingTime = 0;
+
+    this.loadingNetwork.set(true);
 
     await this.waitForNextPaint();
 
+    const { graph, constructionTime } = this.constructGraph(options);
+
+    this.network.set(graph);
+    this.graphConstructionTime = constructionTime;
+
+    this.loadingNetwork.set(false);
+  }
+
+  private constructGraph(options: ConfigurationOptions): {
+    graph: Network;
+    constructionTime: Time;
+  } {
     const graphGeneralOptions = {
       node: {
         color: "#65e5c2",
@@ -96,18 +123,17 @@ export class NetworkPlannerPage {
     } as GraphGeneralAttributes;
 
     const startGraphConstruction = performance.now();
-    const graph = NetworkGraph.random(
+    const graph = Network.random(
       options.transmitters,
       options.interferenceRadius,
       graphGeneralOptions,
     );
-    this.graphConstructionTime.set(performance.now() - startGraphConstruction);
-
-    this.networkGraph.set(graph);
+    const constructionTime = performance.now() - startGraphConstruction;
+    return { graph, constructionTime };
   }
 
   async onRunAllocation(allocationOptions: AllocationOptions) {
-    const graph = this.networkGraph();
+    const graph = this.network();
 
     if (!graph || graph.value.order === 0) {
       this.showNoGraphWarning.set(true);
@@ -122,29 +148,42 @@ export class NetworkPlannerPage {
       await this.waitForNextPaint();
     }
 
+    const { assignament, algorithmTime } = this.runAlgorithm(
+      graph.value,
+      allocationOptions.algorithm,
+    );
+
+    this.setPerformanceMetrics(
+      this.graphConstructionTime,
+      algorithmTime,
+      this.renderingTime,
+    );
+
+    this.setGraphInformations(graph.value.order, graph.value.size);
+    this.assingColors(assignament);
+
+    this.loadingAlgorithm.set(false);
+  }
+
+  private runAlgorithm(
+    graph: Graph,
+    algorithmType: AlgorithmOption,
+  ): { assignament: DsaturResult; algorithmTime: Time } {
     const startRunningAlgorithm = performance.now();
 
     const algorithm =
-      allocationOptions.algorithm === "DSATUR-NAIVE"
+      algorithmType === this.DSATUR_NAIVE_OPTION
         ? new ScanDsatur(graph)
         : new HeapDsatur(graph);
 
     const assignament = algorithm.run();
+    const algorithmTime = performance.now() - startRunningAlgorithm;
 
-    this.performance.set({
-      graphConstruction: this.graphConstructionTime(),
-      algorithm: performance.now() - startRunningAlgorithm,
-      rendering: this.renderingTime(),
-    });
+    return { assignament, algorithmTime };
+  }
 
-    this.graphSize.set({
-      transmitters: graph.value.order,
-      edges: graph.value.size,
-      averageDegree:
-        graph.value.order > 0 ? (2 * graph.value.size) / graph.value.order : 0,
-    });
-
-    this.networkGraph()!.assignColors(
+  private assingColors(assignament: DsaturResult) {
+    this.network()!.assignColors(
       new Map(
         assignament.nodes.map((user) => [
           user.id.toString(),
@@ -153,12 +192,30 @@ export class NetworkPlannerPage {
       ) as ReadonlyMap<string, string>,
       assignament.colorCount,
     );
+  }
 
-    this.loadingAlgorithm.set(false);
+  private setPerformanceMetrics(
+    constructionTime: Time,
+    algorithmTime: Time,
+    renderingTime: Time,
+  ) {
+    this.performanceMetrics.set({
+      graphConstruction: constructionTime,
+      algorithm: algorithmTime,
+      rendering: renderingTime,
+    });
+  }
+
+  private setGraphInformations(order: number, size: number) {
+    this.graphInformations.set({
+      transmitters: order,
+      edges: size,
+      averageDegree: order > 0 ? (2 * size) / order : 0,
+    });
   }
 
   onGraphRendered(renderingTime: number): void {
-    this.renderingTime.set(renderingTime);
-    this.loading.set(false);
+    this.renderingTime = renderingTime;
+    this.loadingNetwork.set(false);
   }
 }
