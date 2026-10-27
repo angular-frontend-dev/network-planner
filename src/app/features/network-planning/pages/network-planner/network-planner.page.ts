@@ -103,8 +103,6 @@ export class NetworkPlannerPage {
 
     this.network.set(graph);
     this.graphConstructionTime = constructionTime;
-
-    this.loadingNetwork.set(false);
   }
 
   private constructGraph(options: ConfigurationOptions): {

@@ -1,35 +1,43 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
   viewChild,
 } from "@angular/core";
 
-import { Chart, ChartConfiguration, registerables } from "chart.js";
+import { afterNextRender } from "@angular/core";
+import type { Chart, ChartConfiguration } from "chart.js";
 import { PERFORMANCE_DATA } from "../../data/performance-data";
-
-Chart.register(...registerables);
 
 @Component({
   selector: "app-runtime",
   templateUrl: "./runtime.component.html",
   styleUrls: ["./runtime.component.scss", "../../styles/_dashboard.scss"],
 })
-export class RuntimeComponent implements AfterViewInit, OnDestroy {
+export class RuntimeComponent implements OnDestroy {
   private readonly canvas =
     viewChild.required<ElementRef<HTMLCanvasElement>>("canvas");
 
   private chart?: Chart<"line">;
+  private destroyed = false;
 
-  ngAfterViewInit(): void {
-    this.chart = new Chart(
-      this.canvas().nativeElement,
-      this.chartConfiguration,
-    );
+  constructor() {
+    afterNextRender(() => void this.initializeChart());
+  }
+
+  private async initializeChart(): Promise<void> {
+    const { Chart, registerables } = await import("chart.js");
+
+    if (this.destroyed) {
+      return;
+    }
+
+    Chart.register(...registerables);
+    this.chart = new Chart(this.canvas().nativeElement, this.chartConfiguration);
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this.chart?.destroy();
   }
 

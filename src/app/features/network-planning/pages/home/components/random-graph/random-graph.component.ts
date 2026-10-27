@@ -1,4 +1,4 @@
-import { Component, input, signal } from "@angular/core";
+import { afterNextRender, Component, input, signal } from "@angular/core";
 
 import {
   GraphViewComponent,
@@ -21,6 +21,10 @@ export class RandomGraphComponent {
   private animationFrame?: number;
   private randomGraph = signal<Network | null>(null);
 
+  constructor() {
+    afterNextRender(() => this.animateGraph());
+  }
+
   graphViewOptions: Partial<GraphViewOptions> = {
     enableCameraPanning: false,
     enableCameraZooming: false,
@@ -30,10 +34,6 @@ export class RandomGraphComponent {
 
   ngOnInit() {
     this.randomGraph.set(Network.randomGrid(this.options()));
-  }
-
-  ngAfterViewInit() {
-    this.animateGraph();
   }
 
   private animateGraph(): void {
