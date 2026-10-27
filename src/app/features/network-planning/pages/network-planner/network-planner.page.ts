@@ -11,7 +11,10 @@ import {
   GraphViewOptions,
 } from "../../components/graph-view/graph-view.component";
 import { LoadingComponent } from "../../../../shared/components/loading/loading.component";
-import { GraphGeneralAttributes, Network } from "../../models/network/network";
+import {
+  GraphGeneralAttributes,
+  Network,
+} from "../../models/network/network.model";
 import { HeapDsatur } from "../../engines/algorithms/dsatur/implementations/heap-dsatur";
 import { ScanDsatur } from "../../engines/algorithms/dsatur/implementations/scan-dsatur";
 import {

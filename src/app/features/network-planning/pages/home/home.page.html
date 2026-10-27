@@ -33,8 +33,10 @@
       </div>
 
       <div class="hero-graph">
-        @defer {
+        @defer (on viewport; hydrate on viewport) {
         <app-random-graph />
+        } @placeholder {
+        <div class="graph-placeholder"></div>
         }
       </div>
     </section>

@@ -1,7 +1,6 @@
 import {
+  afterRenderEffect,
   Component,
-  computed,
-  effect,
   ElementRef,
   input,
   OnInit,
@@ -13,8 +12,9 @@ import {
   NetworkEdgeAttributes,
   Network,
   NetworkNodeAttributes,
-} from "../../models/network/network";
-import Sigma from "sigma";
+} from "../../models/network/network.model";
+import type { Miliseconds } from "../../../../shared/types/time.type";
+import { Sigma } from "sigma";
 
 export interface GraphViewOptions {
   enableNodeDrag: boolean;
@@ -52,17 +52,27 @@ export class GraphViewComponent implements OnInit {
   private renderer?: NetworkRenderer;
 
   constructor() {
-    effect((onCleanup) => {
+    this.initializeSigma();
+  }
+
+  ngOnInit(): void {
+    this.resolvedOptions = {
+      ...DEFAULT_GRAPH_VIEW_OPTIONS,
+      ...this.options(),
+    };
+  }
+
+  private async initializeSigma() {
+    afterRenderEffect((onCleanup) => {
       const container = this.container();
       if (!container) {
         return;
       }
 
-      const startInitializationTime = performance.now();
-
-      const renderer = this.render(this.graph(), container.nativeElement);
-
-      const initializationTime = performance.now() - startInitializationTime;
+      const { renderer, initializationTime } = this.render(
+        this.graph(),
+        container.nativeElement,
+      );
 
       this.renderer = renderer;
 
@@ -80,14 +90,12 @@ export class GraphViewComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    this.resolvedOptions = {
-      ...DEFAULT_GRAPH_VIEW_OPTIONS,
-      ...this.options(),
-    };
-  }
+  private render(
+    graph: Network,
+    container: HTMLElement,
+  ): { renderer: NetworkRenderer; initializationTime: Miliseconds } {
+    const startInitializationTime = performance.now();
 
-  private render(graph: Network, container: HTMLElement) {
     this.fitGraphToContainer(graph, container);
 
     const renderer = new Sigma(graph.value, container, {
@@ -185,7 +193,9 @@ export class GraphViewComponent implements OnInit {
     if (this.resolvedOptions.enableCameraPanning)
       this.configureCamera(renderer);
 
-    return renderer;
+    const initializationTime = performance.now() - startInitializationTime;
+
+    return { renderer, initializationTime };
   }
 
   private dragPositionToAttributes(

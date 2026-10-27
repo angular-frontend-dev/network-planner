@@ -1,4 +1,4 @@
-import { SpatialNode } from "./spatial-node";
+import { SpatialNode } from "./spatial-node.model";
 
 export class SpatialGrid {
   private readonly cells = new Map<string, SpatialNode[]>();

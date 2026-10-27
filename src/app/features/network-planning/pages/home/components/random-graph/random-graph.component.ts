@@ -7,7 +7,7 @@ import {
 import {
   GraphGeneralAttributes,
   Network,
-} from "../../../../models/network/network";
+} from "../../../../models/network/network.model";
 
 @Component({
   imports: [GraphViewComponent],

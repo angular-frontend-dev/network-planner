@@ -1,33 +1,13 @@
 import Graph from "graphology";
-import { SpatialGrid } from "./spatial/spatial-grid";
-import { SpatialNode } from "./spatial/spatial-node";
+import { SpatialGrid } from "./spatial/spatial-grid.model";
+import { SpatialNode } from "./spatial/spatial-node.model";
+import { NodeGeneralAttributes } from "./node-attributes.model";
+import { EdgeGeneralAttributes } from "./edge-attributes.model";
+import { GridBounds } from "./grid-bounds.model";
 
 export interface GraphGeneralAttributes {
   node: Partial<NodeGeneralAttributes>;
   edge: Partial<EdgeGeneralAttributes>;
-}
-
-export interface NodeGeneralAttributes {
-  size: number;
-  color: string;
-  borderColor: string;
-  outerBorderSize: number;
-  innerBorderSize: number;
-  opacity: number;
-}
-
-export interface EdgeGeneralAttributes {
-  size: number;
-  color: string;
-  opacity: number;
-  delay: number;
-}
-
-export interface GridBounds {
-  minX: number;
-  maxX: number;
-  minY: number;
-  maxY: number;
 }
 
 export interface NetworkNodeAttributes extends NodeGeneralAttributes {
