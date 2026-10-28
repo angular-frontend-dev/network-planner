@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { WarningDialogComponent } from './warning-dialog.component';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('WarningDialogComponent', () => {
   let component: WarningDialogComponent;

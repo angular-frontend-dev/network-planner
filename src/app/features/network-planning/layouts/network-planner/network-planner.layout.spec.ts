@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NetworkPlannerLayout } from './network-planner.layout';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { provideRouter } from '@angular/router';
 
 describe('NetworkPlannerLayout', () => {
   let component: NetworkPlannerLayout;
@@ -7,7 +9,8 @@ describe('NetworkPlannerLayout', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NetworkPlannerLayout]
+      imports: [NetworkPlannerLayout],
+      providers: [provideRouter([])],
     })
       .compileComponents();
 

@@ -1,6 +1,6 @@
-import type { DsaturNode } from "./dsatur-node";
+import type { Color, NodeId } from "../dsatur-base.types";
 
 export interface DsaturResult {
-  nodes: DsaturNode[];
+  coloring: Map<NodeId, Color>;
   colorCount: number;
 }

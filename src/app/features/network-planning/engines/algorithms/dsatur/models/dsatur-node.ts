@@ -1,9 +1,9 @@
+import { Color, NodeId } from "../dsatur-base.types";
+
 export interface DsaturNode {
   id: NodeId;
-  color: number;
-  saturation: Set<number>;
-  neighbors: DsaturNode[];
+  color: Color;
+  saturation: Set<Color>;
+  neighbors: NodeId[];
   degree: number;
 }
-
-export type NodeId = number;

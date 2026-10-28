@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoadingComponent } from './loading.component';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('LoadingComponent', () => {
   let component: LoadingComponent;

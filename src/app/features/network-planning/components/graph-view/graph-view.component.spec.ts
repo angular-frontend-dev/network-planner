@@ -1,22 +1,22 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { GraphViewComponent } from './graph-view.component';
+import { ComponentFixture, TestBed } from "@angular/core/testing";
+import { GraphViewComponent } from "./graph-view.component";
+import { describe, it, expect, beforeEach } from "vitest";
 
-describe('GraphViewComponent', () => {
+describe("GraphViewComponent", () => {
   let component: GraphViewComponent;
   let fixture: ComponentFixture<GraphViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [GraphViewComponent]
-    })
-      .compileComponents();
+      imports: [GraphViewComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(GraphViewComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
 
-  it('should create', () => {
+  it("should create", () => {
     expect(component).toBeTruthy();
   });
 });

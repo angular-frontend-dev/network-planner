@@ -1,4 +1,5 @@
 import { SpatialNode } from "./spatial-node.model";
+import { Coordinate } from "./spatial.types";
 
 export class SpatialGrid {
   private readonly cells = new Map<string, SpatialNode[]>();
@@ -18,7 +19,7 @@ export class SpatialGrid {
   }
 
   getCellNeighbors(node: SpatialNode): SpatialNode[] {
-    const { x, y } = this.getCellCoordinates(node);
+    const { x, y } = this.getCellCoordinates(node.coordinate);
     const cellNeighbors: SpatialNode[] = [];
 
     for (let dx = -1; dx <= 1; dx++) {
@@ -35,16 +36,16 @@ export class SpatialGrid {
     return cellNeighbors;
   }
 
-  private getCellCoordinates(node: SpatialNode) {
-    return {
-      x: Math.floor(node.x / this.cellSize),
-      y: Math.floor(node.y / this.cellSize),
-    };
+  private getCellKey(node: SpatialNode): string {
+    const { x, y } = this.getCellCoordinates(node.coordinate);
+    return this.createKey(x, y);
   }
 
-  private getCellKey(node: SpatialNode): string {
-    const { x, y } = this.getCellCoordinates(node);
-    return this.createKey(x, y);
+  private getCellCoordinates(coordinate: Coordinate) {
+    return {
+      x: Math.floor(coordinate.x / this.cellSize),
+      y: Math.floor(coordinate.y / this.cellSize),
+    };
   }
 
   private createKey(x: number, y: number): string {

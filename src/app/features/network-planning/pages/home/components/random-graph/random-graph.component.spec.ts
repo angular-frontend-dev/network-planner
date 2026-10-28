@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RandomGraphComponent } from './random-graph.component';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('RandomGraphComponent', () => {
   let component: RandomGraphComponent;

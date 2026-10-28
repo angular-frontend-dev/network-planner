@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NetworkPlannerPage } from './network-planner.page';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('NetworkPlannerPage', () => {
   let component: NetworkPlannerPage;

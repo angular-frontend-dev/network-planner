@@ -22,9 +22,9 @@ import {
   PerformanceSummaryComponent,
 } from "./components/performance-summary/performance-summary.component";
 import Graph from "graphology";
-import { DsaturResult } from "../../engines/algorithms/dsatur/models/dsatur-result";
 import { ColoringAlgorithm } from "../../engines/algorithms/algorithm.types";
 import { Miliseconds } from "../../../../shared/types/time.type";
+import { DsaturResult } from "../../engines/algorithms/dsatur/models/dsatur-result";
 
 const EMPTY_PERFORMANCE_METRICS: PerformanceMetrics = {
   graphConstruction: 0,
@@ -183,15 +183,7 @@ export class NetworkPlannerPage {
   }
 
   private assingColors(assignament: DsaturResult) {
-    this.network()!.assignColors(
-      new Map(
-        assignament.nodes.map((user) => [
-          user.id.toString(),
-          user.color.toString(),
-        ]),
-      ) as ReadonlyMap<string, string>,
-      assignament.colorCount,
-    );
+    this.network()!.assignColors(assignament.coloring);
   }
 
   private setPerformanceMetrics(

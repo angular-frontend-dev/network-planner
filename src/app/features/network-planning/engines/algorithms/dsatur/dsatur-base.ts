@@ -1,6 +1,7 @@
 import Graph from "graphology";
-import { DsaturResult } from "./models/dsatur-result";
 import { DsaturNode } from "./models/dsatur-node";
+import { DsaturResult } from "./models/dsatur-result";
+import type { Color } from "./dsatur-base.types";
 
 export abstract class DsaturBase {
   protected nodes: DsaturNode[] = [];
@@ -25,8 +26,8 @@ export abstract class DsaturBase {
       const source = this.nodes[Number(sourceId)];
       const target = this.nodes[Number(targetId)];
 
-      source.neighbors.push(target);
-      target.neighbors.push(source);
+      source.neighbors.push(target.id);
+      target.neighbors.push(source.id);
     });
   }
 
@@ -53,14 +54,14 @@ export abstract class DsaturBase {
       // O(degree(node))
       // TOTAL: O(m)
       for (const neighbor of node.neighbors) {
-        if (this.isNodeUncolored(neighbor)) {
-          this.updateNodeSaturation(neighbor, node.color);
+        if (this.isNodeUncolored(this.nodes[neighbor])) {
+          this.updateNodeSaturation(this.nodes[neighbor], node.color);
         }
       }
     }
 
     return {
-      nodes: this.nodes,
+      coloring: new Map(this.nodes.map((node) => [node.id, node.color])),
       colorCount,
     };
   }
@@ -69,10 +70,7 @@ export abstract class DsaturBase {
 
   protected abstract selectNextNode(): DsaturNode;
 
-  protected abstract updateNodeSaturation(
-    node: DsaturNode,
-    color: number,
-  ): void;
+  protected abstract updateNodeSaturation(node: DsaturNode, color: Color): void;
 
   protected abstract removeNode(node: DsaturNode): void;
 

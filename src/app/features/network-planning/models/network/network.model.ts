@@ -4,6 +4,10 @@ import { SpatialNode } from "./spatial/spatial-node.model";
 import { NodeGeneralAttributes } from "./node-attributes.model";
 import { EdgeGeneralAttributes } from "./edge-attributes.model";
 import { GridBounds } from "./grid-bounds.model";
+import {
+  Color,
+  NodeId,
+} from "../../engines/algorithms/dsatur/dsatur-base.types";
 
 export interface GraphGeneralAttributes {
   node: Partial<NodeGeneralAttributes>;
@@ -123,7 +127,10 @@ export class Network {
 
     // O(n) iterations
     graph.forEachNode((node, attributes) => {
-      const spatialNode = new SpatialNode(node, attributes.x, attributes.y);
+      const spatialNode = new SpatialNode(node, {
+        x: attributes.x,
+        y: attributes.y,
+      });
 
       // O(k) iterations, where k is the number of neighbors in the spatial grid cell
       for (const neighborNode of spatialGrid.getCellNeighbors(spatialNode)) {
@@ -252,16 +259,9 @@ export class Network {
     return this.graph;
   }
 
-  assignColors(
-    mapNodeColors: ReadonlyMap<string, string>,
-    colorCount: number,
-  ): void {
+  assignColors(mapNodeColors: ReadonlyMap<NodeId, Color>): void {
     for (const [node, color] of mapNodeColors) {
-      this.graph.setNodeAttribute(
-        node,
-        "color",
-        this.getNodeColor(parseInt(color)),
-      );
+      this.graph.setNodeAttribute(node, "color", this.getNodeColor(color));
     }
   }
 

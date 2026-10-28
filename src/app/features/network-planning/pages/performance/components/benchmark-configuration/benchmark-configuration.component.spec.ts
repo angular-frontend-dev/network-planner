@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BenchmarkConfigurationComponent } from './benchmark-configuration.component';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('BenchmarkConfigurationComponent', () => {
   let component: BenchmarkConfigurationComponent;
