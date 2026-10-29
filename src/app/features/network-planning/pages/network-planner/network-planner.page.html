@@ -1,61 +1,60 @@
-<div class="planner-page">
-  <main class="planner-page__content">
-    <section class="page-section">
-      <span class="eyebrow"> NETWORK PLANNER </span>
+<div class="planner-page planner-page__content">
+  <section class="page-section">
+    <span class="eyebrow"> NETWORK PLANNER </span>
 
-      <h1>Design and explore communication networks.</h1>
+    <h1>Design and explore communication networks.</h1>
 
-      <p>
-        Generate network topologies, configure interference constraints and
-        experiment with graph coloring algorithms.
-      </p>
-    </section>
+    <p>
+      Generate network topologies, configure interference constraints and
+      experiment with graph coloring algorithms.
+    </p>
+  </section>
 
-    <section class="planner-workbench">
-      <aside class="planner-controls">
-        <app-planner-controls
-          (generateNetwork)="onGenerateNetwork($event)"
-          (runAllocation)="onRunAllocation($event)"
-        />
-      </aside>
+  <article class="planner-workbench">
+    <aside class="planner-controls">
+      <app-planner-controls
+        (generateNetwork)="onGenerateNetwork($event)"
+        (runAllocation)="onRunAllocation($event)"
+      />
+    </aside>
 
-      <section class="planner-workspace">
-        <div class="graph-stage">
-          <div class="graph-canvas">
-            @if (network(); as graph) {
-            <app-graph-view
-              [graph]="graph"
-              [options]="plannerGraphOptions"
-              (initializationTime)="onGraphRendered($event)"
-            />
-            }
-          </div>
+    <section class="planner-workspace">
+      <div class="graph-stage">
+        <div class="graph-canvas" data-testid="network-graph">
+          @if (network(); as graph) {
+          <app-graph-view
+            [graph]="graph"
+            [options]="plannerGraphOptions"
+            (initializationTime)="onGraphRendered($event)"
+          />
+          }
         </div>
-      </section>
-
-      <!-- GRAPH SUMMARY -->
-      <section class="planner-summary">
-        <app-performance-summary
-          [performanceMetrics]="performanceMetrics()"
-          [graphInformations]="graphInformations()"
-        ></app-performance-summary>
-      </section>
+      </div>
     </section>
-  </main>
 
-  <app-loading [loading]="loadingNetwork()">
-    <p>Generating network...</p>
-  </app-loading>
-
-  <app-loading [loading]="loadingAlgorithm()">
-    <p>Algorithm is running...</p>
-  </app-loading>
-
-  <app-warning-dialog
-    [open]="showNoGraphWarning()"
-    (close)="showNoGraphWarning.set(false)"
-    title="Unable to run allocation"
-  >
-    Generate a network before running the frequency allocation algorithm.
-  </app-warning-dialog>
+    <!-- GRAPH SUMMARY -->
+    <section class="planner-summary">
+      <app-performance-summary
+        [performanceMetrics]="performanceMetrics()"
+        [graphInformations]="graphInformations()"
+      ></app-performance-summary>
+    </section>
+  </article>
 </div>
+
+<app-loading [loading]="loadingNetwork()" data-testid="network-loading">
+  <p>Generating network...</p>
+</app-loading>
+
+<app-loading [loading]="loadingAlgorithm()" data-testid="algorithm-loading">
+  <p>Algorithm is running...</p>
+</app-loading>
+
+<app-warning-dialog
+  [open]="showNoGraphWarning()"
+  (close)="showNoGraphWarning.set(false)"
+  title="Unable to run allocation"
+  data-testid="no-graph-warning"
+>
+  Generate a network before running the frequency allocation algorithm.
+</app-warning-dialog>

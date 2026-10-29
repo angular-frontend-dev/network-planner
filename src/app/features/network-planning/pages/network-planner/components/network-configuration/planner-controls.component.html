@@ -9,7 +9,7 @@
     <button class="mode-tabs__button">Import</button>
   </div>
 
-  <div class="field">
+  <section class="field">
     <div class="field__header">
       <label for="transmitters"> Number of transmitters </label>
 
@@ -23,9 +23,9 @@
       type="range"
       [formField]="configurationForm.transmitters"
     />
-  </div>
+  </section>
 
-  <div class="field">
+  <section class="field">
     <div class="field__header">
       <label for="radius"> Interference radius (m) </label>
 
@@ -39,18 +39,19 @@
       type="range"
       [formField]="configurationForm.interferenceRadius"
     />
-  </div>
+  </section>
 
-  <div class="field">
+  <section class="field">
     <label for="distribution"> Distribution </label>
 
     <select id="distribution" [formField]="configurationForm.distribution">
       <option value="uniform">Random (uniform)</option>
       <option value="grid">Grid</option>
     </select>
-  </div>
+  </section>
 
   <button
+    type="button"
     class="button button--primary button--compact button--full run-button"
     (click)="onClickGenerateNetwork()"
   >
@@ -61,23 +62,25 @@
 <form [formRoot]="allocationForm" class="control-form">
   <h2>Algorithm</h2>
 
-  <div class="field">
+  <section class="field">
     <select aria-label="Algorithm" [formField]="allocationForm.algorithm">
       @for (option of algorithmOptions; track option.id) {
         <option [value]="option.id">{{ option.label }}</option>
       }
     </select>
-  </div>
+  </section>
 
   <button
+    type="button"
     class="button button--primary button--compact button--full run-button"
     (click)="onClickRunAllocation()"
   >
-    <span class="run-button__icon">▷</span>
+    <span class="run-button__icon" aria-hidden="true">▷</span>
     Run allocation
   </button>
 
   <button
+    type="button"
     class="button button--primary button--compact button--full run-button"
     (click)="onClickReset()"
   >

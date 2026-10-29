@@ -1,5 +1,5 @@
 <div class="performance-page">
-  <main class="performance-page__content">
+  <div class="performance-page__content">
     <!-- Intro -->
     <header class="performance-intro">
       <div class="performance-intro__content">
@@ -29,20 +29,28 @@
       </aside>
     </header>
 
-    <app-benchmark-configuration
-      (runBenchmark)="onRunBenchmark($event)"
-    ></app-benchmark-configuration>
+    <article>
+      <section>
+        <app-benchmark-configuration
+          (runBenchmark)="onRunBenchmark($event)"
+        ></app-benchmark-configuration>
+      </section>
 
-    <app-benchmark-result
-      [performanceMetrics]="performanceMetrics()"
-      [graphInformations]="graphInformations()"
-    ></app-benchmark-result>
+      <section>
+        <app-benchmark-result
+          [performanceMetrics]="performanceMetrics()"
+          [graphInformations]="graphInformations()"
+        ></app-benchmark-result>
+      </section>
+    </article>
 
     <!-- Chart -->
-    <app-runtime></app-runtime>
-  </main>
-
-  <app-loading [loading]="loadingAlgorithm()">
-    <p>Algorithm is running...</p>
-  </app-loading>
+    <article>
+      <app-runtime></app-runtime>
+    </article>
+  </div>
 </div>
+
+<app-loading [loading]="loadingAlgorithm()">
+  <p>Algorithm is running...</p>
+</app-loading>

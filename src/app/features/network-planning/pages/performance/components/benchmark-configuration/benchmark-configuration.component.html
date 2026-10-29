@@ -1,55 +1,50 @@
-<form [formRoot]="configurationForm" class="control-form">
-  <section class="dashboard-card benchmark-configuration">
-    <h2>1. Benchmark configuration</h2>
+<form
+  [formRoot]="configurationForm"
+  class="dashboard-card benchmark-configuration control-form"
+>
+  <h2>1. Benchmark configuration</h2>
 
-    <div class="benchmark-configuration__grid">
-      <label class="field">
-        <span>Algorithm</span>
+  <section class="benchmark-configuration__grid">
+    <label class="field">
+      <span>Algorithm</span>
 
-        <select
-          aria-label="Algorithm"
-          [formField]="configurationForm.algorithm"
-        >
-          @for (option of algorithmOptions; track option.id) {
-            <option [value]="option.id">{{ option.label }}</option>
-          }
-        </select>
-      </label>
+      <select aria-label="Algorithm" [formField]="configurationForm.algorithm">
+        @for (option of algorithmOptions; track option.id) {
+          <option [value]="option.id">{{ option.label }}</option>
+        }
+      </select>
+    </label>
 
-      <label class="field">
-        <span>Number of transmitters</span>
+    <label class="field">
+      <span>Number of transmitters</span>
 
-        <input type="number" [formField]="configurationForm.transmitters" />
-      </label>
+      <input type="number" [formField]="configurationForm.transmitters" />
+    </label>
 
-      <label class="field">
-        <span>Approximate number of edges</span>
+    <label class="field">
+      <span>Approximate number of edges</span>
 
-        <div class="input-with-unit">
-          <input
-            type="number"
-            [formField]="configurationForm.approximateSize"
-          />
-        </div>
-      </label>
-      <button
-        type="submit"
-        class="button button--primary benchmark-configuration__run"
-        [disabled]="configurationForm().invalid()"
-        (click)="onClickRunBenchmark()"
-      >
-        <span>▶</span>
-        Run benchmark
-      </button>
-    </div>
-
-    <div
-      class="benchmark-configuration__grid benchmark-configuration__grid--errors"
+      <div class="input-with-unit">
+        <input type="number" [formField]="configurationForm.approximateSize" />
+      </div>
+    </label>
+    <button
+      type="submit"
+      class="button button--primary benchmark-configuration__run"
+      [disabled]="configurationForm().invalid()"
+      (click)="onClickRunBenchmark()"
     >
-      <app-field-errors
-        class="approximate-size-error"
-        [field]="configurationForm.approximateSize()"
-      />
-    </div>
+      <span>▶</span>
+      Run benchmark
+    </button>
+  </section>
+
+  <section
+    class="benchmark-configuration__grid benchmark-configuration__grid--errors"
+  >
+    <app-field-errors
+      class="approximate-size-error"
+      [field]="configurationForm.approximateSize()"
+    />
   </section>
 </form>
