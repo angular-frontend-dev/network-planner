@@ -1,6 +1,16 @@
 import { Component, output, signal } from "@angular/core";
 import { FormField, FormRoot, form, min, max } from "@angular/forms/signals";
 import { ColoringAlgorithm } from "../../../../engines/algorithms/algorithm.types";
+import {
+  DEFAULT_TRANSMITTERS,
+  DEFAULT_INTERFERENCE_RADIUS,
+  DEFAULT_DISTRIBUTION,
+  DEFAULT_ALGORITHM,
+  MAX_INTERFERENCE_RADIUS,
+  MIN_INTERFERENCE_RADIUS,
+  MAX_TRANSMITTERS,
+  MIN_TRANSMITTERS,
+} from "./planner-controls.constant";
 
 export type Distribution = "uniform" | "grid";
 
@@ -15,13 +25,13 @@ export interface AllocationOptions {
 }
 
 const DEFAULT_CONFIGURATION: ConfigurationOptions = {
-  transmitters: 2500,
-  interferenceRadius: 60,
-  distribution: "uniform",
+  transmitters: DEFAULT_TRANSMITTERS,
+  interferenceRadius: DEFAULT_INTERFERENCE_RADIUS,
+  distribution: DEFAULT_DISTRIBUTION,
 };
 
 const DEFAULT_ALLOCATION: AllocationOptions = {
-  algorithm: "DSATUR-NAIVE",
+  algorithm: DEFAULT_ALGORITHM,
 };
 
 @Component({
@@ -48,11 +58,11 @@ export class PlannerControlsComponent {
   });
 
   readonly configurationForm = form(this.configurationModel, (path) => {
-    min(path.transmitters, 100);
-    max(path.transmitters, 5000);
+    min(path.transmitters, MIN_TRANSMITTERS);
+    max(path.transmitters, MAX_TRANSMITTERS);
 
-    min(path.interferenceRadius, 10);
-    max(path.interferenceRadius, 200);
+    min(path.interferenceRadius, MIN_INTERFERENCE_RADIUS);
+    max(path.interferenceRadius, MAX_INTERFERENCE_RADIUS);
   });
 
   readonly allocationForm = form(this.allocationModel, (path) => {});

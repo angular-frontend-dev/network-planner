@@ -7,7 +7,9 @@
 
       <div>
         <span class="metric-card__label">Transmitters</span>
-        <strong> {{ graphInformations().transmitters }} </strong>
+        <strong data-testid="number-transmitters">
+          {{ graphInformations().transmitters }}
+        </strong>
       </div>
     </section>
 
@@ -16,7 +18,9 @@
 
       <div>
         <span class="metric-card__label">Edges</span>
-        <strong> {{ graphInformations().edges }} </strong>
+        <strong data-testid="number-edges">
+          {{ graphInformations().edges }}
+        </strong>
       </div>
     </section>
 
@@ -25,7 +29,9 @@
 
       <div>
         <span class="metric-card__label">Average degree</span>
-        <strong> {{ graphInformations().averageDegree.toFixed(2) }} </strong>
+        <strong data-testid="average-degree">
+          {{ graphInformations().averageDegree.toFixed(2) }}
+        </strong>
       </div>
     </section>
 

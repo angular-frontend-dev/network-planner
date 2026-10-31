@@ -16,16 +16,26 @@
     </label>
 
     <label class="field">
-      <span>Number of transmitters</span>
+      <span for="transmitters">Number of transmitters</span>
 
-      <input type="number" [formField]="configurationForm.transmitters" />
+      <input
+        id="transmitters"
+        type="number"
+        step="1"
+        [formField]="configurationForm.transmitters"
+      />
     </label>
 
     <label class="field">
-      <span>Approximate number of edges</span>
+      <span for="approximate-size">Approximate number of edges</span>
 
       <div class="input-with-unit">
-        <input type="number" [formField]="configurationForm.approximateSize" />
+        <input
+          id="approximate-size"
+          type="number"
+          step="1"
+          [formField]="configurationForm.approximateSize"
+        />
       </div>
     </label>
     <button
@@ -34,7 +44,7 @@
       [disabled]="configurationForm().invalid()"
       (click)="onClickRunBenchmark()"
     >
-      <span>▶</span>
+      <span aria-hidden="true">▶</span>
       Run benchmark
     </button>
   </section>

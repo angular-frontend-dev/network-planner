@@ -1,9 +1,12 @@
 import { test, expect } from "@playwright/test";
+import { EngineeringPOM } from "./pom/engineering.pom";
 
 test("should display the header page content title", async ({ page }) => {
-  await page.goto("/marketing/engineering");
+  const engineeringPage = new EngineeringPOM(page);
 
-  await expect(page.getByRole("main")).toContainText(
+  await engineeringPage.goto();
+
+  await expect(engineeringPage.title).toContainText(
     "Engineering the application",
   );
 });

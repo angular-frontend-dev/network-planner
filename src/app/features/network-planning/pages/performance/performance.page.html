@@ -31,9 +31,13 @@
 
     <article>
       <section>
+        @defer (on immediate){
         <app-benchmark-configuration
           (runBenchmark)="onRunBenchmark($event)"
         ></app-benchmark-configuration>
+        } @placeholder {
+        <div>Loading configuration...</div>
+        }
       </section>
 
       <section>
@@ -51,6 +55,6 @@
   </div>
 </div>
 
-<app-loading [loading]="loadingAlgorithm()">
+<app-loading [loading]="loadingAlgorithm()" data-testid="algorithm-loader">
   <p>Algorithm is running...</p>
 </app-loading>

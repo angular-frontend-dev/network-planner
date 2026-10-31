@@ -1,127 +1,87 @@
 import { test, expect, Page, Locator } from "@playwright/test";
 import { ColoringAlgorithm } from "../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
+import { NetworkPlannerPOM } from "./pom/network-planner.pom";
 
-const nameGenerateNetworkButton = "Generate network";
-const nameRunAllocationButton = "Run allocation";
-const nameResetButton = "Reset";
 const scanDsaturAlgorithm: ColoringAlgorithm = "DSATUR-NAIVE";
 const heapDsaturAlgorithm: ColoringAlgorithm = "DSATUR-HEAP";
 
-async function expectGraphChanges(page: Page, buttonName: string) {
-  const graph = page.getByTestId("network-graph");
-
-  const before = await graph.screenshot();
-
-  await page.getByRole("button", { name: buttonName, exact: true }).click();
-
-  await expect
-    .poll(async () => {
-      const after = await graph.screenshot();
-      return after.equals(before);
-    })
-    .toBe(false);
-}
-
-async function expectShowGraphSize(page: Page, transmittersCount: number) {
-  const transmitters = page.getByTestId("graph-transmitters");
-  const edges = page.getByTestId("graph-edges");
-
-  await expect(transmitters).toHaveText(transmittersCount.toString());
-  await expect(edges).not.toHaveText("0");
-}
-
-async function expectLoadingHidden(spinner: Locator) {
-  await expect(spinner).toBeHidden();
-}
-
-async function expectSuccessfulExecution(
-  page: Page,
-  defaultParameters: boolean = true,
-  coloringAlgorithm: ColoringAlgorithm = scanDsaturAlgorithm,
-  transmitters: number = 2500,
-  interferenceRadius: number = 60,
-) {
-  const errors: string[] = [];
-  const generateButton = page.getByRole("button", {
-    name: nameGenerateNetworkButton,
-  });
-  const allocateButton = page.getByRole("button", {
-    name: nameRunAllocationButton,
-  });
-  const networkSpinner = page.getByTestId("network-loading");
-
-  page.on("pageerror", (error) => {
-    errors.push(error.message);
-  });
-
-  if (!defaultParameters) {
-    await page.getByLabel("Transmitters").fill(transmitters.toString());
-    await page
-      .getByLabel("Interference Radius")
-      .fill(interferenceRadius.toString());
-    await page.getByLabel("Algorithm").selectOption(coloringAlgorithm);
-  }
-
-  await expect(page.getByLabel("Transmitters")).toHaveValue(
-    transmitters.toString(),
-  );
-  await expect(page.getByLabel("Interference Radius")).toHaveValue(
-    interferenceRadius.toString(),
-  );
-  await expect(page.getByLabel("Algorithm")).toHaveValue(coloringAlgorithm);
-
-  await generateButton.click();
-
-  await expectLoadingHidden(networkSpinner);
-  await expectGraphChanges(page, "Zoom In");
-
-  await allocateButton.click();
-
-  await expectShowGraphSize(page, transmitters);
-
-  expect(errors).toEqual([]);
-}
-
 test("should display the header page content title", async ({ page }) => {
-  await page.goto("/network-planning/network-planner");
+  const networkPlannerPage = new NetworkPlannerPOM(page);
 
-  await expect(page.getByRole("main")).toContainText(
+  await networkPlannerPage.goto();
+
+  await expect(networkPlannerPage.title).toContainText(
     "Design and explore communication networks",
   );
 });
 
 test("should allocate frequencies successfully", async ({ page }) => {
-  await page.goto("/network-planning/network-planner");
+  const errors: string[] = [];
+
+  page.on("pageerror", (error) => {
+    errors.push(error.message);
+  });
+
+  const networkPlannerPage = new NetworkPlannerPOM(page);
+
+  await networkPlannerPage.goto();
 
   // running with default inputs
-  await expectSuccessfulExecution(page);
+  await networkPlannerPage.expectSuccessfulExecution();
 
   //second time, changing the parameters
-  await expectSuccessfulExecution(page, false, heapDsaturAlgorithm, 600, 180);
+  await networkPlannerPage.expectSuccessfulExecution(
+    false,
+    heapDsaturAlgorithm,
+    600,
+    180,
+  );
+
+  expect(errors).toEqual([]);
 });
 
 test("should support graph camera controls", async ({ page }) => {
+  const errors: string[] = [];
+
+  page.on("pageerror", (error) => {
+    errors.push(error.message);
+  });
+
   await page.goto("/network-planning/network-planner");
 
-  await expectSuccessfulExecution(page);
+  const networkPlannerPage = new NetworkPlannerPOM(page);
 
-  await expectGraphChanges(page, "Zoom In");
-  await expectGraphChanges(page, "Zoom Out");
+  await networkPlannerPage.expectSuccessfulExecution();
 
-  await expectGraphChanges(page, "Zoom Out");
-  await expectGraphChanges(page, "Reset Camera");
+  await networkPlannerPage.expectGraphChanges("Zoom In");
+  await networkPlannerPage.expectGraphChanges("Zoom Out");
+
+  await networkPlannerPage.expectGraphChanges("Zoom Out");
+  await networkPlannerPage.expectGraphChanges("Reset Camera");
+
+  expect(errors).toEqual([]);
 });
 
 test("should reset to default parameters", async ({ page }) => {
-  await page.goto("/network-planning/network-planner");
+  const errors: string[] = [];
 
-  const resetButton = page.getByRole("button", {
-    name: nameResetButton,
-    exact: true,
+  page.on("pageerror", (error) => {
+    errors.push(error.message);
   });
 
-  await expectSuccessfulExecution(page, false, heapDsaturAlgorithm, 4000, 60);
-  await resetButton.click();
+  await page.goto("/network-planning/network-planner");
 
-  await expectSuccessfulExecution(page);
+  const networkPlannerPage = new NetworkPlannerPOM(page);
+
+  await networkPlannerPage.expectSuccessfulExecution(
+    false,
+    heapDsaturAlgorithm,
+    4000,
+    60,
+  );
+  await networkPlannerPage.resetButton.click();
+
+  await networkPlannerPage.expectSuccessfulExecution();
+
+  expect(errors).toEqual([]);
 });

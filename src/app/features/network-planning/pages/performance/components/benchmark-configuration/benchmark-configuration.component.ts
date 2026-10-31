@@ -4,6 +4,15 @@ import { form, min, max } from "@angular/forms/signals";
 import { FormField, FormRoot } from "@angular/forms/signals";
 import { FieldErrorsComponent } from "../../../../../../shared/components/field-errors/field-errors.component";
 import { ColoringAlgorithm } from "../../../../engines/algorithms/algorithm.types";
+import { integer } from "../../../../../../shared/validators/integer.validator";
+import {
+  DEFAULT_TRANSMITTERS,
+  DEFAULT_APPROXIMATE_SIZE,
+  MAX_EDGES,
+  MAX_NODES,
+  MIN_EDGES,
+  MIN_NODES,
+} from "./benchmark-configuration.constant";
 
 export interface ConfigurationOptions {
   algorithm: ColoringAlgorithm;
@@ -13,11 +22,9 @@ export interface ConfigurationOptions {
 
 const DEFAULT_CONFIGURATION: ConfigurationOptions = {
   algorithm: "DSATUR-NAIVE",
-  transmitters: 100,
-  approximateSize: 200,
+  transmitters: DEFAULT_TRANSMITTERS,
+  approximateSize: DEFAULT_APPROXIMATE_SIZE,
 };
-
-const MAX_EDGES = 1_000_000;
 
 @Component({
   imports: [FormField, FormRoot, FieldErrorsComponent],
@@ -41,10 +48,18 @@ export class BenchmarkConfigurationComponent {
   });
 
   readonly configurationForm = form(this.configurationModel, (path) => {
-    min(path.transmitters, 100);
+    integer(path.transmitters);
+    integer(path.approximateSize);
 
-    min(path.approximateSize, 200, {
-      message: "The number of edges must be at least 500.",
+    min(path.transmitters, MIN_NODES, {
+      message: `The number of transmitters must be at least ${MIN_NODES}.`,
+    });
+    min(path.approximateSize, MIN_EDGES, {
+      message: `The number of edges must be at least ${MIN_EDGES}.`,
+    });
+
+    max(path.transmitters, MAX_NODES, {
+      message: `The number of transmitters exceeds the maximum allowed (${MAX_NODES}).`,
     });
     max(
       path.approximateSize,

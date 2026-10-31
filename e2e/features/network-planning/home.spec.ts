@@ -1,13 +1,11 @@
 import { test, expect } from "@playwright/test";
+import { HomePOM } from "./pom/home.pom";
 
 test("should display the deferred random graph", async ({ page }) => {
-  await page.goto("/");
+  const home = new HomePOM(page);
 
-  const section = page.getByTestId("home-random-graph");
+  await home.goto();
+  await home.randomGraphSection.scrollIntoViewIfNeeded();
 
-  await section.scrollIntoViewIfNeeded();
-
-  await expect(section.locator("canvas")).toBeVisible({
-    timeout: 10_000,
-  });
+  await expect(home.randomGraphCanvas).toBeVisible();
 });
