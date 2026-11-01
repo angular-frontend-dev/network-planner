@@ -21,10 +21,6 @@
     [class.is-open]="menuOpen()"
   >
     <a routerLink="/" (click)="closeMenu()">Home</a>
-    <a routerLink="/marketing/how-it-works" (click)="closeMenu()"
-      >How It Works</a
-    >
-    <a routerLink="/marketing/engineering" (click)="closeMenu()">Engineering</a>
 
     <a routerLink="/network-planning/network-planner" (click)="closeMenu()">
       Planner
@@ -33,5 +29,10 @@
     <a routerLink="/network-planning/performance" (click)="closeMenu()"
       >Performance</a
     >
+
+    <a routerLink="/marketing/how-it-works" (click)="closeMenu()"
+      >How It Works</a
+    >
+    <a routerLink="/marketing/engineering" (click)="closeMenu()">Engineering</a>
   </nav>
 </header>
