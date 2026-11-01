@@ -25,7 +25,7 @@ export class NetworkPlannerPOM {
     exact: true,
   });
   readonly runAllocationButton = this.page.getByRole("button", {
-    name: "Run Allocation",
+    name: "Run allocation",
     exact: true,
   });
   readonly resetButton = this.page.getByRole("button", {
