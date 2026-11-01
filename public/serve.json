@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/network-planning/network-planner",
+      "destination": "/index.csr.html"
+    }
+  ]
+}
