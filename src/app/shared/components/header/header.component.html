@@ -1,26 +1,37 @@
 <header class="navbar">
-  <a class="brand" routerLink="/">
-    <span class="brand-icon">◉</span>
-    <span>GraphLab</span>
-  </a>
+  <a class="brand" routerLink="/" (click)="closeMenu()"> Signal </a>
 
-  <nav class="nav-links">
-    <a routerLink="/network-planning" routerLinkActive="active-nav">Home</a>
-    <a
-      routerLink="/network-planning/network-planner"
-      routerLinkActive="active-nav"
-      >Planner</a
+  <button
+    class="menu-toggle"
+    type="button"
+    aria-controls="primary-navigation"
+    [attr.aria-expanded]="menuOpen()"
+    [attr.aria-label]="menuOpen() ? 'Close menu' : 'Open menu'"
+    (click)="toggleMenu()"
+  >
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav
+    id="primary-navigation"
+    class="nav-links"
+    aria-label="Main navigation"
+    [class.is-open]="menuOpen()"
+  >
+    <a routerLink="/" (click)="closeMenu()">Home</a>
+    <a routerLink="/marketing/how-it-works" (click)="closeMenu()"
+      >How It Works</a
     >
-    <a routerLink="/marketing/how-it-works" routerLinkActive="active-nav"
-      >How it works?</a
-    >
-    <a routerLink="/network-planning/performance" routerLinkActive="active-nav"
+    <a routerLink="/marketing/engineering" (click)="closeMenu()">Engineering</a>
+
+    <a routerLink="/network-planning/network-planner" (click)="closeMenu()">
+      Planner
+    </a>
+
+    <a routerLink="/network-planning/performance" (click)="closeMenu()"
       >Performance</a
     >
-    <a routerLink="/marketing/engineering" routerLinkActive="active-nav"
-      >Engineering</a
-    >
-
-    <a class="nav-button" routerLink="/network-planning"> Git Hub </a>
   </nav>
 </header>

@@ -1,10 +1,14 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const isCI = !!process.env["CI"];
+
+const baseURL = isCI ? "http://localhost:4000" : "http://localhost:4200";
+
 export default defineConfig({
   testDir: "./e2e",
 
   use: {
-    baseURL: "http://localhost:4200",
+    baseURL,
     trace: "on-first-retry",
   },
 
@@ -16,9 +20,12 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: "npx ng serve network-planner --port 4200",
-    url: "http://localhost:4200",
-    reuseExistingServer: !process.env["CI"],
+    command: isCI
+      ? "npm run preview"
+      : "npx ng serve network-planner --port 4200",
+
+    url: baseURL,
+    reuseExistingServer: !isCI,
     timeout: 120_000,
   },
 });
