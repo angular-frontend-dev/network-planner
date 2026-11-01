@@ -17,7 +17,7 @@
     "start:safe": "ng serve --prebundle=false",
     "build": "ng build",
     "prod": "npm run build && npm run preview",
-    "preview": "node dist/network-planner/server/server.mjs",
+    "preview": "serve -s dist/network-planner/browser -l 4000",
     "test": "ng test network-planner",
     "e2e": "playwright test",
     "e2e:ui": "playwright test --ui",
@@ -61,6 +61,7 @@
     "@types/express": "^5.0.1",
     "@types/node": "^22.20.5",
     "jsdom": "^30.1.3",
+    "serve": "^14.2.6",
     "typescript": "^6.0.3",
     "vitest": "^5.0.5"
   }
