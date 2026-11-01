@@ -1,12 +1,12 @@
 @use "styles/_mixins" as mixins;
 
 .how-it-works-page {
+  @include mixins.page-container-content;
+
   min-height: 100%;
   padding: 4rem 1.5rem 6rem;
   background: var(--color-background);
   color: var(--color-text);
-
-  @include mixins.page-container-content;
 }
 
 .modeling-grid {
@@ -36,26 +36,25 @@
       line-height: 1.7;
     }
   }
-}
 
-.algorithm-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(260px, 0.8fr);
-  gap: 1.25rem;
-}
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 0.8fr);
+    gap: 1.25rem;
+  }
 
-.algorithm-steps {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
+  &__steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
 }
 
 @media (max-width: 960px) {
   .modeling-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .algorithm-layout {
+  .algorithm-section__layout {
     grid-template-columns: 1fr;
   }
 }
@@ -66,7 +65,7 @@
   }
 
   .modeling-grid,
-  .algorithm-steps {
+  .algorithm-section__steps {
     grid-template-columns: 1fr;
   }
 

@@ -10,19 +10,17 @@
     </p>
   </section>
 
-  <article class="modeling-section" aria-labelledby="modeling-title">
-    <div class="modeling-grid">
-      @for (step of stepCards; track step.stepNumber) {
-      <app-step-card
-        [stepNumber]="step.stepNumber"
-        [title]="step.title"
-        [imgUrl]="step.imgUrl"
-        [description]="step.description"
-        [content]="step.content"
-      >
-      </app-step-card>
-      }
-    </div>
+  <article class="modeling-grid" aria-labelledby="modeling-title">
+    @for (step of stepCards; track step.stepNumber) {
+    <app-step-card
+      [stepNumber]="step.stepNumber"
+      [title]="step.title"
+      [imgUrl]="step.imgUrl"
+      [description]="step.description"
+      [content]="step.content"
+    >
+    </app-step-card>
+    }
   </article>
 
   <article class="algorithm-section" aria-labelledby="algorithm-title">
@@ -37,8 +35,8 @@
       </p>
     </section>
 
-    <div class="algorithm-layout">
-      <section class="algorithm-steps">
+    <div class="algorithm-section__layout">
+      <section class="algorithm-section__steps">
         @for (algorithm of algorithmCards; track algorithm.stepNumber) {
         <app-algorithm-card
           [stepNumber]="algorithm.stepNumber"

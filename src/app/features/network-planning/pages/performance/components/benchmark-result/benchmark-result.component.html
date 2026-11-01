@@ -5,64 +5,51 @@
     <section class="metric-card">
       <span class="metric-card__icon">◎</span>
 
-      <div>
-        <span class="metric-card__label">Transmitters</span>
-        <strong data-testid="number-transmitters">
-          {{ graphInformations().transmitters }}
-        </strong>
-      </div>
+      <span class="metric-card__label">Transmitters</span>
+      <strong data-testid="number-transmitters">
+        {{ graphInformations().transmitters }}
+      </strong>
     </section>
 
     <section class="metric-card">
       <span class="metric-card__icon">⌘</span>
 
-      <div>
-        <span class="metric-card__label">Edges</span>
-        <strong data-testid="number-edges">
-          {{ graphInformations().edges }}
-        </strong>
-      </div>
+      <span class="metric-card__label">Edges</span>
+      <strong data-testid="number-edges">
+        {{ graphInformations().edges }}
+      </strong>
     </section>
 
     <section class="metric-card">
       <span class="metric-card__icon">◇</span>
 
-      <div>
-        <span class="metric-card__label">Average degree</span>
-        <strong data-testid="average-degree">
-          {{ graphInformations().averageDegree.toFixed(2) }}
-        </strong>
-      </div>
+      <span class="metric-card__label">Average degree</span>
+      <strong data-testid="average-degree">
+        {{ graphInformations().averageDegree.toFixed(2) }}
+      </strong>
     </section>
 
     <section class="metric-card">
       <span class="metric-card__icon">⚙</span>
 
-      <div>
-        <span class="metric-card__label">Graph construction</span>
-        <strong>
-          {{ performanceMetrics().graphConstruction.toFixed(2) }} ms
-        </strong>
-      </div>
+      <span class="metric-card__label">Graph construction</span>
+      <strong>
+        {{ performanceMetrics().graphConstruction.toFixed(2) }} ms
+      </strong>
     </section>
 
     <section class="metric-card">
       <span class="metric-card__icon">◷</span>
 
-      <div>
-        <span class="metric-card__label">Algorithm</span>
-        <strong> {{ performanceMetrics().algorithm.toFixed(2) }} ms </strong>
-      </div>
+      <span class="metric-card__label">Algorithm</span>
+      <strong> {{ performanceMetrics().algorithm.toFixed(2) }} ms </strong>
     </section>
 
     <section class="metric-card metric-card--accent">
       <span class="metric-card__icon">ϟ</span>
 
-      <div>
-        <span class="metric-card__label">Total runtime</span>
-
-        <strong> {{ performanceMetrics().totalRuntime.toFixed(2) }} ms </strong>
-      </div>
+      <span class="metric-card__label">Total runtime</span>
+      <strong> {{ performanceMetrics().totalRuntime.toFixed(2) }} ms </strong>
     </section>
   </div>
 </article>

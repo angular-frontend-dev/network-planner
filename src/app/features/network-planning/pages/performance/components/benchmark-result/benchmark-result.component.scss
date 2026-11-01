@@ -12,6 +12,7 @@
   display: grid;
 
   grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-rows: repeat(3, auto);
 
   gap: 0.7rem;
 }
@@ -19,10 +20,11 @@
 .metric-card {
   min-width: 0;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-row: span 3;
+  grid-template-rows: subgrid;
 
-  gap: 0.8rem;
+  gap: 0.3rem;
 
   padding: 1.15rem;
 
@@ -30,35 +32,35 @@
   border-radius: 0.6rem;
 
   background: var(--color-background);
-}
 
-.metric-card__icon {
-  color: #57a6ff;
+  strong {
+    display: block;
 
-  font-size: 1.35rem;
-}
+    overflow: hidden;
 
-.metric-card__label {
-  display: block;
+    color: var(--color-text);
 
-  margin-bottom: 0.45rem;
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
 
-  color: var(--color-text-muted);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-  font-size: 0.72rem;
-}
+  &__icon {
+    color: #57a6ff;
 
-.metric-card strong {
-  display: block;
+    font-size: 1.35rem;
+  }
 
-  overflow: hidden;
+  &__label {
+    display: block;
 
-  color: var(--color-text);
+    margin-bottom: 0.45rem;
 
-  font-size: clamp(1rem, 1.5vw, 1.35rem);
+    color: var(--color-text-muted);
 
-  text-overflow: ellipsis;
-  white-space: nowrap;
+    font-size: 0.72rem;
+  }
 }
 
 .metric-card--accent {
@@ -67,4 +69,16 @@
 
 .metric-card--accent .metric-card__icon {
   color: var(--color-accent);
+}
+
+@media (max-width: 920px) {
+  .metric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 580px) {
+  .metric-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

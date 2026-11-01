@@ -1,10 +1,18 @@
+:host {
+  display: grid;
+  grid-row: span 5;
+  grid-template-rows: subgrid;
+}
+
 .step-card {
-  min-width: 0;
-  padding: 1.25rem;
-  background: var(--color-surface);
+  display: grid;
+  grid-row: 1 / -1;
+  grid-template-rows: subgrid;
+  gap: 1rem;
+
+  padding: 1rem;
   border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  height: 100%;
+  border-radius: 0.8rem;
 
   &__header {
     display: flex;

@@ -1,45 +1,45 @@
-<article>
-  <header class="section-header">
+<article class="architecture">
+  <header>
     <h2>Architecture</h2>
 
     <p>The computation runs in a Web Worker to keep the UI responsive.</p>
   </header>
 
-  <section class="architecture">
-    <section class="architecture__thread architecture__thread--main">
+  <section class="main-section">
+    <section class="thread thread--main">
       <h3>Main thread (UI)</h3>
 
-      <section class="architecture__panel">
-        <div class="architecture__item">
-          <span class="architecture__icon">
+      <section class="panel">
+        <div class="item">
+          <span class="icon">
             <svg lucideCodeXml></svg>
           </span>
           Angular / TypeScript
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucidePanelsTopLeft></svg>
           </span>
           User interface
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucideLayers></svg>
           </span>
           Canvas rendering
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucideMousePointer2></svg>
           </span>
           User interactions
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucideWorkflow></svg>
           </span>
           State management
@@ -47,17 +47,17 @@
       </section>
     </section>
 
-    <section class="architecture__communication">
-      <div class="architecture__flow">
-        <span>Graph data<br />(run / cancel)</span>
+    <section class="communication">
+      <div class="flow">
+        <span>Graph data </span>
 
-        <div class="architecture__arrow architecture__arrow--right">
+        <div class="arrow arrow--right">
           <span></span>
         </div>
       </div>
 
-      <div class="architecture__flow">
-        <div class="architecture__arrow architecture__arrow--left">
+      <div class="flow">
+        <div class="arrow arrow--left">
           <span></span>
         </div>
 
@@ -68,43 +68,29 @@
       </div>
     </section>
 
-    <section class="architecture__thread architecture__thread--worker">
-      <h3>Web Worker (computation)</h3>
+    <section class="thread thread--worker">
+      <h3>Web Worker (planned)</h3>
 
-      <section class="architecture__panel">
-        <div class="architecture__item">
-          <span class="architecture__icon">
+      <section class="panel">
+        <div class="item">
+          <span class="icon">
             <svg lucideNetwork></svg>
           </span>
-          Graph construction
+          Graph generation
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucidePalette></svg>
           </span>
-          DSATUR algorithm
+          DSATUR computation
         </div>
 
-        <div class="architecture__item">
-          <span class="architecture__icon">
+        <div class="item">
+          <span class="icon">
             <svg lucideShare2></svg>
           </span>
-          Graph data structures
-        </div>
-
-        <div class="architecture__item">
-          <span class="architecture__icon">
-            <svg lucideActivity></svg>
-          </span>
-          Progress reporting
-        </div>
-
-        <div class="architecture__item">
-          <span class="architecture__icon">
-            <svg lucideCircleStop></svg>
-          </span>
-          Cancellation support
+          Communication with the main thread
         </div>
       </section>
     </section>

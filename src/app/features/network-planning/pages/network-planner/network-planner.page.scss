@@ -50,6 +50,7 @@
 -------------------------- */
 
 .planner-controls {
+  grid-column: 1;
   grid-row: 1;
 
   overflow-y: auto;
@@ -106,11 +107,6 @@ app-graph-view {
   grid-column: 2;
   grid-row: 2;
 
-  display: grid;
-  grid-template-columns:
-    minmax(0, 1.7fr)
-    minmax(220px, 0.8fr);
-
   gap: 1rem;
 
   padding: 1rem;
@@ -137,13 +133,7 @@ app-graph-view {
    RESPONSIVE
 -------------------------- */
 
-@media (max-width: 900px) {
-  .planner-workbench {
-    grid-template-columns: 15rem minmax(0, 1fr);
-  }
-}
-
-@media (max-width: 700px) {
+@media (max-width: 950px) {
   .planner-page {
     padding-top: 2.5rem;
   }
@@ -164,5 +154,10 @@ app-graph-view {
   .planner-workspace {
     grid-column: 1;
     grid-row: 2;
+  }
+
+  .planner-summary {
+    grid-column: 1;
+    grid-row: 3;
   }
 }

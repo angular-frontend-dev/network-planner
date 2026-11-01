@@ -1,72 +1,46 @@
 @use "styles/_mixins" as mixins;
 
 .engineering-page {
+  @include mixins.page-container-content;
+
   min-height: 100%;
   padding: 3.5rem 1.5rem 6rem;
 
   background: var(--color-background);
   color: var(--color-text);
+}
 
-  @include mixins.page-container-content;
+@media (max-width: 560px) {
+  .engineering-page {
+    padding: 2.5rem 1rem 4rem;
+  }
 }
 
 .engineering-overview {
   display: grid;
   grid-template-columns: minmax(0, 2.2fr) minmax(17rem, 1fr);
   gap: 1rem;
-}
 
-.architecture-grid,
-.tech-stack-grid {
-  border: 1px solid var(--color-border);
-  border-radius: 0.8rem;
-  background: var(--color-surface);
-}
-
-.architecture-grid {
-  background: #f7f5ff;
-  padding: 1rem;
-}
-
-.section-header {
-  margin-bottom: 1rem;
-
-  h2 {
-    margin: 0 0 0.25rem;
-    font-size: 1.2rem;
+  .architecture-grid,
+  .tech-stack-grid {
+    border: 1px solid var(--color-border);
+    border-radius: 0.8rem;
+    background: var(--color-surface);
   }
 
-  p {
-    margin: 0;
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-  }
-}
-
-.tech-stack-grid {
-  padding: 1rem;
-  background: #f3f7ff;
-  display: flex;
-  flex-direction: column;
-
-  h2 {
-    margin: 0 0 1rem;
-    font-size: 1.15rem;
-  }
-}
-
-.decisions {
-  margin-top: 1rem;
-
-  > h2 {
-    margin: 0 0 0.75rem;
-    font-size: 1.15rem;
+  .architecture-grid {
+    background: #f7f5ff;
+    padding: 1rem;
   }
 
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 0.75rem;
+  .tech-stack-grid {
+    padding: 1rem;
+    background: #f3f7ff;
+
+    h2 {
+      margin: 0 0 1rem;
+      font-size: 1.15rem;
+    }
   }
 }
 
@@ -74,26 +48,31 @@
   .engineering-overview {
     grid-template-columns: 1fr;
   }
+}
 
-  .architecture {
-    grid-template-columns: 1fr;
+.key-decisions {
+  margin-top: 1rem;
 
-    &__communication {
-      display: none;
-    }
+  > h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.15rem;
   }
 
-  .decisions__grid {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .key-decisions .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 560px) {
-  .engineering-page {
-    padding: 2.5rem 1rem 4rem;
-  }
-
-  .decisions__grid {
+  .key-decisions .grid {
     grid-template-columns: 1fr;
   }
 }

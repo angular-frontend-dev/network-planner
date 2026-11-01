@@ -7,7 +7,7 @@ import {
   LucideCpu,
   LucideShare2,
   LucidePackageCheck,
-  LucideCircleStop,
+  LucideGrid3X3,
 } from "@lucide/angular";
 import type { LucideIcon } from "@lucide/angular";
 
@@ -29,38 +29,42 @@ export class EngineeringPage {
     {
       id: 1,
       icon: LucideLayers,
-      title: "Canvas rendering",
+      title: "WebGL Rendering",
       description:
-        "Rendering thousands of nodes with DOM/SVG would be too slow. Canvas " +
-        "provides smooth performance.",
+        "Sigma.js uses WebGL to visualize large graphs efficiently, " +
+        "avoiding the overhead of rendering thousands of individual DOM elements.",
     },
     {
       id: 2,
       icon: LucideCpu,
-      title: "Web Workers",
+      title: "Web Workers (Planned)",
       description:
-        "Graph construction and DSATUR run in a separate thread to avoid blocking user input and rendering.",
+        "Graph generation and coloring currently run on the main thread. " +
+        "Moving these computations to Web Workers is a possible future improvement.",
     },
     {
       id: 3,
       icon: LucideShare2,
-      title: "Adjacency Lists",
+      title: "Graphology",
       description:
-        "The interference graph is sparse, so we use adjacency lists O(V + E) instead of an adjacency matrix O(V²).",
+        "Graphology manages the graph's vertices, edges, and attributes, " +
+        "providing a shared representation for algorithms and visualization.",
     },
     {
       id: 4,
-      icon: LucidePackageCheck,
-      title: "Batched updates",
+      icon: LucideGrid3X3,
+      title: "Spatial Partitioning",
       description:
-        "The worker sends batched updates instead of a message per operation, reducing communication overhead.",
+        "A spatial grid organizes transmitters by location, allowing graph " +
+        "generation to search nearby cells instead of comparing every pair of nodes.",
     },
     {
       id: 5,
-      icon: LucideCircleStop,
-      title: "Cancellation",
+      icon: LucidePackageCheck,
+      title: "Playwright testing",
       description:
-        "Long-running computations can be cancelled, keeping the interface responsive at all times.",
+        "Unit tests verify graph construction and coloring algorithms, " +
+        "while Playwright tests validate the application's main workflows.",
     },
   ];
 }

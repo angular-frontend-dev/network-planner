@@ -1,7 +1,7 @@
 <div class="landing-page">
   <!-- Hero -->
   <article class="page-section hero">
-    <section class="hero-content">
+    <section class="content">
       <span class="eyebrow">GRAPH THEORY × NETWORK PLANNING</span>
 
       <h1>
@@ -9,12 +9,12 @@
         <span>graph algorithms.</span>
       </h1>
 
-      <p class="hero-description">
+      <p class="description">
         Build communication networks, visualize their structure and experiment
         with graph algorithms in an interactive environment.
       </p>
 
-      <div class="hero-actions">
+      <div class="actions">
         <button
           class="button button--primary button--compact"
           routerLink="/network-planner"
@@ -31,7 +31,7 @@
       </div>
     </section>
 
-    <section class="hero-graph" data-testid="home-random-graph">
+    <section class="graph" data-testid="home-random-graph">
       @defer (on idle; hydrate on idle) {
       <app-random-graph />
       } @placeholder {
@@ -42,7 +42,7 @@
 
   <!-- Features -->
   <article id="features" class="features">
-    <section class="section-heading">
+    <section class="heading">
       <span class="eyebrow">THE PROJECT</span>
 
       <h2>Experiment with networks visually</h2>

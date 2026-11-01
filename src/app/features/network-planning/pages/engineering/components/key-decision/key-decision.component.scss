@@ -5,7 +5,20 @@
   background: var(--color-surface);
   height: 100%;
 
-  &__icon {
+  h3 {
+    margin: 0 0 0.5rem;
+    font-size: 0.84rem;
+  }
+
+  p {
+    margin: 0;
+
+    color: var(--color-text-secondary);
+    font-size: 0.72rem;
+    line-height: 1.45;
+  }
+
+  .icon {
     display: grid;
     place-items: center;
 
@@ -19,18 +32,5 @@
     color: var(--color-primary);
 
     font-weight: 700;
-  }
-
-  h3 {
-    margin: 0 0 0.5rem;
-    font-size: 0.84rem;
-  }
-
-  p {
-    margin: 0;
-
-    color: var(--color-text-secondary);
-    font-size: 0.72rem;
-    line-height: 1.45;
   }
 }
