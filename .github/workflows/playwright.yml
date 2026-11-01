@@ -16,6 +16,13 @@ jobs:
           node-version: lts/*
           cache: npm
 
+      - name: Diagnose CI environment
+        run: |
+          node -v
+          npm -v
+          git rev-parse HEAD
+          npm config get legacy-peer-deps
+
       - name: Install dependencies
         run: npm ci
 
