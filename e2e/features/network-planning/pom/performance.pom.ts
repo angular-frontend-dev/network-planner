@@ -1,4 +1,6 @@
-import { expect, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { TutorialPOM } from "../../../shared/pom/tutorial.pom";
+import { TUTORIAL_STEPS } from "../../../../src/app/features/network-planning/pages/performance/performance.constants";
 import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
 import {
   DEFAULT_APPROXIMATE_SIZE,
@@ -8,8 +10,9 @@ import {
 const scanDsaturAlgorithm: ColoringAlgorithm = "DSATUR-NAIVE";
 const heapDsaturAlgorithm: ColoringAlgorithm = "DSATUR-HEAP";
 
-export class PerformancePOM {
-  constructor(private readonly page: Page) {}
+export class PerformancePOM extends TutorialPOM {
+  protected readonly path = "/network-planning/performance";
+  protected readonly numberOfSteps = TUTORIAL_STEPS.length;
 
   // Inputs
   readonly transmittersInput = this.page.getByLabel("Number of transmitters", {
@@ -34,14 +37,6 @@ export class PerformancePOM {
   readonly graphTransmitters = this.page.getByTestId("number-transmitters");
   readonly graphEdges = this.page.getByTestId("number-edges");
   readonly graphAverageDegree = this.page.getByTestId("average-degree");
-
-  get title() {
-    return this.page.getByRole("main");
-  }
-
-  async goto() {
-    await this.page.goto("/network-planning/performance");
-  }
 
   async fillBenchmarkParameters(
     transmitters: number,

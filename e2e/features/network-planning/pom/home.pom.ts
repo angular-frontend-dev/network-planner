@@ -1,13 +1,9 @@
-import { Page } from "@playwright/test";
+import { BasePOM } from "../../../shared/pom/base.pom";
 
-export class HomePOM {
-  constructor(private readonly page: Page) {}
+export class HomePOM extends BasePOM {
+  protected readonly path = "/";
 
   readonly randomGraphSection = this.page.getByTestId("home-random-graph");
 
   readonly randomGraphCanvas = this.randomGraphSection.locator("canvas");
-
-  async goto() {
-    await this.page.goto("/");
-  }
 }

@@ -1,4 +1,11 @@
-import { Component, signal } from "@angular/core";
+import {
+  afterNextRender,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  viewChild,
+} from "@angular/core";
 import {
   BenchmarkConfigurationComponent,
   ConfigurationOptions,
@@ -16,18 +23,17 @@ import type Graph from "graphology";
 import type { ColoringAlgorithm } from "../../engines/algorithms/algorithm.types";
 import { createBenchmarkGraph } from "./graph/benchmark-graph.factory";
 import { Miliseconds } from "../../../../shared/types/time.type";
-
-const EMPTY_PERFORMANCE_METRIC: PerformanceMetrics = {
-  graphConstruction: 0,
-  algorithm: 0,
-  totalRuntime: 0,
-};
-
-const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
-  transmitters: 0,
-  edges: 0,
-  averageDegree: 0,
-};
+import {
+  GuidedTourService,
+  TutorialStep,
+} from "../../../../shared/services/guided-tour.service";
+import { TutorialPromptComponent } from "../../../../shared/components/tutorial-prompt/tutorial-prompt.component";
+import {
+  EMPTY_GRAPH_INFORMATIONS,
+  EMPTY_PERFORMANCE_METRIC,
+  TUTORIAL_STEPS,
+  TUTORIAL_STORAGE_KEY,
+} from "./performance.constants";
 
 @Component({
   imports: [
@@ -35,12 +41,18 @@ const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
     BenchmarkResultComponent,
     RuntimeComponent,
     LoadingComponent,
+    TutorialPromptComponent,
   ],
   selector: "app-performance",
   styleUrl: "./performance.page.scss",
   templateUrl: "./performance.page.html",
 })
 export class PerformancePage {
+  private readonly guidedTour = inject(GuidedTourService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly tutorialPrompt = viewChild.required(TutorialPromptComponent);
+
   readonly loadingAlgorithm = signal(false);
   readonly showNoGraphWarning = signal(false);
 
@@ -48,6 +60,24 @@ export class PerformancePage {
   graphInformations = signal<GraphInformations>(EMPTY_GRAPH_INFORMATIONS);
 
   private readonly DSATUR_NAIVE_OPTION: ColoringAlgorithm = "DSATUR-NAIVE";
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.guidedTour.destroy());
+    afterNextRender(() => {
+      if (!localStorage.getItem(TUTORIAL_STORAGE_KEY)) {
+        this.tutorialPrompt().open();
+      }
+    });
+  }
+
+  startTutorial() {
+    this.markTutorialSeen();
+    this.guidedTour.start(TUTORIAL_STEPS);
+  }
+
+  private markTutorialSeen() {
+    localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+  }
 
   private async waitForNextPaint(): Promise<void> {
     return new Promise<void>((resolve) =>

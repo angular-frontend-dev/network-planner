@@ -1,13 +1,5 @@
-import { Locator, Page } from "@playwright/test";
+import { BasePOM } from "../../../shared/pom/base.pom";
 
-export class EngineeringPOM {
-  constructor(private readonly page: Page) {}
-
-  get title(): Locator {
-    return this.page.getByRole("main");
-  }
-
-  async goto() {
-    await this.page.goto("/marketing/engineering");
-  }
+export class EngineeringPOM extends BasePOM {
+  protected readonly path = "/marketing/engineering";
 }

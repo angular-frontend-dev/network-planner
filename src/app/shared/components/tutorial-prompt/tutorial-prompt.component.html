@@ -1,0 +1,28 @@
+<dialog
+  #dialog
+  aria-labelledby="tutorial-prompt-title"
+  aria-describedby="tutorial-prompt-description"
+  (cancel)="dismiss($event)"
+>
+  <div class="tutorial-prompt">
+    <div class="tutorial-prompt__icon" aria-hidden="true">?</div>
+
+    <h2 id="tutorial-prompt-title">
+      {{ title() }}
+    </h2>
+
+    <p id="tutorial-prompt-description">
+      {{ description() }}
+    </p>
+
+    <div class="tutorial-prompt__actions">
+      <button type="button" class="tutorial-prompt__skip" (click)="dismiss()">
+        Not now
+      </button>
+
+      <button type="button" class="tutorial-prompt__start" (click)="start()">
+        Start tutorial
+      </button>
+    </div>
+  </div>
+</dialog>

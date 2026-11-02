@@ -1,13 +1,16 @@
-import { expect, Locator, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
 import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
 import {
   DEFAULT_ALGORITHM,
   DEFAULT_INTERFERENCE_RADIUS,
   DEFAULT_TRANSMITTERS,
 } from "../../../../src/app/features/network-planning/pages/network-planner/components/network-configuration/planner-controls.constant";
+import { TutorialPOM } from "../../../shared/pom/tutorial.pom";
+import { TUTORIAL_STEPS } from "../../../../src/app/features/network-planning/pages/network-planner/network-planner.constants";
 
-export class NetworkPlannerPOM {
-  constructor(private readonly page: Page) {}
+export class NetworkPlannerPOM extends TutorialPOM {
+  protected readonly path = "/network-planning/network-planner";
+  protected readonly numberOfSteps = TUTORIAL_STEPS.length;
 
   // Inputs
   readonly transmittersInput = this.page.getByLabel("Number of transmitters", {
@@ -53,14 +56,6 @@ export class NetworkPlannerPOM {
   readonly networkGraph = this.page.getByTestId("network-graph");
   readonly graphTransmitters = this.page.getByTestId("graph-transmitters");
   readonly graphEdges = this.page.getByTestId("graph-edges");
-
-  get title() {
-    return this.page.getByRole("main");
-  }
-
-  async goto() {
-    await this.page.goto("/network-planning/network-planner");
-  }
 
   async fillNetworkParameters(
     transmitters: string,

@@ -55,6 +55,12 @@
   </div>
 </div>
 
+<app-tutorial-prompt
+  description="Discover how graph size, edge density, and algorithm choice affect execution time. Take a quick tour to understand the benchmark results."
+  (startTour)="startTutorial()"
+  (dismissed)="markTutorialSeen()"
+/>
+
 <app-loading [loading]="loadingAlgorithm()" data-testid="algorithm-loader">
   <p>Algorithm is running...</p>
 </app-loading>

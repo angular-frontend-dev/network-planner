@@ -30,9 +30,17 @@
       >Performance</a
     >
 
-    <a routerLink="/marketing/how-it-works" (click)="closeMenu()"
+    <a
+      routerLink="/marketing/how-it-works"
+      data-tour="how-it-works-link"
+      (click)="closeMenu()"
       >How It Works</a
     >
-    <a routerLink="/marketing/engineering" (click)="closeMenu()">Engineering</a>
+    <a
+      routerLink="/marketing/engineering"
+      data-tour="engineering-link"
+      (click)="closeMenu()"
+      >Engineering</a
+    >
   </nav>
 </header>

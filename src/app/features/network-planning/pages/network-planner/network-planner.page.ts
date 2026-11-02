@@ -1,4 +1,11 @@
-import { Component, signal } from "@angular/core";
+import {
+  afterNextRender,
+  Component,
+  DestroyRef,
+  inject,
+  signal,
+  viewChild,
+} from "@angular/core";
 import type { GraphInformations } from "./components/performance-summary/performance-summary.component";
 import { WarningDialogComponent } from "../../../../shared/components/warning-dialog/warning-dialog.component";
 import { PlannerControlsComponent } from "./components/network-configuration/planner-controls.component";
@@ -25,18 +32,17 @@ import Graph from "graphology";
 import { ColoringAlgorithm } from "../../engines/algorithms/algorithm.types";
 import { Miliseconds } from "../../../../shared/types/time.type";
 import { DsaturResult } from "../../engines/algorithms/dsatur/models/dsatur-result";
-
-const EMPTY_PERFORMANCE_METRICS: PerformanceMetrics = {
-  graphConstruction: 0,
-  algorithm: 0,
-  rendering: 0,
-};
-
-const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
-  transmitters: 0,
-  edges: 0,
-  averageDegree: 0,
-};
+import {
+  GuidedTourService,
+  TutorialStep,
+} from "../../../../shared/services/guided-tour.service";
+import { TutorialPromptComponent } from "../../../../shared/components/tutorial-prompt/tutorial-prompt.component";
+import {
+  EMPTY_PERFORMANCE_METRICS,
+  EMPTY_GRAPH_INFORMATIONS,
+  TUTORIAL_STORAGE_KEY,
+  TUTORIAL_STEPS,
+} from "./network-planner.constants";
 
 @Component({
   imports: [
@@ -45,6 +51,7 @@ const EMPTY_GRAPH_INFORMATIONS: GraphInformations = {
     LoadingComponent,
     WarningDialogComponent,
     PerformanceSummaryComponent,
+    TutorialPromptComponent,
   ],
   selector: "app-network-planner",
   styleUrl: "./network-planner.page.scss",
@@ -58,6 +65,11 @@ export class NetworkPlannerPage {
     enableToolBar: true,
   } satisfies Partial<GraphViewOptions>;
 
+  private readonly guidedTour = inject(GuidedTourService);
+  private readonly destroyRef = inject(DestroyRef);
+
+  readonly tutorialPrompt = viewChild.required(TutorialPromptComponent);
+
   readonly network = signal<Network | null>(null);
   readonly loadingNetwork = signal(false);
   readonly loadingAlgorithm = signal(false);
@@ -70,6 +82,24 @@ export class NetworkPlannerPage {
   private renderingTime: number = 0;
 
   private readonly DSATUR_NAIVE_OPTION: ColoringAlgorithm = "DSATUR-NAIVE";
+
+  constructor() {
+    this.destroyRef.onDestroy(() => this.guidedTour.destroy());
+    afterNextRender(() => {
+      if (!localStorage.getItem(TUTORIAL_STORAGE_KEY)) {
+        this.tutorialPrompt().open();
+      }
+    });
+  }
+
+  startTutorial() {
+    this.markTutorialSeen();
+    this.guidedTour.start(TUTORIAL_STEPS);
+  }
+
+  private markTutorialSeen() {
+    localStorage.setItem(TUTORIAL_STORAGE_KEY, "true");
+  }
 
   private async waitForNextPaint(): Promise<void> {
     return new Promise<void>((resolve) =>

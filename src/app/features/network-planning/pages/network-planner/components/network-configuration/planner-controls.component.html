@@ -1,5 +1,9 @@
 <article>
-  <form [formRoot]="configurationForm" class="control-form">
+  <form
+    [formRoot]="configurationForm"
+    data-tour="network-configuration"
+    class="control-form"
+  >
     <h2>Network configuration</h2>
 
     <div class="mode-tabs">
@@ -47,7 +51,6 @@
 
       <select id="distribution" [formField]="configurationForm.distribution">
         <option value="uniform">Random (uniform)</option>
-        <option value="grid">Grid</option>
       </select>
     </section>
 
@@ -60,7 +63,11 @@
     </button>
   </form>
 
-  <form [formRoot]="allocationForm" class="control-form">
+  <form
+    [formRoot]="allocationForm"
+    data-tour="frequency-allocation"
+    class="control-form"
+  >
     <h2>Algorithm</h2>
 
     <section class="field">

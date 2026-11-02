@@ -18,7 +18,7 @@
       />
     </aside>
 
-    <section class="planner-workspace">
+    <section data-tour="network-graph" class="planner-workspace">
       <div class="graph-stage">
         <div class="graph-canvas" data-testid="network-graph">
           @if (network(); as graph) {
@@ -41,6 +41,12 @@
     </section>
   </article>
 </div>
+
+<app-tutorial-prompt
+  description="Learn how interference creates connections, why dense graphs can look messy, and how frequencies are allocated."
+  (startTour)="startTutorial()"
+  (dismissed)="markTutorialSeen()"
+/>
 
 <app-loading [loading]="loadingNetwork()" data-testid="network-loader">
   <p>Generating network...</p>

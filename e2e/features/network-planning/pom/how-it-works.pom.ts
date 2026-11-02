@@ -1,13 +1,5 @@
-import { Page } from "@playwright/test";
+import { BasePOM } from "../../../shared/pom/base.pom";
 
-export class HowItWorksPOM {
-  constructor(private readonly page: Page) {}
-
-  get title() {
-    return this.page.getByRole("main");
-  }
-
-  async goto() {
-    await this.page.goto("/marketing/how-it-works");
-  }
+export class HowItWorksPOM extends BasePOM {
+  protected readonly path = "/marketing/how-it-works";
 }
