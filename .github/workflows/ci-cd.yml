@@ -1,0 +1,20 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [main]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/playwright.yml
+
+  deploy:
+    needs: tests
+    if: >-
+      github.event_name == 'push' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+    uses: ./.github/workflows/azure-static-web-apps-white-island-0dc0d1e10.yml
+    secrets: inherit
