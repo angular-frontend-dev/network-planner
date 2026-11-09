@@ -2,7 +2,6 @@ name: Azure Static Web Apps CI/CD
 
 on:
   workflow_call:
-    branches: [main]
   pull_request:
     types: [closed]
     branches: [main]
