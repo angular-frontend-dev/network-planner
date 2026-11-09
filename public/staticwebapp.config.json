@@ -1,4 +1,11 @@
 {
+  "routes": [
+    {
+      "route": "/",
+      "redirect": "/network-planning",
+      "statusCode": 302
+    }
+  ],
   "navigationFallback": {
     "rewrite": "/index.csr.html"
   }
