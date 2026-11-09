@@ -4,7 +4,7 @@
 
 The project combines algorithm design, graph visualisation, frontend performance engineering, automated testing, and deployment.
 
-> **Live demo:** Add the Azure Static Web Apps URL here.
+> **Live demo:** https://white-island-0dc0d1e10.2.azurestaticapps.net/network-planning
 >
 > **Source code:** https://github.com/angular-frontend-dev/network-planner
 
@@ -32,27 +32,29 @@ The Performance page makes it possible to compare graph-colouring implementation
 
 ## Technology
 
-| Area | Tools |
-| --- | --- |
-| Frontend | Angular, TypeScript, Angular Signals |
-| Graph model | Graphology |
-| Interactive graph rendering | Sigma.js (WebGL) |
-| Data visualisation | Chart.js |
-| Unit tests | Angular test runner / Vitest |
-| End-to-end tests | Playwright |
-| CI/CD | GitHub Actions |
-| Hosting | Azure Static Web Apps |
+| Area                        | Tools                                                                                |
+| --------------------------- | ------------------------------------------------------------------------------------ |
+| Frontend                    | Angular, TypeScript, Angular Signals                                                 |
+| Rendering                   | Angular SSR tooling (`@angular/ssr`), SSG (prerendering), CSR, incremental hydration |
+| Graph model                 | Graphology                                                                           |
+| Interactive graph rendering | Sigma.js (WebGL)                                                                     |
+| Data visualisation          | Chart.js                                                                             |
+| Unit tests                  | Angular test runner / Vitest                                                         |
+| End-to-end tests            | Playwright                                                                           |
+| CI/CD                       | GitHub Actions                                                                       |
+| Hosting                     | Azure Static Web Apps                                                                |
 
 ## Architecture and rendering
 
-The project separates graph algorithms and network-generation logic from the UI that presents their results.
+Signal uses **modern Angular's server-side rendering (SSR) infrastructure** (`@angular/ssr`) to support a **hybrid rendering strategy**. In production, the project uses **static site generation (SSG)** for content-oriented routes and **client-side rendering (CSR)** for the interactive Network Planner:
 
-- **Marketing and informational pages** are prerendered as static pages.
-- **Network Planner** uses browser-side rendering for its interactive WebGL graph.
-- **Lazy loading and incremental hydration** help avoid paying the cost of interactive components before they are needed.
-- **Spatial indexing** avoids checking every possible pair of transmitters when building interference edges in typical spatial distributions.
+- **SSG / build-time prerendering:** Marketing and informational pages are rendered to HTML during the Angular build, so Azure Static Web Apps can serve prebuilt content without waiting for JavaScript to generate the initial page.
+- **CSR for the Network Planner:** Its interactive graph relies on Sigma.js and WebGL, so rendering and interaction happen in the browser. Browser-dependent graph-rendering code is loaded through a dynamic import rather than executed during prerendering.
+- **Lazy loading and incremental hydration:** Routes are loaded on demand, and eligible deferred content can hydrate incrementally to reduce initial JavaScript and rendering work.
+- **Separation of concerns:** Network generation, spatial indexing and graph-colouring algorithms are kept separate from the components responsible for presenting and interacting with the graph.
+- **Performance-conscious visualisation:** Spatial indexing limits unnecessary distance checks during graph construction. Static graph images are used where a live WebGL renderer would add unnecessary overhead.
 
-Static graph imagery is used in places where a live renderer would add unnecessary main-thread and WebGL overhead.
+**SSR vs. SSG:** Although the application uses Angular's SSR tooling to generate prerendered pages, **Azure hosts the resulting static files; it does not run request-time Angular SSR**. This distinction matters because SSG uses server rendering _at build time_, while traditional SSR renders HTML _for each request_.
 
 ## Run locally
 
