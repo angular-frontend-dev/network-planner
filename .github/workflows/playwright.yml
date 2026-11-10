@@ -23,7 +23,7 @@ jobs:
           npm config get legacy-peer-deps
 
       - name: Run unit tests
-        run: npx ng test network-planner --watch=false
+        run: npx nx test network-planner --watch=false
 
       - name: Build application
         run: npm run build
