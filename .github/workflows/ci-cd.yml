@@ -8,13 +8,14 @@ on:
     branches: [main]
 
 jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
   tests:
     uses: ./.github/workflows/playwright.yml
 
   deploy:
-    needs: tests
-    if: >-
-      github.event_name == 'push' ||
-      github.event.pull_request.head.repo.full_name == github.repository
+    needs: [lint, tests]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     uses: ./.github/workflows/azure-static-web-apps-white-island-0dc0d1e10.yml
     secrets: inherit

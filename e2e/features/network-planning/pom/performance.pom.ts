@@ -1,11 +1,11 @@
 import { expect } from "@playwright/test";
 import { TutorialPOM } from "../../../shared/pom/tutorial.pom";
-import { TUTORIAL_STEPS } from "../../../../src/app/features/network-planning/pages/performance/performance.constants";
-import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
 import {
+  TUTORIAL_STEPS,
   DEFAULT_APPROXIMATE_SIZE,
   DEFAULT_TRANSMITTERS,
-} from "../../../../src/app/features/network-planning/pages/performance/components/benchmark-configuration/benchmark-configuration.constant";
+} from "@signal/performance/testing";
+import { ColoringAlgorithm } from "@signal/util";
 
 const scanDsaturAlgorithm: ColoringAlgorithm = "DSATUR-NAIVE";
 const heapDsaturAlgorithm: ColoringAlgorithm = "DSATUR-HEAP";
@@ -111,7 +111,7 @@ export class PerformancePOM extends TutorialPOM {
   }
 
   async expectSuccessfulExecution(
-    defaultParameters: boolean = true,
+    defaultParameters = true,
     coloringAlgorithm: ColoringAlgorithm = scanDsaturAlgorithm,
     transmitters: number = DEFAULT_TRANSMITTERS,
     approximateSize: number = DEFAULT_APPROXIMATE_SIZE,

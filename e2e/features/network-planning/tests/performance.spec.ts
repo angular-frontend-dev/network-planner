@@ -1,13 +1,13 @@
 import { test, expect, Page } from "@playwright/test";
-import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
+import { ColoringAlgorithm } from "@signal/util";
 import {
   MIN_NODES,
   MAX_NODES,
   MIN_EDGES,
   MAX_EDGES,
-} from "../../../../src/app/features/network-planning/pages/performance/components/benchmark-configuration/benchmark-configuration.constant";
+  TUTORIAL_STORAGE_KEY,
+} from "@signal/performance/testing";
 import { PerformancePOM } from "../pom/performance.pom";
-import { TUTORIAL_STORAGE_KEY } from "../../../../src/app/features/network-planning/pages/performance/performance.constants";
 
 const scanDsaturAlgorithm: ColoringAlgorithm = "DSATUR-NAIVE";
 const heapDsaturAlgorithm: ColoringAlgorithm = "DSATUR-HEAP";

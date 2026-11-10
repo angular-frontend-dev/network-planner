@@ -1,0 +1,31 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "DOM"],
+    "skipLibCheck": true,
+    "strict": true,
+    "paths": {
+      "@signal/marketing": ["./src/app/libs/features/marketing/src/index.ts"],
+      "@signal/ui": ["./src/app/libs/shared/ui/src/index.ts"],
+      "@signal/util": ["./src/app/libs/shared/util/src/index.ts"],
+      "@signal/data-access": ["./src/app/libs/shared/data-access/src/index.ts"],
+
+      "@signal/planner": ["./src/app/libs/features/planner/src/index.ts"],
+      "@signal/performance": [
+        "./src/app/libs/features/performance/src/index.ts"
+      ],
+
+      "@signal/planner/testing": [
+        "./src/app/libs/features/planner/src/testing.ts"
+      ],
+      "@signal/performance/testing": [
+        "./src/app/libs/features/performance/src/testing.ts"
+      ]
+    }
+  }
+}
