@@ -1,0 +1,13 @@
+<div
+  class="app-layout"
+  [class.theme-light]="theme() === 'light'"
+  [class.theme-dark]="theme() === 'dark'"
+>
+  <app-header />
+
+  <main>
+    <router-outlet />
+  </main>
+
+  <app-footer />
+</div>

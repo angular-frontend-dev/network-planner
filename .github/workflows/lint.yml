@@ -1,0 +1,19 @@
+name: Lint
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    name: ESLint and Nx Boundaries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-deps
+
+      - name: Run ESLint
+        run: npm run lint:all

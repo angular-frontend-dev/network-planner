@@ -1,0 +1,66 @@
+<div class="planner-page planner-page__content">
+  <section class="page-section">
+    <span class="eyebrow"> NETWORK PLANNER </span>
+
+    <h1>Design and explore communication networks.</h1>
+
+    <p>
+      Generate network topologies, configure interference constraints and
+      experiment with graph coloring algorithms.
+    </p>
+  </section>
+
+  <article class="planner-workbench">
+    <aside class="planner-controls">
+      <app-planner-controls
+        (generateNetwork)="onGenerateNetwork($event)"
+        (runAllocation)="onRunAllocation($event)"
+      />
+    </aside>
+
+    <section data-tour="network-graph" class="planner-workspace">
+      <div class="graph-stage">
+        <div class="graph-canvas" data-testid="network-graph">
+          @if (network(); as graph) {
+          <app-graph-view
+            [graph]="graph"
+            [options]="plannerGraphOptions"
+            (initializationTime)="onGraphRendered($event)"
+          />
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAPH SUMMARY -->
+    <section class="planner-summary">
+      <app-performance-summary
+        [performanceMetrics]="performanceMetrics()"
+        [graphInformations]="graphInformations()"
+      ></app-performance-summary>
+    </section>
+  </article>
+</div>
+
+<app-tutorial-prompt
+  description="Learn how interference creates connections, why dense graphs can look messy, and how frequencies are allocated."
+  (startTour)="startTutorial()"
+  (dismissed)="markTutorialSeen()"
+/>
+
+<app-loading [loading]="loadingNetwork()" data-testid="network-loader">
+  <p>Generating network...</p>
+</app-loading>
+
+<app-loading [loading]="loadingAlgorithm()" data-testid="algorithm-loader">
+  <p>Algorithm is running...</p>
+</app-loading>
+
+<app-warning-dialog
+  [open]="showNoGraphWarning()"
+  (closed)="showNoGraphWarning.set(false)"
+  title="Unable to run allocation"
+  data-testid="no-graph-warning"
+>
+  Generate a network before running the frequency allocation algorithm.
+</app-warning-dialog>

@@ -22,7 +22,7 @@ export default defineConfig({
   webServer: {
     command: isCI
       ? "npm run preview"
-      : "npx ng serve network-planner --port 4200",
+      : "npx nx serve network-planner --port 4200",
 
     url: baseURL,
     reuseExistingServer: !isCI,

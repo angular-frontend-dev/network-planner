@@ -1,0 +1,7 @@
+{
+  "name": "network-planner-e2e",
+  "projectType": "application",
+  "sourceRoot": "e2e",
+  "tags": ["type:e2e", "scope:e2e"],
+  "targets": {}
+}

@@ -1,12 +1,13 @@
 import { expect } from "@playwright/test";
-import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
+import { ColoringAlgorithm } from "@signal/util";
 import {
   DEFAULT_ALGORITHM,
   DEFAULT_INTERFERENCE_RADIUS,
   DEFAULT_TRANSMITTERS,
-} from "../../../../src/app/features/network-planning/pages/network-planner/components/network-configuration/planner-controls.constant";
+  TUTORIAL_STEPS,
+} from "@signal/planner/testing";
+
 import { TutorialPOM } from "../../../shared/pom/tutorial.pom";
-import { TUTORIAL_STEPS } from "../../../../src/app/features/network-planning/pages/network-planner/network-planner.constants";
 
 export class NetworkPlannerPOM extends TutorialPOM {
   protected readonly path = "/network-planning/network-planner";
@@ -122,7 +123,7 @@ export class NetworkPlannerPOM extends TutorialPOM {
   }
 
   async expectSuccessfulExecution(
-    defaultParameters: boolean = true,
+    defaultParameters = true,
     coloringAlgorithm: ColoringAlgorithm = DEFAULT_ALGORITHM,
     transmitters: number = DEFAULT_TRANSMITTERS,
     interferenceRadius: number = DEFAULT_INTERFERENCE_RADIUS,

@@ -1,0 +1,29 @@
+name: Setup Dependencies
+description: Configure Node.js and npm, then install locked dependencies
+
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: "22.22.3"
+  npm-version:
+    description: npm version
+    required: false
+    default: "11.12.0"
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: npm
+
+    - name: Set up npm
+      shell: bash
+      run: npm install --global npm@${{ inputs.npm-version }}
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci

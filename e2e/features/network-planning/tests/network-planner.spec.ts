@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import { ColoringAlgorithm } from "../../../../src/app/features/network-planning/engines/algorithms/algorithm.types";
+import { ColoringAlgorithm } from "@signal/util";
 import { NetworkPlannerPOM } from "../pom/network-planner.pom";
-import { TUTORIAL_STORAGE_KEY } from "../../../../src/app/features/network-planning/pages/network-planner/network-planner.constants";
+import { TUTORIAL_STORAGE_KEY } from "@signal/planner/testing";
 
 const scanDsaturAlgorithm: ColoringAlgorithm = "DSATUR-NAIVE";
 const heapDsaturAlgorithm: ColoringAlgorithm = "DSATUR-HEAP";

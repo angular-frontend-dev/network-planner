@@ -1,0 +1,21 @@
+@if (open()) {
+  <div class="dialog-backdrop">
+    <button
+      type="button"
+      class="backdrop-button"
+      aria-label="Close dialog"
+      (click)="closed.emit()"
+    ></button>
+    <div class="dialog-icon">!</div>
+
+    <h2 id="warning-title">{{ title() }}</h2>
+
+    <div class="dialog-message">
+      <ng-content />
+    </div>
+
+    <button type="button" class="dialog-button" (click)="closed.emit()">
+      Got it
+    </button>
+  </div>
+}
