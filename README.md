@@ -1,288 +1,166 @@
 # Signal — Wireless Network Planner
 
-**Signal** is an interactive application for exploring **graph colouring** in a wireless-network planning scenario. It models transmitters as vertices, creates interference edges between nearby transmitters, and uses the **DSATUR heuristic** to assign frequencies (colours) so that interfering transmitters receive different frequencies.
+**Signal** is an interactive application that explores **graph colouring** through a wireless-network planning scenario. It represents transmitters as vertices, connects nearby transmitters when they may interfere, and uses the **DSATUR heuristic** to allocate frequencies (colours) so that adjacent transmitters receive different frequencies.
 
-The project combines algorithm design, graph visualisation, frontend performance engineering, automated testing, and deployment.
+The project brings together graph algorithms, interactive visualisation, frontend performance engineering, modern Angular architecture, automated testing, and continuous deployment.
 
-> **Live demo:** https://white-island-0dc0d1e10.2.azurestaticapps.net/network-planning
->
+> **Live demo:** https://white-island-0dc0d1e10.2.azurestaticapps.net/  
 > **Source code:** https://github.com/angular-frontend-dev/network-planner
 
 ## Features
 
 ### Network Planner
 
-- Generate networks of transmitters with configurable parameters, including an interference radius.
-- Build an interference graph from transmitter positions using a spatial grid to limit unnecessary distance checks.
-- Allocate frequencies using DSATUR graph colouring.
-- Explore the resulting graph in an interactive **Sigma.js / WebGL** visualisation.
+- Generate networks with configurable transmitter counts and interference radius.
+- Construct interference graphs from transmitter positions, using a spatial grid to reduce unnecessary distance checks.
+- Allocate frequencies with DSATUR and inspect the resulting colouring.
+- Explore the graph with an interactive **Sigma.js / WebGL** visualisation.
+- Use the guided tutorial to learn the planning workflow.
 
-### Colouring Algorithms
+### Graph-colouring algorithms
 
 Signal includes two DSATUR implementations:
 
-- **Scan DSATUR (naive):** Selects the next vertex by scanning the uncoloured vertices.
-- **Heap DSATUR:** Uses a heap-based selection strategy.
+- **Scan DSATUR:** selects the next vertex by scanning uncoloured vertices.
+- **Heap DSATUR:** uses a heap-based selection strategy.
 
-Both apply the DSATUR heuristic, prioritising vertices based on the diversity of colours already assigned to their neighbours.
+Both prioritise vertices according to the diversity of colours already assigned to their neighbours. DSATUR is a heuristic: it produces a proper colouring, but **does not guarantee the minimum possible number of colours** for every graph.
 
-DSATUR is a heuristic and does **not** guarantee a minimum colouring for every graph.
+### Performance exploration
 
-### Performance Exploration
+The Performance page lets users compare the implementations and investigate the effect of network size and density on execution time. Benchmark results depend on graph structure, hardware, browser, and runtime conditions; they are not universal performance guarantees.
 
-The Performance page makes it possible to compare graph-colouring implementations and explore how graph size and density affect execution time.
+## Tech stack
 
-Results depend on the generated graph, hardware, browser, and runtime conditions.
+| Area                        | Technology                                                                                          |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| Frontend                    | Angular 22, TypeScript, Angular Signals, Form Signals                                               |
+| Workspace and architecture  | Nx 24, feature-oriented libraries, module-boundary rules                                            |
+| Rendering                   | Angular SSR tooling, static prerendering (SSG), browser-side rendering (CSR), incremental hydration |
+| Graph model and algorithms  | Graphology, custom spatial grid, Scan DSATUR, Heap DSATUR                                           |
+| Interactive graph rendering | Sigma.js (WebGL)                                                                                    |
+| Charts                      | Chart.js                                                                                            |
+| Unit tests                  | Angular test runner / Vitest                                                                        |
+| End-to-end tests            | Playwright                                                                                          |
+| Automation                  | GitHub Actions                                                                                      |
+| Hosting                     | Azure Static Web Apps                                                                               |
 
-## Performance Considerations
+## Architecture
 
-Signal is designed to explore graph algorithms interactively. However, performance depends significantly on graph size and density.
+The application is organised into focused Nx libraries. Public entry points and dependency boundaries keep user-interface code, domain logic, data access, and reusable utilities from becoming unnecessarily coupled.
 
-Two aspects deserve particular attention: **graph rendering in the Network Planner** and **algorithm execution on the Performance page**.
+Key libraries under `src/app/libs/` include:
 
-### 1. Rendering Dense Graphs — Network Planner
+- **`planner`** — network-planning interface and interactions.
+- **`performance`** — algorithm benchmarking and results.
+- **`marketing`** — landing and informational pages.
+- **`ui`** — reusable presentation components.
+- **`util`** — reusable graph and algorithm utilities.
+- **`data-access`** — shared data-access responsibilities.
 
-The Network Planner uses **Sigma.js with WebGL** to render graphs efficiently. Nevertheless, dense graphs can introduce significant rendering overhead.
+These boundaries are enforced through Nx-aware lint rules. Algorithm and network-model logic are kept separate from Sigma's browser-specific rendering code.
 
-For a simple undirected graph with `n` vertices, the maximum number of edges is:
+### Rendering strategy
 
-    |E| = n(n - 1) / 2
+Signal uses Angular's server-rendering infrastructure (`@angular/ssr`) for a **hybrid build-time/browser rendering approach**:
 
-Consequently, the number of edges may grow quadratically with the number of vertices.
+- **SSG:** marketing and informational routes are prerendered to static HTML during the build.
+- **CSR:** the interactive Network Planner renders in the browser because Sigma.js depends on WebGL and browser APIs.
+- **Lazy loading:** route-level code is loaded on demand.
+- **Incremental hydration:** eligible deferred UI content can hydrate progressively.
+- **Browser-only imports:** Sigma rendering code is loaded dynamically to avoid executing browser-dependent code during prerendering.
 
-Although Signal uses a **spatial grid** to avoid unnecessary distance calculations during graph construction, this optimisation cannot eliminate the cost of creating and rendering edges that actually exist.
+**Deployment detail:** Although Angular's SSR tooling participates in the build, Azure Static Web Apps serves the generated static site. Signal does **not** require a request-time Angular SSR server.
 
-**Recommendations:**
+### Performance considerations
 
-- Start with smaller networks and increase the number of transmitters gradually.
-- Reduce the interference radius to generate sparser graphs.
-- Avoid generating extremely dense graphs, which may cause reduced frame rates, visual clutter, or browser unresponsiveness.
+- A spatial grid reduces unnecessary pairwise distance checks when generating interference edges.
+- Graph rendering is isolated from graph generation and colouring.
+- Static images replace live WebGL visualisations in areas where interactivity is not needed, avoiding extra renderer work on informational pages.
+- The Network Planner remains interactive and client-rendered where WebGL provides value.
 
-### 2. Algorithm Execution — Performance Page
-
-Signal implements two variants of the DSATUR graph-colouring heuristic:
-
-- **Scan DSATUR (naive):** Repeatedly scans uncoloured vertices to select the next vertex.
-- **Heap DSATUR:** Uses a priority queue to optimise vertex selection.
-
-The naive implementation can become computationally expensive for large graphs because vertex selection repeatedly examines the remaining candidates.
-
-The number of vertices affects the cost of repeated selection, while graph density also influences the amount of adjacency information the algorithms must process.
-
-For sufficiently large or dense inputs, execution may take considerable time, potentially making the browser temporarily unresponsive.
-
-**Recommendations:**
-
-- Begin comparisons with small or moderately sized graphs.
-- Increase graph size and density progressively to observe performance differences.
-- Avoid extremely large or dense inputs when testing Scan DSATUR.
-- Compare the implementations using equivalent input graphs for meaningful performance measurements.
-
-### 3. Understanding the Trade-offs
-
-These limitations are part of the project's educational purpose.
-
-Signal demonstrates that algorithmic complexity, graph representation, spatial indexing, and rendering technology all influence application performance.
-
-**A faster graph-colouring algorithm does not necessarily mean faster visualisation.** Algorithm execution and graphical rendering are separate costs, and optimising one does not automatically improve the other.
-
-## Technology
-
-| Area                        | Tools                                                                                |
-| --------------------------- | ------------------------------------------------------------------------------------ |
-| Frontend                    | Angular, TypeScript, Angular Signals, Form Signals                                   |
-| Rendering                   | Angular SSR tooling (`@angular/ssr`), SSG (prerendering), CSR, incremental hydration |
-| Graph model                 | Graphology                                                                           |
-| Interactive graph rendering | Sigma.js (WebGL)                                                                     |
-| Data visualisation          | Chart.js                                                                             |
-| Unit tests                  | Angular test runner                                                                  |
-| End-to-end tests            | Playwright                                                                           |
-| CI/CD                       | GitHub Actions                                                                       |
-| Hosting                     | Azure Static Web Apps                                                                |
-
-## Architecture and Rendering
-
-Signal uses **modern Angular's server-side rendering (SSR) infrastructure** (`@angular/ssr`) to support a **hybrid rendering strategy**.
-
-In production, the project uses **Static Site Generation (SSG)** for content-oriented routes and **Client-Side Rendering (CSR)** for the interactive Network Planner.
-
-### Static Site Generation (SSG)
-
-Marketing and informational pages are prerendered to HTML during the Angular build process.
-
-This allows Azure Static Web Apps to serve prebuilt content without waiting for JavaScript to generate the initial page.
-
-Benefits include:
-
-- Faster initial content rendering.
-- Reduced client-side rendering work.
-- Improved accessibility of initial page content.
-- No requirement for a continuously running rendering server.
-
-### Client-Side Rendering (CSR)
-
-The Network Planner is primarily client-rendered because its interactive graph relies on browser-specific APIs, including WebGL.
-
-Graph rendering is isolated from the server-rendering process, and browser-dependent modules are loaded dynamically.
-
-This separation prevents WebGL-dependent code from executing during prerendering.
-
-### Lazy Loading and Incremental Hydration
-
-Signal uses lazy-loaded routes and Angular's incremental hydration capabilities to reduce unnecessary initial JavaScript execution.
-
-Selected deferred content can be hydrated when needed, improving perceived loading performance.
-
-### Separation of Concerns
-
-The application separates its main responsibilities:
-
-- **Graph algorithms:** DSATUR implementations and graph-colouring logic.
-- **Network generation:** Transmitter positioning and interference graph construction.
-- **Spatial indexing:** Efficient identification of nearby transmitters.
-- **Visualisation:** Interactive rendering using Sigma.js and WebGL.
-- **User interface:** Angular components responsible for configuration, interaction, and presentation.
-
-The graph-colouring algorithms remain independent of the visualisation layer, allowing them to be tested and evaluated separately.
-
-### Frontend Performance Optimisations
-
-The application incorporates several performance-oriented decisions:
-
-- Spatial indexing to reduce unnecessary distance calculations during graph generation.
-- WebGL rendering for interactive network visualisation.
-- Static graph images for informational pages where continuous rendering is unnecessary.
-- Lazy loading to reduce initial JavaScript execution.
-- SSG and incremental hydration to improve initial rendering performance.
-
-**SSR vs. SSG:** Although Signal uses Angular's SSR tooling to generate prerendered pages, Azure hosts the resulting static files. It does not run request-time Angular SSR.
-
-This distinction matters because SSG generates HTML during the build process, while traditional SSR generates HTML in response to individual requests.
-
-## Run Locally
+## Getting started
 
 ### Requirements
 
-- Node.js 22.22.3
-- npm
+The project is configured and tested with:
 
-Install dependencies:
+- **Node.js 22.22.3**
+- **npm 11.12.0**
+
+For consistent dependency installation, use the Node/npm versions declared in `package.json` and the committed `package-lock.json`.
+
+### Install and run
 
 ```bash
 npm ci
-```
-
-Start the development server:
-
-```bash
 npm start
 ```
 
-Then open the local URL reported by Angular CLI (typically `http://localhost:4200`).
+Open the local URL reported by the development server (typically `http://localhost:4200`).
 
-To produce a production build:
+Create the production build with:
 
 ```bash
 npm run build
 ```
 
-The static browser build is generated under:
+The static browser output is generated at `dist/network-planner/browser`.
 
-```text
-dist/network-planner/browser
-```
+## Quality checks
 
-## Tests
-
-Signal includes automated unit and end-to-end tests.
-
-### Unit Tests
-
-Run Angular unit tests:
+Lint the Nx projects:
 
 ```bash
-npx ng test network-planner --watch=false
+npm run lint:all
 ```
 
-Unit tests cover the core graph algorithms and network-related functionality.
-
-### End-to-End Tests
-
-Playwright is used to validate application behaviour and user interactions.
-
-Install the Playwright browsers:
+Run unit tests without watch mode:
 
 ```bash
-npx playwright install --with-deps
+npx nx test network-planner --watch=false
 ```
 
-Run E2E tests sequentially:
+Install Playwright browser binaries (first use, or after a Playwright upgrade):
 
 ```bash
-npx playwright test --workers=1
+npx playwright install
 ```
 
-Sequential execution is used to improve test stability in the CI environment.
+Run the end-to-end suite sequentially:
 
-## CI/CD
+```bash
+npm run e2e
+```
 
-Signal uses **GitHub Actions** to automate testing, building, and deployment.
+Additional commands include `npm run e2e:ui` and `npm run e2e:report`. On Linux CI, Playwright browser installation also includes system dependencies via `npx playwright install --with-deps`.
 
-The pipeline is organised into three workflows inside `.github/workflows/`:
+## CI/CD and deployment
 
-1. **`ci-cd.yml`** — Orchestrates the CI/CD process on pushes to `main` and relevant pull-request events.
-2. **`playwright.yml`** — Executes unit tests, validates the Angular build, and runs Playwright E2E tests.
-3. **`azure-static-web-apps-white-island-0dc0d1e10.yml`** — Builds and deploys the application to Azure Static Web Apps.
+GitHub Actions runs automated checks and deploys successful updates to **Azure Static Web Apps**. The pipeline uses reusable workflows and a shared dependency-setup action:
 
-### Deployment Strategy
+| File                                                                 | Responsibility                                                |
+| -------------------------------------------------------------------- | ------------------------------------------------------------- |
+| `.github/workflows/ci-cd.yml`                                        | Orchestrates checks and deployment                            |
+| `.github/workflows/lint.yml`                                         | Runs Nx/ESLint checks                                         |
+| `.github/workflows/playwright.yml`                                   | Runs unit tests, production build, and Playwright E2E tests   |
+| `.github/workflows/azure-static-web-apps-white-island-0dc0d1e10.yml` | Builds and deploys the static application to Azure            |
+| `.github/actions/setup-deps/action.yml`                              | Sets up the shared Node/npm environment and performs `npm ci` |
 
-The pipeline follows a test-before-deployment strategy:
+**Pipeline behaviour:**
 
-    Push / Pull Request
-            |
-            v
-       Unit Tests
-            |
-            v
-      Angular Build
-            |
-            v
-     Playwright Tests
-            |
-            v
-     Azure Deployment
-     (only if tests pass)
+1. Pushes trigger lint and test workflows; pull requests targeting `main` also receive checks.
+2. The deployment job runs only for pushes to `main` after the checks succeed.
+3. Azure serves the generated browser build from `dist/network-planner/browser`.
 
-Deployment depends on successful completion of the automated tests.
+The production deployment was validated after merging the CI/CD changes to `main`.
 
-When a pull request is closed, Azure preview-environment cleanup can execute independently of the testing workflow.
+## Scope and limitations
 
-### Hosting
+Signal is an **educational and experimental planner**, not a production-ready radio-frequency engineering tool. Its interference model uses spatial proximity rather than propagation modelling, terrain, obstacles, or regulatory frequency constraints.
 
-Signal is hosted using **Azure Static Web Apps**.
+The application is primarily intended for **sparse to moderately dense networks**. Very large or dense graphs can increase construction time, memory usage, algorithm execution time, and visual clutter. Performance also varies by device and browser.
 
-The deployment serves prerendered HTML and static assets generated by Angular.
+## Project goals
 
-Azure also handles route navigation and server-side redirects through `staticwebapp.config.json`.
-
-## Scope and Limitations
-
-Signal is an **educational and experimental planner**, not a production-grade radio-frequency engineering tool.
-
-The interference model is based on spatial proximity rather than detailed radio propagation modelling, terrain, obstacles, or regulatory frequency constraints.
-
-It is primarily intended for experimenting with graph-colouring algorithms and understanding performance trade-offs.
-
-For guidance on large networks, dense graphs, and computationally expensive scenarios, see the **Performance Considerations** section.
-
-## Project Goals
-
-Signal was developed to demonstrate how graph algorithms can support an understandable real-world problem while exploring:
-
-- Algorithm design and analysis.
-- Graph modelling and spatial indexing.
-- Interactive data visualisation.
-- Modern Angular architecture and rendering strategies.
-- Frontend performance engineering.
-- Automated testing.
-- Reliable CI/CD and cloud deployment.
+Signal demonstrates how graph algorithms can support an understandable real-world problem while showcasing practical software-engineering choices: modular architecture, appropriate rendering strategies, performance optimisation, automated testing, and reliable deployment.
